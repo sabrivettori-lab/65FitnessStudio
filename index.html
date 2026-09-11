@@ -499,7 +499,7 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
       <p class="legend">
         <span class="tag plan">Plan</span> in your 12-week plan
         <span class="tag prev">Previous</span> from your earlier app
-        <span class="tag new">Added</span> suggested by Claude
+        <span class="tag new">Added</span> in neither plan
       </p>
       <input class="lib-search" id="libSearch" type="search" placeholder="Search the library…" aria-label="Search exercises">
       <div id="library"></div>
@@ -635,7 +635,10 @@ const LIBRARY = [
    {id:"cable-y-raise", n:"Bench supine cable Y raise",  q:"supine cable Y raise bench shoulder", v:"oDSGrucETfw", src:"prev"},
    {id:"single-arm-row", n:"Single-arm dumbbell row",     q:"single arm dumbbell row proper form", v:"dFzUjzfih7k", src:"new"},
    {id:"straight-arm-pull", n:"Straight-arm pulldown",       q:"straight arm pulldown proper form", v:"wcVDItawocI", src:"new"},
-   {id:"back-extension", n:"Back extension",              q:"back extension proper form", v:"ph3pddpKzzw", src:"new"}
+   {id:"back-extension", n:"Back extension",              q:"back extension proper form", v:"ph3pddpKzzw", src:"new"},
+   {id:"one-arm-pulldown", n:"Single-arm lat pulldown",    q:"single arm lat pulldown proper form", v:"eM162KNncD8", src:"new"},
+   {id:"t-bar-row", n:"T-bar row",                  q:"t bar row proper form", v:"TyLoy3n_a10", src:"new"},
+   {id:"machine-row", n:"Machine row",                q:"seated machine row proper form", v:"TeFo51Q_Nsc", src:"new"}
  ]},
 
  {g:"chest", label:"Chest", items:[
@@ -647,7 +650,9 @@ const LIBRARY = [
    {id:"alt-db-floor-fly", n:"Alt DB floor flys",           q:"alternating dumbbell floor fly", v:"6rr5p1jCZC4", c:"Stretch focus, slow eccentric.", src:"prev"},
    {id:"pushup", n:"Push-ups",                    q:"push up proper form", v:"IODxDxX7oi4", src:"plan"},
    {id:"cable-fly", n:"Cable fly",                   q:"cable chest fly proper form", v:"JUDTGZh4rhg", src:"new"},
-   {id:"chest-press-mc", n:"Chest press machine",         q:"chest press machine proper form", v:"n8TOta_pfr4", src:"new"}
+   {id:"chest-press-mc", n:"Chest press machine",         q:"chest press machine proper form", v:"n8TOta_pfr4", src:"new"},
+   {id:"incline-bb-press", n:"Incline barbell press",      q:"incline barbell bench press proper form", v:"jPLdzuHckI8", src:"new"},
+   {id:"db-chest-fly", n:"Dumbbell chest fly",         q:"dumbbell chest fly bench proper form", v:"eozdVDA78K0", src:"new"}
  ]},
 
  {g:"shoulders", label:"Shoulders", items:[
@@ -663,7 +668,8 @@ const LIBRARY = [
    {id:"biceps", n:"Biceps curl",                 q:"dumbbell biceps curl proper form", v:"av7-8igSXTs", src:"plan"},
    {id:"preacher-curl", n:"Bench preacher curl",         q:"bench preacher curl form tutorial", v:"tciCEtwnGuc", src:"prev"},
    {id:"hammer-curl", n:"Hammer curl",                 q:"hammer curl proper form", v:"BRVDS6HVR9Q", src:"new"},
-   {id:"cable-curl", n:"Cable curl",                  q:"cable biceps curl proper form", v:"2MUEL4nL6hA", src:"new"}
+   {id:"cable-curl", n:"Cable curl",                  q:"cable biceps curl proper form", v:"2MUEL4nL6hA", src:"new"},
+   {id:"ez-bar-curl", n:"EZ-bar curl",                q:"ez bar biceps curl form", v:"zG2xJ0Q5QtI", src:"new"}
  ]},
 
  {g:"triceps", label:"Triceps", items:[
@@ -682,7 +688,9 @@ const LIBRARY = [
    {id:"side-plank", n:"Side plank",                  q:"side plank proper form", v:"XeN4pEZZJNI", noload:true, src:"new"},
    {id:"pallof-press", n:"Pallof press",                q:"pallof press proper form", v:"_2xWmYNnFS8", src:"new"},
    {id:"ab-wheel", n:"Ab wheel rollout",            q:"ab wheel rollout beginner form", v:"A3uK5TPzHq8", noload:true, src:"new"},
-   {id:"carry", n:"Farmer carry",                q:"farmer carry proper form", v:"p5MNNosenJc", src:"plan"}
+   {id:"carry", n:"Farmer carry",                q:"farmer carry proper form", v:"p5MNNosenJc", src:"plan"},
+   {id:"woodchopper", n:"Cable woodchopper",          q:"cable woodchopper proper form", v:"pAplQXk3dkU", c:"Rotate from the trunk, not the arms.", src:"new"},
+   {id:"oblique-crunch", n:"Oblique cable crunch",       q:"kneeling cable oblique crunch", v:"xUulEXD1AQc", c:"Kneel side-on to the cable. Each side.", src:"new"}
  ]}
 
 ]},

@@ -47,7 +47,7 @@ the right. Tap it and the video opens.
 
 How they were chosen: each was scored on view count, whether the channel is an
 established strength, rehab or equipment source, whether the title is actually
-about that movement, and whether the length suits a form check. 91 of the 125 are
+about that movement, and whether the length suits a form check. 91 of the first 125 are
 from recognised channels (Jeff Nippard, ATHLEAN-X, Squat University, E3 Rehab,
 Bodybuilding.com, Rogue, Concept2, Physiotutors and similar), 114 have over
 100,000 views and 70 over a million. Twelve were corrected by hand — five where
@@ -81,11 +81,11 @@ stays accurate even if the phone sleeps through a round.
 
 ## The exercise library
 
-125 exercises in three parts:
+133 exercises in three parts:
 
 | Part | Grouped by | Count |
 |---|---|---|
-| Strength | Muscle group — glutes, hamstrings, quads, calves, back, chest, shoulders, biceps, triceps, core | 75 |
+| Strength | Muscle group — glutes, hamstrings, quads, calves, back, chest, shoulders, biceps, triceps, core | 83 |
 | HIIT and conditioning | Type — interval formats, full-body explosive, lower body power, upper body and core under fatigue, machines and sprints | 46 |
 | Mobility and recovery | — | 4 |
 
@@ -93,7 +93,7 @@ Each exercise carries a tag saying where it came from:
 
 - **Plan** — in the current 12-week plan
 - **Previous** — from the earlier version of this app, kept so nothing is lost
-- **Added** — a suggestion, in neither plan
+- **Added** — in neither plan: a suggestion, or picked up from another sheet
 
 Search the library by name or by muscle group. Every entry has a video thumbnail.
 
