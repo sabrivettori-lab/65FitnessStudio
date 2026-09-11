@@ -199,11 +199,15 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
 .exercise{
   display:grid;
   grid-template-columns:minmax(0,1fr) 190px;
-  grid-template-areas:"head head" "meta thumb";
+  grid-template-areas:"head head" "meta thumb" "extra extra";
   gap:10px 14px;align-items:start;
   padding:16px 0;border-top:1px solid rgba(21,18,16,.1);
 }
 .ex-meta{grid-area:meta;min-width:0}
+.ex-extra{grid-area:extra;min-width:0}
+.ex-extra:empty{display:none}
+/* Interval sessions print their rounds instead, so the row loses its column. */
+.exercise.no-thumb{grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "meta" "extra"}
 .exercise > .thumb{grid-area:thumb;width:100%}
 /* The exercise name is the loudest thing in the row. Everything else —
    the dose, the cue, the swap control — reads as quieter metadata. */
@@ -374,6 +378,43 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
   text-align:center;color:var(--ink-3);font-family:var(--mono);font-size:10.5px;
   letter-spacing:.05em;padding:24px 0 10px;
 }
+
+/* ---------- the interval session, written out ---------- */
+.rounds{
+  margin-top:12px;padding:14px;border-radius:14px;
+  background:var(--bone);border:1px solid rgba(21,18,16,.12);
+}
+.rounds-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:9px}
+.rounds-label{
+  font-family:var(--display);font-size:10.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--burgundy);
+}
+.rounds-dose{font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--ink-3)}
+.rounds-pick{background:var(--white);font-size:13.5px;font-weight:600;padding:9px 10px}
+.r-list{list-style:none;padding:0;margin:10px 0 0;counter-reset:none}
+.r-row{
+  display:grid;grid-template-columns:28px minmax(0,1fr) 26px;gap:12px;align-items:center;
+  padding:9px 0;border-top:1px solid rgba(21,18,16,.08);
+}
+.r-row:first-child{border-top:0}
+.r-num{
+  width:26px;height:26px;border-radius:50%;background:var(--cream-warm);color:var(--ink);
+  display:grid;place-content:center;font-family:var(--display);font-size:11px;
+}
+.r-text{min-width:0}
+.r-name{display:block;font-weight:700;font-size:14.5px;letter-spacing:-.01em}
+.r-cue{display:block;color:var(--ink-3);font-size:12.5px;margin-top:2px}
+.r-vid{
+  width:24px;height:24px;border-radius:50%;border:1px solid var(--burgundy);
+  color:var(--burgundy);text-decoration:none;font-size:9px;
+  display:grid;place-content:center;
+}
+.r-vid.empty{border:0}
+.rounds-warm{
+  margin-top:11px;padding-top:10px;border-top:1px solid rgba(21,18,16,.08);
+  font-family:var(--serif);font-style:italic;font-size:12.5px;color:var(--ink-3);
+}
+.rounds .timer-open{margin-top:11px}
 
 /* ---------- clips stored in the repo ---------- */
 .clip-video{
@@ -952,6 +993,7 @@ function dayRec(w, i){
   if (!r.w) r.w = {};
   if (!r.sub) r.sub = {};
   if (!r.walk) r.walk = 0;
+  if (!r.routine) r.routine = "rotate";
   return r;
 }
 function planFor(w){ const o = WEEK_OVERRIDES[w]; return (o && o.days) ? o.days : DEFAULT_WEEK; }
@@ -1133,6 +1175,46 @@ function renderWeeks(){
   renderTargets();
 }
 
+/* The interval session, written out in full on the card: pick a routine, read
+   the rounds, start the timer. Nothing here needs a video to follow. */
+function roundListHTML(ex, rec, dayIndex){
+  const key = ROUTINES[rec.routine] ? rec.routine : "rotate";
+  const rt = ROUTINES[key];
+  const want = ex.timer.rounds;
+  let rows = "";
+  for (let i = 0; i < want; i++){
+    const r = rt.rounds[i % rt.rounds.length];
+    const lib = r.ex ? EX[r.ex] : null;
+    rows += '<li class="r-row">' +
+        '<span class="r-num">' + (i + 1) + "</span>" +
+        '<span class="r-text">' +
+          '<span class="r-name">' + esc(r.n) + "</span>" +
+          '<span class="r-cue">' + esc(r.c) + "</span>" +
+        "</span>" +
+        (lib ? '<a class="r-vid" target="_blank" rel="noopener" href="' + videoHref(lib) +
+               '" aria-label="Form video for ' + esc(r.n) + '">&#9654;</a>' : '<span class="r-vid empty"></span>') +
+      "</li>";
+  }
+  const picker = Object.keys(ROUTINES).map(function(k){
+    return '<option value="' + k + '"' + (k === key ? " selected" : "") + ">" +
+      esc(ROUTINES[k].name) + " \u00b7 " + esc(ROUTINES[k].blurb) + "</option>";
+  }).join("");
+
+  return '<div class="rounds">' +
+      '<div class="rounds-head">' +
+        '<span class="rounds-label">The rounds</span>' +
+        '<span class="rounds-dose">' + want + " \u00d7 " + ex.timer.work + "s on / " +
+          ex.timer.rest + "s off</span>" +
+      "</div>" +
+      '<select class="rounds-pick" data-routine="' + dayIndex + '" aria-label="Which routine">' +
+        picker + "</select>" +
+      '<ol class="r-list">' + rows + "</ol>" +
+      '<p class="rounds-warm">5 min warm-up first, 5 min cool-down after. The timer counts all of it.</p>' +
+      '<button class="timer-open" type="button" data-timer="' + esc(ex.id) +
+        '" data-day="' + dayIndex + '">Start the timer</button>' +
+    "</div>";
+}
+
 /* one <select> holding every exercise, grouped by section and muscle */
 function libraryOptions(selectedId){
   return LIBRARY.map(function(sec){
@@ -1191,7 +1273,7 @@ function renderDays(){
             ' data-w="' + esc(ex.id) + '" value="' + esc(rec.w[ex.id] || "") + '">' +
             '<span class="kg-unit">kg</span></div>';
 
-        return '<div class="exercise">' +
+        return '<div class="exercise' + (ex.timer ? " no-thumb" : "") + '">' +
               '<div class="ex-head">' +
                 '<div class="ex-name">' + esc(ex.n) + "</div>" +
                 '<button class="swap" type="button" data-swap="' + esc(item.ex) + '" aria-expanded="false"' +
@@ -1204,13 +1286,15 @@ function renderDays(){
               (isSub ? '<div class="subbed">Swapped in for ' + esc(EX[item.ex].n) + "</div>" : "") +
               (last ? '<div class="last">Last time: ' + esc(last.kg) + " kg · " + esc(last.when) + "</div>" : "") +
               box +
-              (ex.timer ? '<button class="timer-open" type="button" data-timer="' + esc(ex.id) + '">Open the timer &middot; ' +
-                  ex.timer.rounds + ' \u00d7 ' + ex.timer.work + 's / ' + ex.timer.rest + 's</button>' : "") +
+            "</div>" + (ex.timer ? "" : thumbHTML(ex)) +
+            '<div class="ex-extra">' +
+              (ex.timer ? roundListHTML(ex, rec, i) : "") +
               '<div class="subbox" hidden>' +
                 '<select data-sub="' + esc(item.ex) + '">' + libraryOptions(ex.id) + "</select>" +
                 (isSub ? '<button class="linkbtn" type="button" data-unsub="' + esc(item.ex) + '">Put ' + esc(EX[item.ex].n) + " back</button>" : "") +
               "</div>" +
-            "</div>" + thumbHTML(ex) + "</div>";
+            "</div>" +
+          "</div>";
       }).join("");
       body += '<div class="cardio"><strong>Cardio</strong>' + esc(ses.cardio) +
         '<label class="walkdone"><input type="checkbox" data-walk="' + i + '"' +
@@ -1365,6 +1449,13 @@ function wireDays(){
     });
   });
 
+  planEl.querySelectorAll("[data-routine]").forEach(function(sel){
+    sel.addEventListener("change", function(){
+      dayRec(view, Number(sel.dataset.routine)).routine = sel.value;
+      save(); renderDays();
+    });
+  });
+
   planEl.querySelectorAll("[data-walk]").forEach(function(cb){
     cb.addEventListener("change", function(){
       dayRec(view, Number(cb.dataset.walk)).walk = cb.checked ? 1 : 0;
@@ -1375,7 +1466,7 @@ function wireDays(){
   });
 
   planEl.querySelectorAll("[data-timer]").forEach(function(btn){
-    btn.addEventListener("click", function(){ openTimer(btn.dataset.timer); });
+    btn.addEventListener("click", function(){ openTimer(btn.dataset.timer, btn.dataset.day); });
   });
 
   planEl.querySelectorAll("[data-unsub]").forEach(function(btn){
@@ -1454,33 +1545,33 @@ el("wipe").addEventListener("click", function(){
    ================================================================== */
 const ROUTINES = {
   rotate:{ name:"Rotate 4", blurb:"Four moves, twice through", rounds:[
-    {n:"Burpees",             c:"Chest to floor, jump high at the top"},
-    {n:"Jump squats",         c:"Full depth, explode up, land soft"},
-    {n:"Mountain climbers",   c:"Strong plank, drive the knees fast"},
-    {n:"High knees",          c:"Knees waist-high, pump the arms"},
-    {n:"Burpees",             c:"Chest to floor, jump high at the top"},
-    {n:"Jump squats",         c:"Full depth, explode up, land soft"},
-    {n:"Mountain climbers",   c:"Strong plank, drive the knees fast"},
-    {n:"High knees",          c:"Knees waist-high, pump the arms"}
+    {n:"Burpees", ex:"burpees",                     c:"Chest to floor, jump high at the top"},
+    {n:"Jump squats", ex:"jump-squats",             c:"Full depth, explode up, land soft"},
+    {n:"Mountain climbers", ex:"mountain-climbers", c:"Strong plank, drive the knees fast"},
+    {n:"High knees", ex:"high-knees",               c:"Knees waist-high, pump the arms"},
+    {n:"Burpees", ex:"burpees",                     c:"Chest to floor, jump high at the top"},
+    {n:"Jump squats", ex:"jump-squats",             c:"Full depth, explode up, land soft"},
+    {n:"Mountain climbers", ex:"mountain-climbers", c:"Strong plank, drive the knees fast"},
+    {n:"High knees", ex:"high-knees",               c:"Knees waist-high, pump the arms"}
   ]},
   variety:{ name:"Variety 8", blurb:"Eight different moves, no repeats", rounds:[
-    {n:"Burpees",             c:"Chest to floor, jump at the top"},
-    {n:"Jump squats",         c:"Full depth, explode up"},
-    {n:"Push-ups",            c:"Knees if needed, chest to floor"},
-    {n:"Mountain climbers",   c:"Hips low, drive the knees fast"},
-    {n:"Jumping lunges",      c:"Switch mid-air, land soft"},
-    {n:"Plank shoulder taps", c:"Hips still, tap the opposite shoulder"},
-    {n:"Skater jumps",        c:"Lateral leap, land on the outside leg"},
-    {n:"Burpees",             c:"Finisher. Empty the tank"}
+    {n:"Burpees", ex:"burpees",                     c:"Chest to floor, jump at the top"},
+    {n:"Jump squats", ex:"jump-squats",             c:"Full depth, explode up"},
+    {n:"Push-ups", ex:"pushup",                     c:"Knees if needed, chest to floor"},
+    {n:"Mountain climbers", ex:"mountain-climbers", c:"Hips low, drive the knees fast"},
+    {n:"Jumping lunges", ex:"jumping-lunges",       c:"Switch mid-air, land soft"},
+    {n:"Plank shoulder taps", ex:"plank-taps",      c:"Hips still, tap the opposite shoulder"},
+    {n:"Skater jumps", ex:"skater-jumps",           c:"Lateral leap, land on the outside leg"},
+    {n:"Burpees", ex:"burpees",                     c:"Finisher. Empty the tank"}
   ]},
   sprints:{ name:"Sprints", blurb:"One machine: bike, rower or incline", rounds:
-    Array.from({length:8}, function(){ return {n:"Sprint", c:"Max effort, all-out pace"}; })
+    Array.from({length:8}, function(){ return {n:"Sprint", ex:"bike-intervals", c:"Max effort, all-out pace"}; })
   }
 };
 
 const T = {
   cfg:null, exId:null, routine:"rotate",
-  phase:"idle", left:0, round:0, tick:null, running:false, audio:null, wake:null,
+  phase:"idle", left:0, round:0, tick:null, running:false, audio:null, wake:null, day:null,
   endsAt:0, beeped:-1
 };
 
@@ -1589,6 +1680,7 @@ function drawTimer(){
     b.addEventListener("click", function(){
       if (T.phase !== "idle" && !confirm("Change the routine? This restarts the timer.")) return;
       T.routine = b.dataset.variant;
+      if (T.day !== null){ dayRec(view, T.day).routine = T.routine; save(); renderDays(); }
       resetTimer();
     });
   });
@@ -1650,10 +1742,12 @@ function resetTimer(){
   drawTimer();
 }
 
-function openTimer(exId){
+function openTimer(exId, dayIndex){
   const ex = EX[exId];
   if (!ex || !ex.timer) return;
   T.cfg = ex.timer; T.exId = exId;
+  T.day = (dayIndex === undefined || dayIndex === null) ? null : Number(dayIndex);
+  if (T.day !== null) T.routine = dayRec(view, T.day).routine || "rotate";
   tEl("timerEyebrow").textContent = ex.n;
   resetTimer();
   tEl("timerSheet").hidden = false;
