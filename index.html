@@ -59,7 +59,7 @@ body{
   margin-bottom:22px;font-size:13px;color:var(--ink-2);
 }
 .meta-row .dot{width:4px;height:4px;background:var(--orange);border-radius:50%}
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:26px}
+.stats{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:26px}
 .stat{background:var(--white);border:1px solid rgba(21,18,16,.12);border-radius:14px;padding:14px 12px;text-align:center}
 .stat-num{font-family:var(--mono);font-size:clamp(17px,4.6vw,21px);font-weight:700;color:var(--burgundy)}
 .stat-label{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-top:4px;font-weight:600}
@@ -107,6 +107,24 @@ body{
 .meter{height:6px;border-radius:999px;background:rgba(21,18,16,.1);margin-top:8px;overflow:hidden}
 .meter i{display:block;height:100%;background:linear-gradient(90deg,var(--orange-bright),var(--burgundy));width:0;transition:width .25s}
 
+/* ---------- what the week asked for, and what got done ---------- */
+.targets{margin-top:16px;display:grid;gap:2px}
+.target{
+  display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:10px;
+  padding:9px 10px;border-radius:10px;
+}
+.target.hit{background:rgba(122,144,104,.12)}
+.target-name{font-size:13.5px;font-weight:600;color:var(--ink-2)}
+.target.hit .target-name{color:var(--sage-deep)}
+.dots{display:flex;gap:3px}
+.dots i{
+  width:8px;height:8px;border-radius:50%;background:rgba(21,18,16,.14);display:block;
+}
+.dots i.on{background:var(--orange)}
+.target.hit .dots i.on{background:var(--sage-deep)}
+.target-n{font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--ink-3);min-width:40px;text-align:right}
+.target.hit .target-n{color:var(--sage-deep)}
+
 /* ---------- day cards ---------- */
 .day{
   background:var(--white);border:1px solid rgba(21,18,16,.12);
@@ -125,8 +143,13 @@ body{
   font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.1em;
   text-transform:uppercase;color:var(--ink-3);
 }
-.day-when .istoday{color:var(--orange);font-weight:700}
-.day-title{font-family:var(--display);font-size:19px;color:var(--ink);margin-top:4px;letter-spacing:-.01em}
+.day-when b{color:var(--ink-2);font-weight:700}
+.day-when .istoday{
+  color:var(--white);background:var(--orange);font-weight:700;
+  border-radius:999px;padding:1px 7px;margin-left:5px;letter-spacing:.08em;
+}
+.day-title{font-family:var(--display);font-size:19px;color:var(--ink);margin-top:5px;letter-spacing:-.01em}
+.day.done .day-title{color:var(--sage-deep)}
 .complete{
   appearance:none;width:28px;height:28px;border:2px solid var(--ink-3);border-radius:8px;
   display:grid;place-content:center;cursor:pointer;background:var(--bone);flex:0 0 auto;
@@ -135,11 +158,7 @@ body{
 .complete:checked::after{content:"\2713";color:var(--white);font-weight:900;font-size:17px}
 .content{padding:4px 18px 16px}
 
-.picker{display:grid;gap:6px;padding:12px 0}
-.picker label{
-  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--ink-3);
-}
+.picker{padding:12px 0 2px}
 select{
   width:100%;padding:11px 12px;border-radius:10px;border:1px solid rgba(21,18,16,.18);
   background:var(--bone);color:var(--ink);font:inherit;font-size:15px;font-weight:600;
@@ -150,11 +169,17 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
   display:grid;grid-template-columns:minmax(0,1fr) 140px;gap:14px;align-items:start;
   padding:14px 0;border-top:1px solid rgba(21,18,16,.1);
 }
-.ex-name{font-weight:700;font-size:15.5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.pills{display:flex;gap:6px;margin-top:5px;flex-wrap:wrap}
+/* The exercise name is the loudest thing in the row. Everything else —
+   the dose, the cue, the swap control — reads as quieter metadata. */
+.ex-head{display:flex;align-items:flex-start;gap:9px}
+.ex-name{
+  flex:1 1 auto;min-width:0;
+  font-size:17px;font-weight:800;letter-spacing:-.015em;line-height:1.2;
+}
+.pills{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap}
 .pill{
-  font-family:var(--mono);font-size:11px;font-weight:700;
-  padding:3px 9px;border-radius:999px;
+  font-family:var(--mono);font-size:10px;font-weight:700;
+  padding:2px 7px;border-radius:999px;
 }
 .pill.sets{background:var(--ink);color:var(--cream)}
 .pill.reps{background:var(--burgundy);color:var(--white)}
@@ -165,31 +190,63 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
 }
 .video-link::before{content:'\25B6';font-size:8px;margin-right:5px}
 .video-link:active{background:var(--burgundy-bright);color:var(--white)}
-.cue{color:var(--ink-3);font-size:12.5px;margin-top:5px}
-.last{font-family:var(--mono);font-size:11.5px;color:var(--sage-deep);margin-top:5px;font-weight:600}
-.subbed{font-size:12px;color:var(--orange-deep);margin-top:5px;font-weight:600}
+.cue{color:var(--ink-3);font-size:12.5px;margin-top:6px;line-height:1.35}
+.last{font-family:var(--mono);font-size:11px;color:var(--sage-deep);margin-top:6px;font-weight:600}
+.subbed{font-size:11.5px;color:var(--orange-deep);margin-top:6px;font-weight:600}
 .swap{
-  appearance:none;background:none;border:0;padding:4px 0;margin-top:3px;
+  position:relative;flex:0 0 auto;appearance:none;cursor:pointer;
+  width:30px;height:30px;margin-top:-2px;border-radius:50%;
+  border:1px solid rgba(21,18,16,.16);background:var(--bone);color:var(--ink-3);
+  font-size:14px;line-height:1;display:grid;place-content:center;
+}
+.swap::after{content:'';position:absolute;inset:-7px}   /* a thumb-sized tap target */
+.swap:active{background:var(--burgundy);border-color:var(--burgundy);color:var(--white)}
+.swap[aria-expanded="true"]{background:var(--ink);border-color:var(--ink);color:var(--cream)}
+.linkbtn{
+  appearance:none;background:none;border:0;padding:5px 0;cursor:pointer;text-align:left;
   font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.05em;
-  color:var(--ink-3);text-decoration:underline;cursor:pointer;text-transform:uppercase;
+  color:var(--ink-3);text-decoration:underline;text-transform:uppercase;
 }
 .subbox{margin-top:8px;display:grid;gap:6px}
 .subbox[hidden]{display:none}
+.kg-wrap{position:relative;display:inline-block;margin-top:11px}
 .weight-input{
-  display:block;width:108px;margin-top:9px;
-  padding:11px 10px;border-radius:10px;border:1.5px solid rgba(21,18,16,.2);
-  background:var(--bone);color:var(--ink);text-align:center;
+  display:block;width:116px;
+  padding:11px 36px 11px 13px;border-radius:10px;border:1.5px solid rgba(21,18,16,.2);
+  background:var(--bone);color:var(--ink);text-align:left;
   font-family:var(--mono);font-size:16px;font-weight:700;
 }
+.kg-unit{
+  position:absolute;right:13px;top:50%;transform:translateY(-50%);pointer-events:none;
+  font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--ink-3);
+}
+.weight-input:placeholder-shown + .kg-unit{opacity:0}
 .weight-input:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
 .weight-input.filled{border-color:var(--sage);background:var(--white)}
-.noload{margin-top:9px;font-family:var(--mono);font-size:11.5px;color:var(--ink-3);letter-spacing:.06em}
+.noload{margin-top:9px;font-family:var(--serif);font-style:italic;font-size:13px;color:var(--ink-3)}
 
 .cardio{
   margin-top:14px;padding:13px 15px;border-radius:12px;
   background:rgba(43,82,52,.06);border-left:3px solid var(--forest);font-size:13.5px;color:var(--ink-2);
 }
-.cardio strong{color:var(--forest);font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.cardio strong{
+  color:var(--forest);font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;margin-right:8px;
+}
+.walkdone{
+  display:flex;align-items:center;gap:9px;margin-top:11px;padding-top:11px;
+  border-top:1px solid rgba(43,82,52,.18);cursor:pointer;
+  font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-3);
+}
+.walkdone input{
+  appearance:none;width:20px;height:20px;flex:0 0 auto;cursor:pointer;
+  border:2px solid var(--ink-3);border-radius:6px;background:var(--white);
+  display:grid;place-content:center;
+}
+.walkdone input:checked{background:var(--forest);border-color:var(--forest)}
+.walkdone input:checked::after{content:"\2713";color:var(--white);font-size:13px;font-weight:900}
+.walkdone input:checked ~ span{color:var(--forest)}
 .restnote{padding:16px 0 6px;color:var(--ink-3);font-size:14px;font-style:italic;font-family:var(--serif)}
 
 /* ---------- exercise library ---------- */
@@ -221,11 +278,11 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
   display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;
   padding:10px 0;border-top:1px solid rgba(21,18,16,.07);
 }
-.lib-name{font-weight:600;font-size:14.5px}
+.lib-name{font-weight:700;font-size:15px;letter-spacing:-.01em}
 .lib-cue{color:var(--ink-3);font-size:12px;margin-top:2px}
 .tag{
-  display:inline-block;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.08em;
-  text-transform:uppercase;padding:2px 7px;border-radius:999px;margin-left:7px;vertical-align:2px;
+  display:inline-block;font-family:var(--mono);font-size:8.5px;font-weight:700;letter-spacing:.07em;
+  text-transform:uppercase;padding:2px 6px;border-radius:999px;margin-left:7px;vertical-align:2px;
 }
 .tag.plan{background:var(--orange);color:var(--white)}
 .tag.prev{background:rgba(21,18,16,.1);color:var(--ink-3)}
@@ -283,7 +340,7 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
 
 /* ---------- HIIT timer sheet ---------- */
 .timer-open{
-  appearance:none;width:100%;margin-top:10px;padding:12px 14px;
+  appearance:none;width:100%;margin-top:12px;padding:12px 14px;
   border:none;border-radius:12px;background:var(--ink);color:var(--cream);
   font-family:var(--display);font-size:11px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;
 }
@@ -365,7 +422,7 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
 @media print{
   body{background:#fff;background-image:none}
   .panel,.day,.callout{border:1px solid #bbb}
-  .btn,.weeks,.weeknav,.backtoday,.swap,.lib-search{display:none}
+  .btn,.weeks,.weeknav,.backtoday,.swap,.linkbtn,.lib-search,.timer-open{display:none}
   .day{break-inside:avoid}
 }
 </style>
@@ -384,8 +441,7 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
       <span>daily incline walk</span>
     </div>
     <div class="stats">
-      <div class="stat"><div class="stat-num" id="weekStat">1/12</div><div class="stat-label">Week</div></div>
-      <div class="stat"><div class="stat-num" id="doneStat">0</div><div class="stat-label">Sessions done</div></div>
+      <div class="stat"><div class="stat-num" id="weeksDone">0 of 12</div><div class="stat-label">Weeks completed</div></div>
     </div>
   </header>
 
@@ -401,6 +457,7 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
       <button class="backtoday" id="backToday" type="button" hidden>Back to this week</button>
       <p class="weekbar" id="weekbar"></p>
       <div class="meter"><i id="meter"></i></div>
+      <div class="targets" id="targets"></div>
     </div>
   </section>
 
@@ -497,108 +554,108 @@ const LIBRARY = [
 {section:"Strength", groups:[
 
  {g:"glutes", label:"Glutes", items:[
-   {id:"hip-thrust", n:"Hip thrust",                  q:"barbell hip thrust proper form", v:"Zp26q4BY5HE", src:"plan"},
+   {id:"hip-thrust", n:"Hip thrust",                  q:"barbell hip thrust proper form", v:"xDmFkJxPzeM", src:"plan"},
    {id:"sl-db-glute-bridge", n:"Single-leg DB glute bridge",  q:"single leg hip thrust dumbbell bench", v:"L4nTaesNm0E", c:"Each side. Go heavy.", src:"prev"},
    {id:"glute-bridge", n:"Glute bridge",                q:"glute bridge proper form", v:"wPM8icPu6H8", src:"plan"},
-   {id:"kickback", n:"Cable glute kickback",        q:"cable glute kickback proper form", v:"l4zReIOfPCQ", src:"plan"},
-   {id:"cable-hip-abduction", n:"Cable hip abduction",         q:"standing cable hip abduction glute medius", v:"seRBLLNIa-s", c:"Each side. Glute medius.", src:"prev"},
-   {id:"abduction", n:"Hip abduction machine",       q:"hip abduction machine proper form", v:"OQC8nso2aPE", src:"plan"},
-   {id:"bulgarian", n:"Bulgarian split squat",       q:"bulgarian split squat glute biased forward lean", v:"vgn7bSXkgkA", c:"Forward lean, foot far from the bench.", src:"plan"},
+   {id:"kickback", n:"Cable glute kickback",        q:"cable glute kickback proper form", v:"dJa_Nf4zdik", src:"plan"},
+   {id:"cable-hip-abduction", n:"Cable hip abduction",         q:"standing cable hip abduction glute medius", v:"pvnR8CDb4BU", c:"Each side. Glute medius.", src:"prev"},
+   {id:"abduction", n:"Hip abduction machine",       q:"hip abduction machine proper form", v:"h9BqUMqK-SY", src:"plan"},
+   {id:"bulgarian", n:"Bulgarian split squat",       q:"bulgarian split squat glute biased forward lean", v:"hiLF_pF3EJM", c:"Forward lean, foot far from the bench.", src:"plan"},
    {id:"step-up", n:"Dumbbell step-up",            q:"dumbbell step up proper form", v:"aKj-6hgiViA", src:"new"},
    {id:"frog-pump", n:"Frog pump",                   q:"frog pump glute exercise form", v:"rgljhH1X4vc", src:"new"},
-   {id:"back-ext-glute", n:"Back extension, glute-biased",q:"glute biased back extension form", v:"G6HG5VzJoNc", src:"new"}
+   {id:"back-ext-glute", n:"Back extension, glute-biased",q:"glute biased back extension form", v:"H8Swl1N-uis", src:"new"}
  ]},
 
  {g:"hamstrings", label:"Hamstrings", items:[
-   {id:"rdl", n:"Romanian deadlift",           q:"romanian deadlift proper form", v:"5WxMW-Fu5KU", src:"plan"},
+   {id:"rdl", n:"Romanian deadlift",           q:"romanian deadlift proper form", v:"_oyxCn2iSjU", src:"plan"},
    {id:"db-rdl", n:"Dumbbell RDL",                q:"dumbbell romanian deadlift form", v:"hQgFixeXdZo", src:"plan"},
    {id:"bilateral-rdl", n:"Bilateral RDL",               q:"bilateral romanian deadlift form", v:"5zmlnbWb-g4", c:"Feel the stretch.", src:"prev"},
    {id:"staggered-deadlift", n:"Staggered stance deadlift",   q:"staggered stance deadlift form", v:"IpXl63ds9NU", src:"prev"},
-   {id:"leg-curl", n:"Leg curl",                    q:"lying leg curl proper form", v:"jxctD6fL_FQ", src:"plan"},
-   {id:"db-ham-curl", n:"DB ham curl",                 q:"dumbbell hamstring curl prone", v:"dY7BmNR7RJk", c:"Controlled tempo.", src:"prev"},
-   {id:"good-morning", n:"Good morning",                q:"barbell good morning proper form", v:"0Syp9iyINZ4", src:"new"},
+   {id:"leg-curl", n:"Leg curl",                    q:"lying leg curl proper form", v:"vl5nUdE9mWM", src:"plan"},
+   {id:"db-ham-curl", n:"DB ham curl",                 q:"dumbbell hamstring curl prone", v:"ZHlBSI6JPsA", c:"Controlled tempo.", src:"prev"},
+   {id:"good-morning", n:"Good morning",                q:"barbell good morning proper form", v:"f23vXjoG2e8", src:"new"},
    {id:"nordic-curl", n:"Nordic hamstring curl",       q:"nordic hamstring curl beginner", v:"_e9vFU9-tkc", src:"new"}
  ]},
 
  {g:"quads", label:"Quads", items:[
    {id:"back-squat", n:"Back squat",                  q:"barbell back squat proper form woman", v:"gcNh17Ckjgg", src:"plan"},
    {id:"hack-squat", n:"Hack squat",                  q:"hack squat machine proper form", v:"0tn5K9NlCfo", src:"plan"},
-   {id:"leg-press", n:"Leg press",                   q:"leg press proper form", v:"K5n2vg3oZa4", src:"plan"},
-   {id:"goblet", n:"Goblet squat",                q:"goblet squat proper form", v:"Mu7aVOjEBdA", src:"plan"},
+   {id:"leg-press", n:"Leg press",                   q:"leg press proper form", v:"B6rGDcfyPto", src:"plan"},
+   {id:"goblet", n:"Goblet squat",                q:"goblet squat proper form", v:"gm4ln6PO4rc", src:"plan"},
    {id:"lunge", n:"Walking lunges",              q:"dumbbell walking lunges form", v:"Pbmj6xPo-Hw", src:"plan"},
-   {id:"poliquin-split", n:"Poliquin split squat",        q:"poliquin split squat quad eccentric", v:"7Y-fr2lceQU", c:"Quad eccentric focus.", src:"prev"},
-   {id:"cable-sissy-squat", n:"Cable sissy squat",           q:"cable sissy squat heel elevated", v:"hzbN6mqlBYs", c:"Heel elevated, slow eccentric.", src:"prev"},
-   {id:"cable-rev-nordic", n:"Cable reverse Nordics",       q:"cable reverse nordic curl", v:"JX4bA2rT10M", c:"Plyobox, slow control.", src:"prev"},
-   {id:"thomas-hf", n:"Thomas HF eccentrics",        q:"thomas hip flexor eccentrics", v:"fUFztXZUbZ0", c:"KB or monkey feet, controlled.", src:"prev"},
-   {id:"leg-extension", n:"Leg extension",               q:"leg extension machine proper form", v:"YyvSfVjQeL0", src:"new"},
-   {id:"front-squat", n:"Front squat",                 q:"front squat proper form", v:"nmUof3vszxM", src:"new"}
+   {id:"poliquin-split", n:"Poliquin split squat",        q:"poliquin split squat quad eccentric", v:"h80lCPi_TpM", c:"Quad eccentric focus.", src:"prev"},
+   {id:"cable-sissy-squat", n:"Cable sissy squat",           q:"cable sissy squat heel elevated", v:"UUUSIzjFtn0", c:"Heel elevated, slow eccentric.", src:"prev"},
+   {id:"cable-rev-nordic", n:"Cable reverse Nordics",       q:"cable reverse nordic curl", v:"PvJDjcfZe1c", c:"Plyobox, slow control.", src:"prev"},
+   {id:"thomas-hf", n:"Thomas HF eccentrics",        q:"thomas hip flexor eccentrics", v:"WdTihDw2JN4", c:"KB or monkey feet, controlled.", src:"prev"},
+   {id:"leg-extension", n:"Leg extension",               q:"leg extension machine proper form", v:"ljO4jkwv8wQ", src:"new"},
+   {id:"front-squat", n:"Front squat",                 q:"front squat proper form", v:"v-mQm_droHg", src:"new"}
  ]},
 
  {g:"calves", label:"Calves", items:[
-   {id:"calf", n:"Standing calf raise",         q:"standing calf raise proper form", v:"eMTy3qylqnE", src:"plan"},
-   {id:"seated-calf", n:"Seated calf raise",           q:"seated calf raise proper form", v:"ORY-ke6vcgk", src:"new"}
+   {id:"calf", n:"Standing calf raise",         q:"standing calf raise proper form", v:"wxwY7GXxL4k", src:"plan"},
+   {id:"seated-calf", n:"Seated calf raise",           q:"seated calf raise proper form", v:"3ZRe_QpvRPg", src:"new"}
  ]},
 
  {g:"back", label:"Back", items:[
    {id:"pulldown", n:"Lat pulldown",                q:"lat pulldown proper form", v:"SALxEARiMkw", src:"plan"},
-   {id:"cable-row", n:"Seated cable row",            q:"seated cable row proper form", v:"vwHG9Jfu4sw", src:"plan"},
-   {id:"cs-row", n:"Chest-supported row",         q:"chest supported row proper form", v:"vmX58YYK3-8", src:"plan"},
-   {id:"bent-over-row", n:"Bent-over row",               q:"barbell bent over row form heavy", v:"qXrTDQG1oUQ", c:"Deep stable hinge, pull to the belly.", src:"prev"},
-   {id:"chin-up", n:"Chin-ups (90° knees)",        q:"chin up form 90 degree knees", v:"qPVV9tOZlAk", c:"Band-assist if needed.", src:"prev"},
-   {id:"pullup", n:"Assisted pull-up",            q:"assisted pull up machine form", v:"gx0RWT7WbmA", src:"plan"},
+   {id:"cable-row", n:"Seated cable row",            q:"seated cable row proper form", v:"xQNrFHEMhI4", src:"plan"},
+   {id:"cs-row", n:"Chest-supported row",         q:"chest supported row proper form", v:"0UBRfiO4zDs", src:"plan"},
+   {id:"bent-over-row", n:"Bent-over row",               q:"barbell bent over row form heavy", v:"FWJR5Ve8bnQ", c:"Deep stable hinge, pull to the belly.", src:"prev"},
+   {id:"chin-up", n:"Chin-ups (90° knees)",        q:"chin up form 90 degree knees", v:"7KG5UCkNU9U", c:"Band-assist if needed.", src:"prev"},
+   {id:"pullup", n:"Assisted pull-up",            q:"assisted pull up machine form", v:"wFj808u2HWU", src:"plan"},
    {id:"face-pull", n:"Face pull",                   q:"cable face pull proper form", v:"ljgqer1ZpXg", src:"plan"},
-   {id:"y-raise", n:"Bench supine Y raise",        q:"bench supine Y raise prone", v:"7vXXJURCZCQ", c:"Lower trap and rear delt.", src:"prev"},
+   {id:"y-raise", n:"Bench supine Y raise",        q:"bench supine Y raise prone", v:"7NaNt-txiqc", c:"Lower trap and rear delt.", src:"prev"},
    {id:"cable-y-raise", n:"Bench supine cable Y raise",  q:"supine cable Y raise bench shoulder", v:"oDSGrucETfw", src:"prev"},
    {id:"single-arm-row", n:"Single-arm dumbbell row",     q:"single arm dumbbell row proper form", v:"dFzUjzfih7k", src:"new"},
-   {id:"straight-arm-pull", n:"Straight-arm pulldown",       q:"straight arm pulldown proper form", v:"98W63pVdW38", src:"new"},
-   {id:"back-extension", n:"Back extension",              q:"back extension proper form", v:"G6HG5VzJoNc", src:"new"}
+   {id:"straight-arm-pull", n:"Straight-arm pulldown",       q:"straight arm pulldown proper form", v:"wcVDItawocI", src:"new"},
+   {id:"back-extension", n:"Back extension",              q:"back extension proper form", v:"ph3pddpKzzw", src:"new"}
  ]},
 
  {g:"chest", label:"Chest", items:[
-   {id:"db-press", n:"Dumbbell chest press",        q:"dumbbell bench press proper form", v:"5Y3VZsLb1Ys", src:"plan"},
-   {id:"incline-press", n:"Incline dumbbell press",      q:"incline dumbbell press proper form", v:"hChjZQhX1Ls", src:"plan"},
-   {id:"db-incline-bench", n:"DB incline bench",            q:"dumbbell incline bench press form", v:"8iPEnn-ltC8", c:"30–45° incline, upper chest.", src:"prev"},
-   {id:"barbell-bench", n:"Barbell bench press",         q:"barbell bench press woman form", v:"lWFknlOTbyM", c:"The heavy compound press.", src:"prev"},
-   {id:"alt-db-bench", n:"Alt DB bench hooklying",      q:"alternating dumbbell bench press hooklying", v:"_MMIKPqxuTs", c:"Alternating arms, controlled tempo.", src:"prev"},
-   {id:"alt-db-floor-fly", n:"Alt DB floor flys",           q:"alternating dumbbell floor fly", v:"Z2plyYaToHQ", c:"Stretch focus, slow eccentric.", src:"prev"},
-   {id:"pushup", n:"Push-ups",                    q:"push up proper form", v:"I9fsqKE5XHo", src:"plan"},
+   {id:"db-press", n:"Dumbbell chest press",        q:"dumbbell bench press proper form", v:"QsYre__-aro", src:"plan"},
+   {id:"incline-press", n:"Incline dumbbell press",      q:"incline dumbbell press proper form", v:"IP4oeKh1Sd4", src:"plan"},
+   {id:"db-incline-bench", n:"DB incline bench",            q:"dumbbell incline bench press form", v:"IP4oeKh1Sd4", c:"30–45° incline, upper chest.", src:"prev"},
+   {id:"barbell-bench", n:"Barbell bench press",         q:"barbell bench press woman form", v:"JvOJdUtx6UQ", c:"The heavy compound press.", src:"prev"},
+   {id:"alt-db-bench", n:"Alt DB bench hooklying",      q:"alternating dumbbell bench press hooklying", v:"wOa4YyxyiKI", c:"Alternating arms, controlled tempo.", src:"prev"},
+   {id:"alt-db-floor-fly", n:"Alt DB floor flys",           q:"alternating dumbbell floor fly", v:"6rr5p1jCZC4", c:"Stretch focus, slow eccentric.", src:"prev"},
+   {id:"pushup", n:"Push-ups",                    q:"push up proper form", v:"IODxDxX7oi4", src:"plan"},
    {id:"cable-fly", n:"Cable fly",                   q:"cable chest fly proper form", v:"JUDTGZh4rhg", src:"new"},
-   {id:"chest-press-mc", n:"Chest press machine",         q:"chest press machine proper form", v:"xUm0BiZCWlQ", src:"new"}
+   {id:"chest-press-mc", n:"Chest press machine",         q:"chest press machine proper form", v:"n8TOta_pfr4", src:"new"}
  ]},
 
  {g:"shoulders", label:"Shoulders", items:[
-   {id:"shoulder-press", n:"Shoulder press",              q:"dumbbell shoulder press proper form", v:"rO_iEImwHyo", src:"plan"},
+   {id:"shoulder-press", n:"Shoulder press",              q:"dumbbell shoulder press proper form", v:"B-aVuyhvLHU", src:"plan"},
    {id:"lateral-raise", n:"Lateral raise",               q:"dumbbell lateral raise proper form", v:"PzsMitRdI_8", c:"Slight forward lean, pinky up at the top.", src:"plan"},
-   {id:"lying-cable-lat", n:"Lying cable lateral raise",   q:"lying side cable lateral raise medial deltoid", v:"kyUzdHj99JE", c:"On your side on a bench under the cable.", src:"prev"},
+   {id:"lying-cable-lat", n:"Lying cable lateral raise",   q:"lying side cable lateral raise medial deltoid", v:"Z5FA9aq3L6A", c:"On your side on a bench under the cable.", src:"prev"},
    {id:"rear-delt-fly", n:"Rear delt fly",               q:"rear delt fly proper form", v:"FqfYvaRgKyM", src:"new"},
-   {id:"arnold-press", n:"Arnold press",                q:"arnold press proper form", v:"ris9tKqMwgU", src:"new"},
+   {id:"arnold-press", n:"Arnold press",                q:"arnold press proper form", v:"6Z15_WdXmVw", src:"new"},
    {id:"upright-row", n:"Cable upright row",           q:"cable upright row proper form", v:"nwkLwMRHMQo", src:"new"}
  ]},
 
  {g:"biceps", label:"Biceps", items:[
-   {id:"biceps", n:"Biceps curl",                 q:"dumbbell biceps curl proper form", v:"XE_pHwbst04", src:"plan"},
-   {id:"preacher-curl", n:"Bench preacher curl",         q:"bench preacher curl form tutorial", v:"9WDQqgiwQEY", src:"prev"},
-   {id:"hammer-curl", n:"Hammer curl",                 q:"hammer curl proper form", v:"8XLxfXROrTo", src:"new"},
+   {id:"biceps", n:"Biceps curl",                 q:"dumbbell biceps curl proper form", v:"av7-8igSXTs", src:"plan"},
+   {id:"preacher-curl", n:"Bench preacher curl",         q:"bench preacher curl form tutorial", v:"tciCEtwnGuc", src:"prev"},
+   {id:"hammer-curl", n:"Hammer curl",                 q:"hammer curl proper form", v:"BRVDS6HVR9Q", src:"new"},
    {id:"cable-curl", n:"Cable curl",                  q:"cable biceps curl proper form", v:"2MUEL4nL6hA", src:"new"}
  ]},
 
  {g:"triceps", label:"Triceps", items:[
-   {id:"triceps", n:"Triceps pushdown",            q:"triceps pushdown proper form", v:"_w-HpW70nSQ", src:"plan"},
-   {id:"cable-tri-pushdown", n:"Cable tricep pushdown",       q:"single arm cable tricep pushdown bench", v:"RhkRr9eyOzQ", c:"Single arm, braced on a bench.", src:"prev"},
-   {id:"overhead-ext", n:"Overhead triceps extension",  q:"overhead triceps extension proper form", v:"-Vyt2QdsR7E", src:"new"},
-   {id:"bench-dips", n:"Bench dips",                  q:"bench dips proper form", v:"c3ZGl4pAwZ4", src:"new"}
+   {id:"triceps", n:"Triceps pushdown",            q:"triceps pushdown proper form", v:"8WL0m0vLAPo", src:"plan"},
+   {id:"cable-tri-pushdown", n:"Cable tricep pushdown",       q:"single arm cable tricep pushdown bench", v:"6Fzep104f0s", c:"Single arm, braced on a bench.", src:"prev"},
+   {id:"overhead-ext", n:"Overhead triceps extension",  q:"overhead triceps extension proper form", v:"1u18yJELsh0", src:"new"},
+   {id:"bench-dips", n:"Bench dips",                  q:"bench dips proper form", v:"0326dy_-CzM", src:"new"}
  ]},
 
  {g:"core", label:"Core", items:[
-   {id:"cable-crunch", n:"Cable crunch",                q:"cable crunch kneeling rope", v:"b9FJ4hIK3pI", c:"Kneel facing the cable, rope behind the head.", src:"plan"},
-   {id:"hanging-leg-raise", n:"Hanging leg raise",           q:"hanging leg raise form", v:"_jLskVdzS4o", c:"Bent knees if strict is hard.", src:"prev"},
-   {id:"russian-twist", n:"Russian twists",              q:"russian twist abs form", v:"wkD8rjkodUI", c:"Feet up, rotate slowly.", src:"prev"},
-   {id:"plank", n:"Plank",                       q:"front plank proper form", v:"u6ZelKyUM6g", noload:true, src:"plan"},
-   {id:"dead-bug", n:"Dead bug",                    q:"dead bug exercise proper form", v:"GbSC02oU3To", noload:true, src:"plan"},
-   {id:"side-plank", n:"Side plank",                  q:"side plank proper form", v:"NXr4Fw8q60o", noload:true, src:"new"},
+   {id:"cable-crunch", n:"Cable crunch",                q:"cable crunch kneeling rope", v:"3qjoXDTuyOE", c:"Kneel facing the cable, rope behind the head.", src:"plan"},
+   {id:"hanging-leg-raise", n:"Hanging leg raise",           q:"hanging leg raise form", v:"Pr1ieGZ5atk", c:"Bent knees if strict is hard.", src:"prev"},
+   {id:"russian-twist", n:"Russian twists",              q:"russian twist abs form", v:"fCHFQTBqm-U", c:"Feet up, rotate slowly.", src:"prev"},
+   {id:"plank", n:"Plank",                       q:"front plank proper form", v:"F-nQ_KJgfCY", noload:true, src:"plan"},
+   {id:"dead-bug", n:"Dead bug",                    q:"dead bug exercise proper form", v:"4XLEnwUr1d8", noload:true, src:"plan"},
+   {id:"side-plank", n:"Side plank",                  q:"side plank proper form", v:"XeN4pEZZJNI", noload:true, src:"new"},
    {id:"pallof-press", n:"Pallof press",                q:"pallof press proper form", v:"_2xWmYNnFS8", src:"new"},
-   {id:"ab-wheel", n:"Ab wheel rollout",            q:"ab wheel rollout beginner form", v:"ikkOq5mHaho", noload:true, src:"new"},
-   {id:"carry", n:"Farmer carry",                q:"farmer carry proper form", v:"NH7Xv-7NQNQ", src:"plan"}
+   {id:"ab-wheel", n:"Ab wheel rollout",            q:"ab wheel rollout beginner form", v:"A3uK5TPzHq8", noload:true, src:"new"},
+   {id:"carry", n:"Farmer carry",                q:"farmer carry proper form", v:"p5MNNosenJc", src:"plan"}
  ]}
 
 ]},
@@ -608,66 +665,66 @@ const LIBRARY = [
  groups:[
 
  {g:"hiit-formats", label:"Interval formats", items:[
-   {id:"hiit", n:"HIIT intervals",              q:"hiit bike intervals beginner", v:"Rh8VswzWDow", c:"30 sec hard, 90 sec easy, 8 rounds.", noload:true, src:"plan",
+   {id:"hiit", n:"HIIT intervals",              q:"hiit bike intervals beginner", v:"ZiGE3-L4vyg", c:"30 sec hard, 90 sec easy, 8 rounds.", noload:true, src:"plan",
                             timer:{work:30, rest:90, rounds:8, warmup:300, cooldown:300}},
-   {id:"hiit-bodyweight", n:"HIIT bodyweight circuit",     q:"bodyweight hiit 30 60 circuit", v:"4nPKyvKmFi0", c:"8 rounds of 30 sec work, 60 sec easy.", noload:true, src:"prev",
+   {id:"hiit-bodyweight", n:"HIIT bodyweight circuit",     q:"bodyweight hiit 30 60 circuit", v:"W4eKVKwf3rQ", c:"8 rounds of 30 sec work, 60 sec easy.", noload:true, src:"prev",
                             timer:{work:30, rest:60, rounds:8, warmup:300, cooldown:300}},
-   {id:"tabata", n:"Tabata",                      q:"tabata 20 10 workout", v:"Q5FBqUCpGTM", c:"20 sec all out, 10 sec rest, 8 rounds. Four minutes.", noload:true, src:"new"},
-   {id:"emom", n:"EMOM",                        q:"emom workout beginner", v:"shr9jyL1Vak", c:"One set at the top of every minute, rest with what is left.", noload:true, src:"new"},
-   {id:"ladder", n:"Descending ladder",           q:"descending ladder hiit workout", v:"LeLiGwy7BII", c:"10 reps, then 9, then 8, down to 1.", noload:true, src:"new"}
+   {id:"tabata", n:"Tabata",                      q:"tabata 20 10 workout", v:"rfV9NL67OvI", c:"20 sec all out, 10 sec rest, 8 rounds. Four minutes.", noload:true, src:"new"},
+   {id:"emom", n:"EMOM",                        q:"emom workout beginner", v:"uvUJKoudsnk", c:"One set at the top of every minute, rest with what is left.", noload:true, src:"new"},
+   {id:"ladder", n:"Descending ladder",           q:"descending ladder hiit workout", v:"cZnsLVArIt8", c:"10 reps, then 9, then 8, down to 1.", noload:true, src:"new"}
  ]},
 
  {g:"hiit-fullbody", label:"Full-body explosive", items:[
-   {id:"burpees", n:"Burpees",                     q:"burpee proper form", v:"G2hv_NYhM-A", c:"Chest to the floor, jump high at the top.", noload:true, src:"prev"},
-   {id:"burpee-broad-jump", n:"Burpee broad jump",           q:"burpee broad jump form", v:"UTO-GzRXF-Q", c:"Burpee, then jump forward as far as you can.", noload:true, src:"new"},
-   {id:"kb-swing", n:"Kettlebell swing",            q:"kettlebell swing proper form hinge", v:"hp3qVqIHNOI", c:"Hinge, not a squat. Snap the hips.", src:"new"},
-   {id:"db-thruster", n:"Dumbbell thruster",           q:"dumbbell thruster proper form", v:"-rHJkjHUbmo", c:"Front squat straight into an overhead press.", src:"new"},
-   {id:"devil-press", n:"Devil press",                 q:"devil press dumbbell form", v:"Cwxmji-3k40", c:"Burpee with dumbbells, then swing them overhead.", src:"new"},
-   {id:"med-ball-slam", n:"Medicine ball slam",          q:"medicine ball slam proper form", v:"QxYhFwMd1Ks", c:"Full overhead reach, slam hard.", src:"new"},
-   {id:"wall-ball", n:"Wall ball",                   q:"wall ball shot proper form", v:"t3-CS4e4mus", c:"Squat, then throw to a high target.", src:"new"},
-   {id:"db-snatch", n:"Dumbbell snatch",             q:"single arm dumbbell snatch form", v:"HHsOcHb_IFI", c:"One clean pull from floor to overhead.", src:"new"},
+   {id:"burpees", n:"Burpees",                     q:"burpee proper form", v:"tJrdJBWBu08", c:"Chest to the floor, jump high at the top.", noload:true, src:"prev"},
+   {id:"burpee-broad-jump", n:"Burpee broad jump",           q:"burpee broad jump form", v:"3eXUefIatHk", c:"Burpee, then jump forward as far as you can.", noload:true, src:"new"},
+   {id:"kb-swing", n:"Kettlebell swing",            q:"kettlebell swing proper form hinge", v:"sSESeQAir2M", c:"Hinge, not a squat. Snap the hips.", src:"new"},
+   {id:"db-thruster", n:"Dumbbell thruster",           q:"dumbbell thruster proper form", v:"1KYPZ-Jzo3w", c:"Front squat straight into an overhead press.", src:"new"},
+   {id:"devil-press", n:"Devil press",                 q:"devil press dumbbell form", v:"hc6dfJHRcD0", c:"Burpee with dumbbells, then swing them overhead.", src:"new"},
+   {id:"med-ball-slam", n:"Medicine ball slam",          q:"medicine ball slam proper form", v:"lsMGmkvzFsE", c:"Full overhead reach, slam hard.", src:"new"},
+   {id:"wall-ball", n:"Wall ball",                   q:"wall ball shot proper form", v:"fpUD0mcFp_0", c:"Squat, then throw to a high target.", src:"new"},
+   {id:"db-snatch", n:"Dumbbell snatch",             q:"single arm dumbbell snatch form", v:"3mlhF3dptAo", c:"One clean pull from floor to overhead.", src:"new"},
    {id:"sprawl", n:"Sprawl",                      q:"sprawl exercise form", v:"UFFODmd6RTc", c:"A burpee without the push-up. Easier on the shoulders.", noload:true, src:"new"},
-   {id:"bear-crawl", n:"Bear crawl",                  q:"bear crawl proper form", v:"U3Y58Kyw7Xw", c:"Knees an inch off the floor, hips still.", noload:true, src:"new"}
+   {id:"bear-crawl", n:"Bear crawl",                  q:"bear crawl proper form", v:"he1k9F-P4DI", c:"Knees an inch off the floor, hips still.", noload:true, src:"new"}
  ]},
 
  {g:"hiit-lower", label:"Lower body power", items:[
    {id:"jump-squats", n:"Jump squats",                 q:"jump squat proper form", v:"A-cFYWvaHr0", c:"Full depth, explode up, land soft.", noload:true, src:"prev"},
-   {id:"jumping-lunges", n:"Jumping lunges",              q:"jumping lunges proper form", v:"oKajsQ0kvhU", c:"Switch mid-air, land soft.", noload:true, src:"prev"},
-   {id:"skater-jumps", n:"Skater jumps",                q:"skater jumps proper form", v:"9_jLW6VkU8A", c:"Lateral leap, land on the outside leg.", noload:true, src:"prev"},
-   {id:"plyo-split-jumps", n:"Plyo split jumps",            q:"plyo split jumps form", v:"NVWElWKCsyQ", noload:true, src:"prev"},
-   {id:"plyo-pogos", n:"Plyo + pogos",                q:"pogo jumps and plyo split jumps warmup", v:"j0nl5dWuqN4", c:"Pogos 30s, split jumps 30s, rest 30s.", noload:true, src:"prev"},
-   {id:"box-jump", n:"Box jump",                    q:"box jump proper form beginner", v:"v9cZQqGX1Xk", c:"Step down, never jump down.", noload:true, src:"new"},
-   {id:"broad-jump", n:"Broad jump",                  q:"standing broad jump form", v:"XqpN9AbLMe4", noload:true, src:"new"},
-   {id:"tuck-jump", n:"Tuck jump",                   q:"tuck jump proper form", v:"4hXaSh2WlyE", noload:true, src:"new"},
+   {id:"jumping-lunges", n:"Jumping lunges",              q:"jumping lunges proper form", v:"O-rntsAALBo", c:"Switch mid-air, land soft.", noload:true, src:"prev"},
+   {id:"skater-jumps", n:"Skater jumps",                q:"skater jumps proper form", v:"JuMXySadYdw", c:"Lateral leap, land on the outside leg.", noload:true, src:"prev"},
+   {id:"plyo-split-jumps", n:"Plyo split jumps",            q:"plyo split jumps form", v:"AmgM_PjBq0I", noload:true, src:"prev"},
+   {id:"plyo-pogos", n:"Plyo + pogos",                q:"pogo jumps and plyo split jumps warmup", v:"4Z_9yMyi1dI", c:"Pogos 30s, split jumps 30s, rest 30s.", noload:true, src:"prev"},
+   {id:"box-jump", n:"Box jump",                    q:"box jump proper form beginner", v:"4VJynYzr3w4", c:"Step down, never jump down.", noload:true, src:"new"},
+   {id:"broad-jump", n:"Broad jump",                  q:"standing broad jump form", v:"uhz-ia-2UcM", noload:true, src:"new"},
+   {id:"tuck-jump", n:"Tuck jump",                   q:"tuck jump proper form", v:"zh1v8jINBZ0", noload:true, src:"new"},
    {id:"lateral-bound", n:"Lateral bound",               q:"lateral bound plyometric form", v:"gjiZLF5S6aA", c:"Stick the landing for a beat.", noload:true, src:"new"},
-   {id:"step-up-sprint", n:"Step-up sprints",             q:"fast step up cardio drill", v:"2Aql4qSJ9YY", noload:true, src:"new"}
+   {id:"step-up-sprint", n:"Step-up sprints",             q:"fast step up cardio drill", v:"nPSN79l4WSQ", noload:true, src:"new"}
  ]},
 
  {g:"hiit-upper", label:"Upper body and core under fatigue", items:[
-   {id:"mountain-climbers", n:"Mountain climbers",           q:"mountain climbers proper form", v:"ZhiCSdOVJp0", c:"Strong plank, drive the knees fast.", noload:true, src:"prev"},
+   {id:"mountain-climbers", n:"Mountain climbers",           q:"mountain climbers proper form", v:"cnyTQDSE884", c:"Strong plank, drive the knees fast.", noload:true, src:"prev"},
    {id:"plank-taps", n:"Plank shoulder taps",         q:"plank shoulder taps form", v:"wcKyqAMqueQ", c:"Hips still, tap the opposite shoulder.", noload:true, src:"prev"},
-   {id:"plank-jacks", n:"Plank jacks",                 q:"plank jacks proper form", v:"xcBz0TtHqWI", noload:true, src:"new"},
-   {id:"renegade-row", n:"Renegade row",                q:"renegade row proper form", v:"4qEIChzM4ZA", c:"Wide feet, no hip rotation.", src:"new"},
-   {id:"battle-rope-waves", n:"Battle rope waves",           q:"battle rope alternating waves", v:"xObZ2pAon2o", c:"Fast small waves, braced core.", noload:true, src:"new"},
-   {id:"battle-rope-slams", n:"Battle rope slams",           q:"battle rope slams form", v:"jhNyj3s_H9M", noload:true, src:"new"},
-   {id:"pushup-burst", n:"Push-up burst",               q:"push up proper form", v:"I9fsqKE5XHo", c:"Max clean reps in the work window. Knees are fine.", noload:true, src:"new"}
+   {id:"plank-jacks", n:"Plank jacks",                 q:"plank jacks proper form", v:"Jo0LKx6c7XM", noload:true, src:"new"},
+   {id:"renegade-row", n:"Renegade row",                q:"renegade row proper form", v:"PJpTBj4ilZw", c:"Wide feet, no hip rotation.", src:"new"},
+   {id:"battle-rope-waves", n:"Battle rope waves",           q:"battle rope alternating waves", v:"1pzpaYrhdOo", c:"Fast small waves, braced core.", noload:true, src:"new"},
+   {id:"battle-rope-slams", n:"Battle rope slams",           q:"battle rope slams form", v:"pQb2xIGioyQ", noload:true, src:"new"},
+   {id:"pushup-burst", n:"Push-up burst",               q:"push up proper form", v:"IODxDxX7oi4", c:"Max clean reps in the work window. Knees are fine.", noload:true, src:"new"}
  ]},
 
  {g:"hiit-cardio", label:"Machines, sprints and skipping", items:[
-   {id:"high-knees", n:"High knees",                  q:"high knees exercise form", v:"ymdS7tM0zws", c:"Knees waist-high, pump the arms.", noload:true, src:"prev"},
-   {id:"jumping-jacks", n:"Jumping jacks",               q:"jumping jacks proper form", v:"XR0xeuK5zBU", noload:true, src:"new"},
-   {id:"jump-rope", n:"Jump rope",                   q:"jump rope beginner technique", v:"IFgQfVQT_68", noload:true, src:"new"},
-   {id:"double-unders", n:"Double unders",               q:"double unders jump rope tutorial", v:"pQRnSYfliEc", noload:true, src:"new"},
+   {id:"high-knees", n:"High knees",                  q:"high knees exercise form", v:"sTvekaq6vOU", c:"Knees waist-high, pump the arms.", noload:true, src:"prev"},
+   {id:"jumping-jacks", n:"Jumping jacks",               q:"jumping jacks proper form", v:"iSSAk4XCsRA", noload:true, src:"new"},
+   {id:"jump-rope", n:"Jump rope",                   q:"jump rope beginner technique", v:"u3zgHI8QnqE", noload:true, src:"new"},
+   {id:"double-unders", n:"Double unders",               q:"double unders jump rope tutorial", v:"9FLc4h5mhrk", noload:true, src:"new"},
    {id:"rower", n:"Rowing sprints",              q:"rowing machine intervals form", v:"ZN0J6qKCIrI", c:"250 m hard, 90 sec easy.", noload:true, src:"new"},
-   {id:"bike-intervals", n:"Assault bike sprints",        q:"assault bike intervals beginner", v:"KC-ZSfOmXgE", noload:true, src:"new"},
+   {id:"bike-intervals", n:"Assault bike sprints",        q:"assault bike intervals beginner", v:"RPY7HTGfOiU", noload:true, src:"new"},
    {id:"ski-erg", n:"Ski erg sprints",             q:"ski erg technique intervals", v:"B0lIgT5PHc8", noload:true, src:"new"},
-   {id:"treadmill-sprint", n:"Treadmill sprints",           q:"treadmill sprint interval workout", v:"q7DfYRKccBU", noload:true, src:"new"},
-   {id:"hill-sprint", n:"Incline sprints",             q:"treadmill incline sprint intervals", v:"Wt5xjf3O1Fs", c:"Lower impact than flat sprinting.", noload:true, src:"new"},
-   {id:"shuttle-run", n:"Shuttle runs",                q:"shuttle run drill form", v:"fZoJVVuqY3U", noload:true, src:"new"},
+   {id:"treadmill-sprint", n:"Treadmill sprints",           q:"treadmill sprint interval workout", v:"n4I_fmegTRk", noload:true, src:"new"},
+   {id:"hill-sprint", n:"Incline sprints",             q:"treadmill incline sprint intervals", v:"Y3mu91LJ00M", c:"Lower impact than flat sprinting.", noload:true, src:"new"},
+   {id:"shuttle-run", n:"Shuttle runs",                q:"shuttle run drill form", v:"3-iZMS6twcE", noload:true, src:"new"},
    {id:"sled-push", n:"Sled push",                   q:"sled push proper form", v:"9XRRXaUpnLk", src:"new"},
-   {id:"incline-walk", n:"Incline walk",                q:"incline treadmill walking fat loss", v:"NAsObfFJXvE", c:"The daily one. Brisk, not wrecking.", noload:true, src:"plan"},
-   {id:"easy-run", n:"Easy run",                    q:"easy zone 2 jog warmup", v:"qVunIG31ohU", c:"Conversational pace.", noload:true, src:"prev"},
-   {id:"long-run", n:"Run, 20–60 min",              q:"easy zone 2 run pace", v:"UxDDPnckFN0", noload:true, src:"prev"}
+   {id:"incline-walk", n:"Incline walk",                q:"incline treadmill walking fat loss", v:"nTPgToEPa4c", c:"The daily one. Brisk, not wrecking.", noload:true, src:"plan"},
+   {id:"easy-run", n:"Easy run",                    q:"easy zone 2 jog warmup", v:"XhBPB1Hxsp4", c:"Conversational pace.", noload:true, src:"prev"},
+   {id:"long-run", n:"Run, 20–60 min",              q:"easy zone 2 run pace", v:"L5J6sgQLvuE", noload:true, src:"prev"}
  ]}
 
 ]},
@@ -675,9 +732,9 @@ const LIBRARY = [
 {section:"Mobility and recovery", groups:[
  {g:"mobility", label:"Mobility and recovery", items:[
    {id:"mobility", n:"Mobility + stretching",       q:"full body mobility routine 15 minutes", v:"R3WDe7byUXo", noload:true, src:"plan"},
-   {id:"glute-activation", n:"Banded glute activation",     q:"glute activation warmup banded", v:"_GtRRr4dPVw", c:"Banded bridges and clamshells.", noload:true, src:"prev"},
-   {id:"hip-flexor-stretch", n:"Hip flexor stretch",          q:"couch stretch hip flexor", v:"-zoCBsmnF8Y", noload:true, src:"new"},
-   {id:"foam-roll", n:"Foam rolling",                q:"foam rolling full body routine", v:"Oz4xHEgMaLY", noload:true, src:"new"}
+   {id:"glute-activation", n:"Banded glute activation",     q:"glute activation warmup banded", v:"6ecOt63tW7Q", c:"Banded bridges and clamshells.", noload:true, src:"prev"},
+   {id:"hip-flexor-stretch", n:"Hip flexor stretch",          q:"couch stretch hip flexor", v:"d9pOjXCKGN8", noload:true, src:"new"},
+   {id:"foam-roll", n:"Foam rolling",                q:"foam rolling full body routine", v:"KWGsSq0J1Bk", noload:true, src:"new"}
  ]}
 ]}
 ];
@@ -698,64 +755,64 @@ LIBRARY.forEach(function(sec){
    src "prev" = the workouts from your earlier app, kept so nothing is lost
    ================================================================== */
 const SESSIONS = [
-  {id:"lower-glutes", name:"Lower Body / Glutes", src:"new",
+  {id:"lower-glutes", name:"Lower Body / Glutes", type:"strength", src:"new",
    cardio:"Incline walk: 25 min • 7–10% incline • comfortable brisk pace",
    items:[{ex:"hip-thrust",d:"4 × 8–10"},{ex:"rdl",d:"3 × 8–10"},{ex:"bulgarian",d:"3 × 10 / leg"},
           {ex:"leg-curl",d:"3 × 12"},{ex:"kickback",d:"3 × 12–15"}]},
 
-  {id:"upper", name:"Upper Body", src:"new",
+  {id:"upper", name:"Upper Body", type:"strength", src:"new",
    cardio:"Incline walk: 25–30 min",
    items:[{ex:"pulldown",d:"3 × 8–12"},{ex:"cable-row",d:"3 × 10"},{ex:"db-press",d:"3 × 8–10"},
           {ex:"shoulder-press",d:"3 × 10"},{ex:"lateral-raise",d:"3 × 12–15"},
           {ex:"biceps",d:"2 × 12"},{ex:"triceps",d:"2 × 12"}]},
 
-  {id:"hiit-core", name:"HIIT + Core", src:"new",
+  {id:"hiit-core", name:"HIIT + Core", type:"hiit", src:"new",
    cardio:"Incline walk: 15–20 min easy",
    items:[{ex:"hiit",d:"30 sec hard + 90 sec easy × 8"},{ex:"cable-crunch",d:"3 × 12–15"},
           {ex:"dead-bug",d:"3 × 10 / side"},{ex:"plank",d:"3 × 30–45 sec"}]},
 
-  {id:"lower-legs", name:"Lower Body / Legs", src:"new",
+  {id:"lower-legs", name:"Lower Body / Legs", type:"strength", src:"new",
    cardio:"Incline walk: 25 min",
    items:[{ex:"back-squat",d:"4 × 6–10"},{ex:"lunge",d:"3 × 10 / leg"},{ex:"leg-press",d:"3 × 10–12"},
           {ex:"leg-curl",d:"3 × 12"},{ex:"abduction",d:"3 × 15–20"},{ex:"calf",d:"3 × 15"}]},
 
-  {id:"upper-shape", name:"Upper Body + Shape", src:"new",
+  {id:"upper-shape", name:"Upper Body + Shape", type:"strength", src:"new",
    cardio:"Incline walk: 25–30 min",
    items:[{ex:"pullup",d:"3 × 8–10"},{ex:"cs-row",d:"3 × 10"},{ex:"incline-press",d:"3 × 10"},
           {ex:"face-pull",d:"3 × 12–15"},{ex:"lateral-raise",d:"3 × 15"},
           {ex:"biceps",d:"2 × 12"},{ex:"triceps",d:"2 × 12"}]},
 
-  {id:"full-body", name:"Light Full Body", src:"new",
+  {id:"full-body", name:"Light Full Body", type:"light", src:"new",
    cardio:"Incline walk: 30–35 min",
    items:[{ex:"goblet",d:"3 × 12"},{ex:"db-rdl",d:"3 × 12"},{ex:"cable-row",d:"3 × 12"},
           {ex:"pushup",d:"3 × 10–12"},{ex:"glute-bridge",d:"3 × 15"},{ex:"carry",d:"3 rounds"}]},
 
-  {id:"recovery", name:"Recovery / Fat-Loss", src:"new",
+  {id:"recovery", name:"Recovery / Fat-Loss", type:"light", src:"new",
    cardio:"Incline walk: 35–45 min easy to moderate",
    items:[{ex:"mobility",d:"15–20 min"}]},
 
   /* ---- the previous plan, kept ---- */
-  {id:"old-back-chest", name:"Back & Chest", src:"prev",
+  {id:"old-back-chest", name:"Back & Chest", type:"strength", src:"prev",
    cardio:"Warm-up: easy run 10 min, or plyo + pogos 3 × 30s/30s",
    items:[{ex:"bent-over-row",d:"3 × 6–10"},{ex:"alt-db-bench",d:"3 × 8–10"},{ex:"chin-up",d:"3 × 6–10"},
           {ex:"db-incline-bench",d:"3 × 8–10"},{ex:"barbell-bench",d:"3 × 6–8"},{ex:"alt-db-floor-fly",d:"3 × 10–12"}]},
 
-  {id:"old-glutes-hips", name:"Glutes & Hips", src:"prev",
+  {id:"old-glutes-hips", name:"Glutes & Hips", type:"strength", src:"prev",
    cardio:"Warm-up: easy run 10 min + banded glute activation",
    items:[{ex:"staggered-deadlift",d:"3 × 8–10"},{ex:"thomas-hf",d:"3 × 10–12"},{ex:"sl-db-glute-bridge",d:"3 × 8–10"},
           {ex:"cable-rev-nordic",d:"3 × 8–10"},{ex:"bulgarian",d:"3 × 8–10"},{ex:"cable-hip-abduction",d:"3 × 12–15"}]},
 
-  {id:"old-legs", name:"Legs", src:"prev",
+  {id:"old-legs", name:"Legs", type:"strength", src:"prev",
    cardio:"Warm-up: easy run 10 min",
    items:[{ex:"cable-sissy-squat",d:"3 × 10–12"},{ex:"db-ham-curl",d:"3 × 10–12"},{ex:"poliquin-split",d:"3 × 8–10"},
           {ex:"bilateral-rdl",d:"3 × 8–10"},{ex:"back-squat",d:"4 × 6–8"},{ex:"lunge",d:"3 × 10 / leg"}]},
 
-  {id:"old-shoulders-arms", name:"Shoulders & Arms", src:"prev",
+  {id:"old-shoulders-arms", name:"Shoulders & Arms", type:"strength", src:"prev",
    cardio:"Run: 20–60 min easy to moderate",
    items:[{ex:"lateral-raise",d:"3 × 12–15"},{ex:"y-raise",d:"2 × 10–15"},{ex:"cable-tri-pushdown",d:"3 × 10–12"},
           {ex:"preacher-curl",d:"2 × 10–12"},{ex:"lying-cable-lat",d:"3 × 10–12"},{ex:"cable-y-raise",d:"2 × 10–12"}]},
 
-  {id:"old-hiit", name:"HIIT — Bodyweight + Core", src:"prev",
+  {id:"old-hiit", name:"HIIT — Bodyweight + Core", type:"hiit", src:"prev",
    cardio:"8 × 30 sec hard / 60 sec easy",
    items:[{ex:"hiit-bodyweight",d:"8 rounds"},{ex:"cable-crunch",d:"3 × 12–15"},{ex:"hanging-leg-raise",d:"3 × 10–12"},
           {ex:"russian-twist",d:"3 × 20"},{ex:"plank",d:"3 × 45–60 sec"}]}
@@ -824,6 +881,7 @@ function dayRec(w, i){
   if (r.s === undefined) r.s = planFor(w)[i];
   if (!r.w) r.w = {};
   if (!r.sub) r.sub = {};
+  if (!r.walk) r.walk = 0;
   return r;
 }
 function planFor(w){ const o = WEEK_OVERRIDES[w]; return (o && o.days) ? o.days : DEFAULT_WEEK; }
@@ -913,14 +971,58 @@ function totalDone(){
   return n;
 }
 
+/* What a week asked for and what actually happened, by kind of session.
+   Targets follow whatever is assigned to the days, so putting a rest day in
+   lowers the target rather than leaving her short of an impossible one. */
+const TARGET_ROWS = [
+  {k:"strength", label:"Strength sessions"},
+  {k:"hiit",     label:"HIIT sessions"},
+  {k:"light",    label:"Light and recovery"},
+  {k:"walk",     label:"Incline walks"}
+];
+function weekTargets(w){
+  /* The walk is a daily habit, so its target is always seven — a rest day is
+     still a walking day. Session targets follow what the week is set to. */
+  const t = {strength:{d:0,t:0}, hiit:{d:0,t:0}, light:{d:0,t:0}, walk:{d:0,t:7}};
+  const days = store.weeks[w] || {};
+  for (let i = 0; i < 7; i++){
+    const rec = days[i] || {};
+    const sid = (rec.s !== undefined) ? rec.s : planFor(w)[i];
+    if (rec.walk) t.walk.d++;
+    if (sid === "rest") continue;
+    const ses = sessionById(sid);
+    if (!ses) continue;
+    const k = t[ses.type] ? ses.type : "strength";
+    t[k].t++;
+    if (rec.done) t[k].d++;
+  }
+  return t;
+}
+function renderTargets(){
+  const t = weekTargets(view);
+  el("targets").innerHTML = TARGET_ROWS.map(function(row){
+    const c = t[row.k];
+    if (!c.t) return "";
+    const hit = c.d >= c.t;
+    let dots = "";
+    for (let i = 0; i < c.t; i++) dots += '<i class="' + (i < c.d ? "on" : "") + '"></i>';
+    return '<div class="target' + (hit ? " hit" : "") + '">' +
+        '<span class="target-name">' + esc(row.label) + "</span>" +
+        '<span class="dots">' + dots + "</span>" +
+        '<span class="target-n">' + c.d + " / " + c.t + "</span>" +
+      "</div>";
+  }).join("");
+}
+
 function renderHeader(){
   const cur = currentWeek();
   const start = parseISO(store.start), end = addDays(weekStart(BLOCK_WEEKS), 6);
   el("eyebrow").textContent = "12-week block · " + fmt(start) + " to " + fmt(end);
   el("todayLabel").textContent = new Date().toLocaleDateString(undefined,
     {weekday:"long", day:"numeric", month:"long"});
-  el("weekStat").textContent = cur + "/" + BLOCK_WEEKS;
-  el("doneStat").textContent = totalDone();
+  let full = 0;
+  for (let w = 1; w <= BLOCK_WEEKS; w++) if (weekCount(w) >= weekTarget(w) && weekTarget(w) > 0) full++;
+  el("weeksDone").textContent = full + " of " + BLOCK_WEEKS;
 }
 
 function renderWeeks(){
@@ -950,6 +1052,7 @@ function renderWeeks(){
   el("weekbar").innerHTML = "<b>" + n + " of " + t + "</b> sessions done this week" +
     (n >= t ? " &mdash; week complete." : "");
   el("meter").style.width = Math.round(100 * Math.min(1, n / t)) + "%";
+  renderTargets();
 }
 
 /* one <select> holding every exercise, grouped by section and muscle */
@@ -999,43 +1102,55 @@ function renderDays(){
 
         const box = ex.noload
           ? '<div class="noload">No weight to log</div>'
-          : '<input class="weight-input' + (rec.w[ex.id] ? " filled" : "") + '" type="text" inputmode="decimal"' +
-            ' placeholder="max kg" aria-label="Heaviest weight for ' + esc(ex.n) + '"' +
-            ' data-w="' + esc(ex.id) + '" value="' + esc(rec.w[ex.id] || "") + '">';
+          : '<div class="kg-wrap"><input class="weight-input' + (rec.w[ex.id] ? " filled" : "") + '"' +
+            ' type="text" inputmode="decimal" placeholder="max kg"' +
+            ' aria-label="Heaviest weight for ' + esc(ex.n) + '"' +
+            ' data-w="' + esc(ex.id) + '" value="' + esc(rec.w[ex.id] || "") + '">' +
+            '<span class="kg-unit">kg</span></div>';
 
         return '<div class="exercise"><div>' +
-              '<div class="ex-name">' + esc(ex.n) + "</div>" +
+              '<div class="ex-head">' +
+                '<div class="ex-name">' + esc(ex.n) + "</div>" +
+                '<button class="swap" type="button" data-swap="' + esc(item.ex) + '" aria-expanded="false"' +
+                  ' title="Swap this exercise"' +
+                  ' aria-label="Swap ' + esc(ex.n) + ' for another exercise">\u21C4</button>' +
+              "</div>" +
               '<div class="pills">' + dosePills(doseFor(view, item)) + "</div>" +
               (ex.c ? '<div class="cue">' + esc(ex.c) + "</div>" : "") +
               (isSub ? '<div class="subbed">Swapped in for ' + esc(EX[item.ex].n) + "</div>" : "") +
               (last ? '<div class="last">Last time: ' + esc(last.kg) + " kg · " + esc(last.when) + "</div>" : "") +
               box +
-              '<button class="swap" type="button" data-swap="' + esc(item.ex) + '">Swap this exercise</button>' +
               (ex.timer ? '<button class="timer-open" type="button" data-timer="' + esc(ex.id) + '">Open the timer &middot; ' +
                   ex.timer.rounds + ' \u00d7 ' + ex.timer.work + 's / ' + ex.timer.rest + 's</button>' : "") +
               '<div class="subbox" hidden>' +
                 '<select data-sub="' + esc(item.ex) + '">' + libraryOptions(ex.id) + "</select>" +
-                (isSub ? '<button class="swap" type="button" data-unsub="' + esc(item.ex) + '">Put ' + esc(EX[item.ex].n) + " back</button>" : "") +
+                (isSub ? '<button class="linkbtn" type="button" data-unsub="' + esc(item.ex) + '">Put ' + esc(EX[item.ex].n) + " back</button>" : "") +
               "</div>" +
             "</div>" + thumbHTML(ex) + "</div>";
       }).join("");
-      body += '<div class="cardio"><strong>Cardio</strong><br>' + esc(ses.cardio) + "</div>";
+      body += '<div class="cardio"><strong>Cardio</strong>' + esc(ses.cardio) +
+        '<label class="walkdone"><input type="checkbox" data-walk="' + i + '"' +
+          (rec.walk ? " checked" : "") + '><span>Walk done</span></label></div>';
     } else {
-      body = '<p class="restnote">Rest day. Walk if you feel like it.</p>';
+      body = '<p class="restnote">Rest day. Walk if you feel like it.</p>' +
+        '<div class="cardio"><strong>Optional</strong>An easy walk still counts.' +
+        '<label class="walkdone"><input type="checkbox" data-walk="' + i + '"' +
+          (rec.walk ? " checked" : "") + '><span>Walk done</span></label></div>';
     }
 
     card.innerHTML =
       '<div class="day-head"><div>' +
-          '<div class="day-when">' + DAY_NAMES[i] + " &middot; " + fmt(date) +
-            (isToday ? ' <span class="istoday">&mdash; TODAY</span>' : "") + "</div>" +
+          '<div class="day-when"><b>' + DAY_NAMES[i] + "</b> &middot; " + fmt(date) +
+            (isToday ? '<span class="istoday">today</span>' : "") + "</div>" +
           '<div class="day-title">' + esc(ses ? ses.name : "Rest day") + "</div>" +
         "</div>" +
         '<input class="complete" type="checkbox" data-done="' + i + '" ' +
           'aria-label="Mark ' + DAY_NAMES[i] + ' done" ' + (rec.done ? "checked" : "") + ">" +
       "</div>" +
       '<div class="content">' +
-        '<div class="picker"><label>What I\'m doing</label>' +
-          '<select data-session="' + i + '">' + opts + "</select></div>" +
+        '<div class="picker">' +
+          '<select data-session="' + i + '" aria-label="Which workout ' + DAY_NAMES[i] + '">' +
+          opts + "</select></div>" +
         body +
       "</div>";
 
@@ -1126,8 +1241,9 @@ function wireDays(){
 
   planEl.querySelectorAll("[data-swap]").forEach(function(btn){
     btn.addEventListener("click", function(){
-      const box = btn.parentElement.querySelector(".subbox");
+      const box = btn.closest(".exercise").querySelector(".subbox");
       box.hidden = !box.hidden;
+      btn.setAttribute("aria-expanded", box.hidden ? "false" : "true");
       if (!box.hidden) box.querySelector("select").focus();
     });
   });
@@ -1138,6 +1254,13 @@ function wireDays(){
       const slot = sel.dataset.sub;
       if (sel.value === slot) delete rec.sub[slot]; else rec.sub[slot] = sel.value;
       save(); renderAll();
+    });
+  });
+
+  planEl.querySelectorAll("[data-walk]").forEach(function(cb){
+    cb.addEventListener("change", function(){
+      dayRec(view, Number(cb.dataset.walk)).walk = cb.checked ? 1 : 0;
+      save(); renderWeeks(); renderHeader();
     });
   });
 

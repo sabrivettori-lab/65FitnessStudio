@@ -13,6 +13,17 @@ Live at **https://sabrivettori-lab.github.io/65FitnessStudio/**
 time, you tick off what you did, and on Sunday the next week starts clean.
 Finished weeks stay readable — tap any number in the 12-week strip to look back.
 
+**Weekly targets.** Under the week you get four rows — strength sessions, HIIT
+sessions, light and recovery, incline walks — each with dots and a count, turning
+green when the target is met. Session targets follow whatever the week is set to,
+so putting in a rest day lowers the target rather than leaving you short of one
+you never intended. The walk target is always seven: a rest day is still a
+walking day. The masthead shows weeks completed out of twelve.
+
+**The daily walk is ticked separately** from the session, on the cardio line of
+each day, so a day where you walked but skipped the weights still counts for
+what it was.
+
 **You pick the workout per day.** Every day has a *What I'm doing* dropdown.
 It starts on the planned session, but you can change it to any other session, to
 one of the workouts from the previous plan, or to a rest day. A day set to rest
@@ -27,11 +38,24 @@ from the full library. The card remembers what it replaced and offers to put the
 original back.
 
 **Form videos.** Every exercise shows a thumbnail of a specific YouTube video on
-the right. Tap it and the video opens. All 125 are real video ids, checked — the
-thumbnail image was fetched for every one. A caveat: nobody watched them. They
-were chosen by title, channel and length from YouTube's own search results, and
-eleven were corrected by hand where the top result was the wrong exercise. If one
-is unhelpful, replace the `v:"..."` for that exercise in `index.html`.
+the right. Tap it and the video opens.
+
+How they were chosen: each was scored on view count, whether the channel is an
+established strength, rehab or equipment source, whether the title is actually
+about that movement, and whether the length suits a form check. 91 of the 125 are
+from recognised channels (Jeff Nippard, ATHLEAN-X, Squat University, E3 Rehab,
+Bodybuilding.com, Rogue, Concept2, Physiotutors and similar), 114 have over
+100,000 views and 70 over a million. Five were corrected by hand where the
+popular result was the wrong movement or a duplicate.
+
+Two caveats, both worth knowing. **Nobody watched them** — they were judged on
+title, channel, length and audience, not on content. And a handful of niche
+exercises (Thomas hip flexor eccentrics, cable sissy squat, staggered stance
+deadlift) simply have no popular video, so those picks are exact but
+little-watched; exactness seemed more useful than popularity there.
+
+Every thumbnail was fetched to confirm the video exists. If one turns out to be
+unhelpful, replace the `v:"..."` for that exercise in `index.html`.
 
 **The interval timer.** HIIT sessions have an *Open the timer* button. It runs a
 five-minute warm-up, then the rounds from the prescription (8 × 30s/90s in the
