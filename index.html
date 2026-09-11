@@ -59,7 +59,7 @@ body{
   margin-bottom:22px;font-size:13px;color:var(--ink-2);
 }
 .meta-row .dot{width:4px;height:4px;background:var(--orange);border-radius:50%}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:26px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:26px}
 .stat{background:var(--white);border:1px solid rgba(21,18,16,.12);border-radius:14px;padding:14px 12px;text-align:center}
 .stat-num{font-family:var(--mono);font-size:clamp(17px,4.6vw,21px);font-weight:700;color:var(--burgundy)}
 .stat-label{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-top:4px;font-weight:600}
@@ -147,7 +147,7 @@ select{
 select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
 
 .exercise{
-  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;
+  display:grid;grid-template-columns:minmax(0,1fr) 140px;gap:14px;align-items:start;
   padding:14px 0;border-top:1px solid rgba(21,18,16,.1);
 }
 .ex-name{font-weight:700;font-size:15.5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -176,13 +176,14 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
 .subbox{margin-top:8px;display:grid;gap:6px}
 .subbox[hidden]{display:none}
 .weight-input{
-  width:94px;padding:11px 8px;border-radius:10px;border:1.5px solid rgba(21,18,16,.2);
+  display:block;width:108px;margin-top:9px;
+  padding:11px 10px;border-radius:10px;border:1.5px solid rgba(21,18,16,.2);
   background:var(--bone);color:var(--ink);text-align:center;
   font-family:var(--mono);font-size:16px;font-weight:700;
 }
 .weight-input:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
 .weight-input.filled{border-color:var(--sage);background:var(--white)}
-.noload{width:94px;text-align:center;color:var(--ink-3);font-family:var(--mono);font-size:13px}
+.noload{margin-top:9px;font-family:var(--mono);font-size:11.5px;color:var(--ink-3);letter-spacing:.06em}
 
 .cardio{
   margin-top:14px;padding:13px 15px;border-radius:12px;
@@ -230,6 +231,31 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
 .tag.prev{background:rgba(21,18,16,.1);color:var(--ink-3)}
 .tag.new{background:var(--sage-deep);color:var(--white)}
 
+/* ---------- video thumbnails ---------- */
+.thumb{
+  display:block;position:relative;width:140px;aspect-ratio:16/9;
+  border-radius:9px;overflow:hidden;border:1px solid rgba(21,18,16,.16);
+  background:var(--cream-warm);text-decoration:none;
+}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb::after{
+  content:'';position:absolute;inset:0;z-index:1;
+  background:linear-gradient(180deg,rgba(21,18,16,0) 45%,rgba(21,18,16,.4));
+}
+.thumb .play{
+  position:absolute;inset:0;z-index:2;display:grid;place-content:center;
+}
+.thumb .play::before{
+  content:'';width:0;height:0;margin-left:3px;
+  border-left:14px solid rgba(255,252,245,.96);
+  border-top:9px solid transparent;border-bottom:9px solid transparent;
+  filter:drop-shadow(0 1px 3px rgba(21,18,16,.65));
+}
+.thumb:active{border-color:var(--burgundy)}
+.thumb:active .play::before{border-left-color:var(--orange-bright)}
+.muscle .thumb{width:84px}
+.muscle li{grid-template-columns:1fr 84px}
+
 /* ---------- callouts, buttons ---------- */
 .callout{background:var(--bone);border-top:3px solid var(--orange);border-radius:12px;padding:18px}
 .callout.forest{border-top-color:var(--forest);background:rgba(43,82,52,.04)}
@@ -255,12 +281,86 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
   letter-spacing:.05em;padding:24px 0 10px;
 }
 
+/* ---------- HIIT timer sheet ---------- */
+.timer-open{
+  appearance:none;width:100%;margin-top:10px;padding:12px 14px;
+  border:none;border-radius:12px;background:var(--ink);color:var(--cream);
+  font-family:var(--display);font-size:11px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;
+}
+.timer-open:active{background:var(--burgundy)}
+.sheet{
+  position:fixed;inset:0;z-index:60;background:var(--cream);
+  overflow-y:auto;-webkit-overflow-scrolling:touch;
+  padding:calc(18px + env(safe-area-inset-top)) 18px calc(30px + env(safe-area-inset-bottom));
+}
+.sheet[hidden]{display:none}
+.sheet-inner{max-width:520px;margin:0 auto}
+.sheet-close{
+  appearance:none;background:none;border:0;padding:6px 0;margin-bottom:10px;
+  font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-3);cursor:pointer;
+}
+.variant-picker{display:flex;gap:6px;margin-bottom:16px;background:rgba(21,18,16,.05);border-radius:12px;padding:4px}
+.variant-btn{
+  flex:1;background:none;border:none;padding:10px 8px;border-radius:9px;
+  font-family:var(--display);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink-3);cursor:pointer;transition:background .15s,color .15s;
+}
+.variant-btn.active{background:var(--white);color:var(--ink)}
+.hiit-timer{
+  background:var(--ink);color:var(--cream);border-radius:20px;
+  padding:26px 20px;margin-bottom:20px;text-align:center;transition:background .3s;
+}
+.hiit-timer.warmup{background:var(--sage-deep)}
+.hiit-timer.work{background:var(--burgundy)}
+.hiit-timer.rest{background:var(--forest)}
+.hiit-timer.cooldown{background:var(--ink-2)}
+.hiit-timer.done{background:var(--orange)}
+.hiit-phase{
+  font-family:var(--display);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(255,252,245,.7);margin-bottom:10px;
+}
+.hiit-time{
+  font-family:var(--display);font-size:clamp(66px,20vw,112px);line-height:.9;
+  color:var(--white);letter-spacing:-.04em;margin-bottom:8px;font-variant-numeric:tabular-nums;
+}
+.hiit-now{
+  font-family:var(--serif);font-style:italic;font-size:21px;color:var(--white);
+  margin-bottom:14px;min-height:28px;
+}
+.hiit-progress{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;
+  color:rgba(255,252,245,.72);margin-bottom:18px;min-height:17px;
+}
+.hiit-controls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.hiit-btn{
+  appearance:none;border:none;border-radius:999px;padding:13px 26px;
+  background:var(--white);color:var(--ink);cursor:pointer;
+  font-family:var(--display);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+}
+.hiit-btn.secondary{background:rgba(255,252,245,.18);color:var(--white)}
+.hiit-rounds{background:var(--white);border:1px solid rgba(21,18,16,.12);border-radius:16px;padding:10px}
+.hiit-round{display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:12px;transition:background .15s}
+.hiit-round.active{background:var(--bone)}
+.hiit-round.active .hiit-round-num{background:var(--burgundy);color:var(--white)}
+.hiit-round.done .hiit-round-num{background:var(--sage-deep);color:var(--white)}
+.hiit-round.done .hiit-round-num span{display:none}
+.hiit-round.done .hiit-round-num::after{content:'\2713';position:absolute}
+.hiit-round-num{
+  width:32px;height:32px;border-radius:50%;background:var(--cream);color:var(--ink);
+  display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0;
+  font-family:var(--display);font-size:13px;
+}
+.hiit-round-name{font-family:var(--display);font-size:14px;color:var(--ink)}
+.hiit-round-cue{font-size:12px;color:var(--ink-3);margin-top:2px}
+.hiit-note{font-size:12.5px;color:var(--ink-3);margin:14px 0 0;text-align:center;font-family:var(--serif);font-style:italic}
+
 @media (max-width:560px){
   .wrap{padding:22px 14px 50px}
   .day-head{padding:14px}
   .content{padding:4px 14px 14px}
-  .exercise{grid-template-columns:minmax(0,1fr) 88px}
-  .weight-input,.noload{width:88px}
+  .exercise{grid-template-columns:minmax(0,1fr) 128px;gap:12px}
+  .thumb{width:128px}
 }
 @media print{
   body{background:#fff;background-image:none}
@@ -284,7 +384,6 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
       <span>daily incline walk</span>
     </div>
     <div class="stats">
-      <div class="stat"><div class="stat-num">70&rarr;65</div><div class="stat-label">Target kg</div></div>
       <div class="stat"><div class="stat-num" id="weekStat">1/12</div><div class="stat-label">Week</div></div>
       <div class="stat"><div class="stat-num" id="doneStat">0</div><div class="stat-label">Sessions done</div></div>
     </div>
@@ -357,6 +456,27 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
   <div class="footer">TAP &#9654; FOR A FORM VIDEO &middot; THE WEEK RUNS SUNDAY TO SATURDAY</div>
 </div>
 
+<div class="sheet" id="timerSheet" hidden role="dialog" aria-modal="true" aria-label="Interval timer">
+  <div class="sheet-inner">
+    <button class="sheet-close" id="timerClose" type="button">&larr; Back to the week</button>
+    <div class="eyebrow" id="timerEyebrow">Interval timer</div>
+    <div class="variant-picker" id="variants" role="tablist"></div>
+    <div class="hiit-timer idle" id="hiitTimer">
+      <div class="hiit-phase" id="hiitPhase">Ready</div>
+      <div class="hiit-time" id="hiitTime">00:00</div>
+      <div class="hiit-now" id="hiitNow">Tap Start to begin</div>
+      <div class="hiit-progress" id="hiitProgress"></div>
+      <div class="hiit-controls">
+        <button class="hiit-btn" id="hiitStart" type="button">Start</button>
+        <button class="hiit-btn secondary" id="hiitSkip" type="button" hidden>Skip</button>
+        <button class="hiit-btn secondary" id="hiitReset" type="button" hidden>Reset</button>
+      </div>
+    </div>
+    <div class="hiit-rounds" id="hiitRounds"></div>
+    <p class="hiit-note">The screen is kept awake while this runs. If the phone locks anyway, the timer catches up when you come back.</p>
+  </div>
+</div>
+
 <script>
 /* ==================================================================
    1. THE EXERCISE LIBRARY
@@ -377,108 +497,108 @@ const LIBRARY = [
 {section:"Strength", groups:[
 
  {g:"glutes", label:"Glutes", items:[
-   {id:"hip-thrust",         n:"Hip thrust",                  q:"barbell hip thrust proper form", src:"plan"},
-   {id:"sl-db-glute-bridge", n:"Single-leg DB glute bridge",  q:"single leg hip thrust dumbbell bench", c:"Each side. Go heavy.", src:"prev"},
-   {id:"glute-bridge",       n:"Glute bridge",                q:"glute bridge proper form", src:"plan"},
-   {id:"kickback",           n:"Cable glute kickback",        q:"cable glute kickback proper form", src:"plan"},
-   {id:"cable-hip-abduction",n:"Cable hip abduction",         q:"standing cable hip abduction glute medius", c:"Each side. Glute medius.", src:"prev"},
-   {id:"abduction",          n:"Hip abduction machine",       q:"hip abduction machine proper form", src:"plan"},
-   {id:"bulgarian",          n:"Bulgarian split squat",       q:"bulgarian split squat glute biased forward lean", c:"Forward lean, foot far from the bench.", src:"plan"},
-   {id:"step-up",            n:"Dumbbell step-up",            q:"dumbbell step up proper form", src:"new"},
-   {id:"frog-pump",          n:"Frog pump",                   q:"frog pump glute exercise form", src:"new"},
-   {id:"back-ext-glute",     n:"Back extension, glute-biased",q:"glute biased back extension form", src:"new"}
+   {id:"hip-thrust", n:"Hip thrust",                  q:"barbell hip thrust proper form", v:"Zp26q4BY5HE", src:"plan"},
+   {id:"sl-db-glute-bridge", n:"Single-leg DB glute bridge",  q:"single leg hip thrust dumbbell bench", v:"L4nTaesNm0E", c:"Each side. Go heavy.", src:"prev"},
+   {id:"glute-bridge", n:"Glute bridge",                q:"glute bridge proper form", v:"wPM8icPu6H8", src:"plan"},
+   {id:"kickback", n:"Cable glute kickback",        q:"cable glute kickback proper form", v:"l4zReIOfPCQ", src:"plan"},
+   {id:"cable-hip-abduction", n:"Cable hip abduction",         q:"standing cable hip abduction glute medius", v:"seRBLLNIa-s", c:"Each side. Glute medius.", src:"prev"},
+   {id:"abduction", n:"Hip abduction machine",       q:"hip abduction machine proper form", v:"OQC8nso2aPE", src:"plan"},
+   {id:"bulgarian", n:"Bulgarian split squat",       q:"bulgarian split squat glute biased forward lean", v:"vgn7bSXkgkA", c:"Forward lean, foot far from the bench.", src:"plan"},
+   {id:"step-up", n:"Dumbbell step-up",            q:"dumbbell step up proper form", v:"aKj-6hgiViA", src:"new"},
+   {id:"frog-pump", n:"Frog pump",                   q:"frog pump glute exercise form", v:"rgljhH1X4vc", src:"new"},
+   {id:"back-ext-glute", n:"Back extension, glute-biased",q:"glute biased back extension form", v:"G6HG5VzJoNc", src:"new"}
  ]},
 
  {g:"hamstrings", label:"Hamstrings", items:[
-   {id:"rdl",                n:"Romanian deadlift",           q:"romanian deadlift proper form", src:"plan"},
-   {id:"db-rdl",             n:"Dumbbell RDL",                q:"dumbbell romanian deadlift form", src:"plan"},
-   {id:"bilateral-rdl",      n:"Bilateral RDL",               q:"bilateral romanian deadlift form", c:"Feel the stretch.", src:"prev"},
-   {id:"staggered-deadlift", n:"Staggered stance deadlift",   q:"staggered stance deadlift form", src:"prev"},
-   {id:"leg-curl",           n:"Leg curl",                    q:"lying leg curl proper form", src:"plan"},
-   {id:"db-ham-curl",        n:"DB ham curl",                 q:"dumbbell hamstring curl prone", c:"Controlled tempo.", src:"prev"},
-   {id:"good-morning",       n:"Good morning",                q:"barbell good morning proper form", src:"new"},
-   {id:"nordic-curl",        n:"Nordic hamstring curl",       q:"nordic hamstring curl beginner", src:"new"}
+   {id:"rdl", n:"Romanian deadlift",           q:"romanian deadlift proper form", v:"5WxMW-Fu5KU", src:"plan"},
+   {id:"db-rdl", n:"Dumbbell RDL",                q:"dumbbell romanian deadlift form", v:"hQgFixeXdZo", src:"plan"},
+   {id:"bilateral-rdl", n:"Bilateral RDL",               q:"bilateral romanian deadlift form", v:"5zmlnbWb-g4", c:"Feel the stretch.", src:"prev"},
+   {id:"staggered-deadlift", n:"Staggered stance deadlift",   q:"staggered stance deadlift form", v:"IpXl63ds9NU", src:"prev"},
+   {id:"leg-curl", n:"Leg curl",                    q:"lying leg curl proper form", v:"jxctD6fL_FQ", src:"plan"},
+   {id:"db-ham-curl", n:"DB ham curl",                 q:"dumbbell hamstring curl prone", v:"dY7BmNR7RJk", c:"Controlled tempo.", src:"prev"},
+   {id:"good-morning", n:"Good morning",                q:"barbell good morning proper form", v:"0Syp9iyINZ4", src:"new"},
+   {id:"nordic-curl", n:"Nordic hamstring curl",       q:"nordic hamstring curl beginner", v:"_e9vFU9-tkc", src:"new"}
  ]},
 
  {g:"quads", label:"Quads", items:[
-   {id:"back-squat",         n:"Back squat",                  q:"barbell back squat proper form woman", src:"plan"},
-   {id:"hack-squat",         n:"Hack squat",                  q:"hack squat machine proper form", src:"plan"},
-   {id:"leg-press",          n:"Leg press",                   q:"leg press proper form", src:"plan"},
-   {id:"goblet",             n:"Goblet squat",                q:"goblet squat proper form", src:"plan"},
-   {id:"lunge",              n:"Walking lunges",              q:"dumbbell walking lunges form", src:"plan"},
-   {id:"poliquin-split",     n:"Poliquin split squat",        q:"poliquin split squat quad eccentric", c:"Quad eccentric focus.", src:"prev"},
-   {id:"cable-sissy-squat",  n:"Cable sissy squat",           q:"cable sissy squat heel elevated", c:"Heel elevated, slow eccentric.", src:"prev"},
-   {id:"cable-rev-nordic",   n:"Cable reverse Nordics",       q:"cable reverse nordic curl", c:"Plyobox, slow control.", src:"prev"},
-   {id:"thomas-hf",          n:"Thomas HF eccentrics",        q:"thomas hip flexor eccentrics", c:"KB or monkey feet, controlled.", src:"prev"},
-   {id:"leg-extension",      n:"Leg extension",               q:"leg extension machine proper form", src:"new"},
-   {id:"front-squat",        n:"Front squat",                 q:"front squat proper form", src:"new"}
+   {id:"back-squat", n:"Back squat",                  q:"barbell back squat proper form woman", v:"gcNh17Ckjgg", src:"plan"},
+   {id:"hack-squat", n:"Hack squat",                  q:"hack squat machine proper form", v:"0tn5K9NlCfo", src:"plan"},
+   {id:"leg-press", n:"Leg press",                   q:"leg press proper form", v:"K5n2vg3oZa4", src:"plan"},
+   {id:"goblet", n:"Goblet squat",                q:"goblet squat proper form", v:"Mu7aVOjEBdA", src:"plan"},
+   {id:"lunge", n:"Walking lunges",              q:"dumbbell walking lunges form", v:"Pbmj6xPo-Hw", src:"plan"},
+   {id:"poliquin-split", n:"Poliquin split squat",        q:"poliquin split squat quad eccentric", v:"7Y-fr2lceQU", c:"Quad eccentric focus.", src:"prev"},
+   {id:"cable-sissy-squat", n:"Cable sissy squat",           q:"cable sissy squat heel elevated", v:"hzbN6mqlBYs", c:"Heel elevated, slow eccentric.", src:"prev"},
+   {id:"cable-rev-nordic", n:"Cable reverse Nordics",       q:"cable reverse nordic curl", v:"JX4bA2rT10M", c:"Plyobox, slow control.", src:"prev"},
+   {id:"thomas-hf", n:"Thomas HF eccentrics",        q:"thomas hip flexor eccentrics", v:"fUFztXZUbZ0", c:"KB or monkey feet, controlled.", src:"prev"},
+   {id:"leg-extension", n:"Leg extension",               q:"leg extension machine proper form", v:"YyvSfVjQeL0", src:"new"},
+   {id:"front-squat", n:"Front squat",                 q:"front squat proper form", v:"nmUof3vszxM", src:"new"}
  ]},
 
  {g:"calves", label:"Calves", items:[
-   {id:"calf",               n:"Standing calf raise",         q:"standing calf raise proper form", src:"plan"},
-   {id:"seated-calf",        n:"Seated calf raise",           q:"seated calf raise proper form", src:"new"}
+   {id:"calf", n:"Standing calf raise",         q:"standing calf raise proper form", v:"eMTy3qylqnE", src:"plan"},
+   {id:"seated-calf", n:"Seated calf raise",           q:"seated calf raise proper form", v:"ORY-ke6vcgk", src:"new"}
  ]},
 
  {g:"back", label:"Back", items:[
-   {id:"pulldown",           n:"Lat pulldown",                q:"lat pulldown proper form", src:"plan"},
-   {id:"cable-row",          n:"Seated cable row",            q:"seated cable row proper form", src:"plan"},
-   {id:"cs-row",             n:"Chest-supported row",         q:"chest supported row proper form", src:"plan"},
-   {id:"bent-over-row",      n:"Bent-over row",               q:"barbell bent over row form heavy", c:"Deep stable hinge, pull to the belly.", src:"prev"},
-   {id:"chin-up",            n:"Chin-ups (90° knees)",        q:"chin up form 90 degree knees", c:"Band-assist if needed.", src:"prev"},
-   {id:"pullup",             n:"Assisted pull-up",            q:"assisted pull up machine form", src:"plan"},
-   {id:"face-pull",          n:"Face pull",                   q:"cable face pull proper form", src:"plan"},
-   {id:"y-raise",            n:"Bench supine Y raise",        q:"bench supine Y raise prone", c:"Lower trap and rear delt.", src:"prev"},
-   {id:"cable-y-raise",      n:"Bench supine cable Y raise",  q:"supine cable Y raise bench shoulder", src:"prev"},
-   {id:"single-arm-row",     n:"Single-arm dumbbell row",     q:"single arm dumbbell row proper form", src:"new"},
-   {id:"straight-arm-pull",  n:"Straight-arm pulldown",       q:"straight arm pulldown proper form", src:"new"},
-   {id:"back-extension",     n:"Back extension",              q:"back extension proper form", src:"new"}
+   {id:"pulldown", n:"Lat pulldown",                q:"lat pulldown proper form", v:"SALxEARiMkw", src:"plan"},
+   {id:"cable-row", n:"Seated cable row",            q:"seated cable row proper form", v:"vwHG9Jfu4sw", src:"plan"},
+   {id:"cs-row", n:"Chest-supported row",         q:"chest supported row proper form", v:"vmX58YYK3-8", src:"plan"},
+   {id:"bent-over-row", n:"Bent-over row",               q:"barbell bent over row form heavy", v:"qXrTDQG1oUQ", c:"Deep stable hinge, pull to the belly.", src:"prev"},
+   {id:"chin-up", n:"Chin-ups (90° knees)",        q:"chin up form 90 degree knees", v:"qPVV9tOZlAk", c:"Band-assist if needed.", src:"prev"},
+   {id:"pullup", n:"Assisted pull-up",            q:"assisted pull up machine form", v:"gx0RWT7WbmA", src:"plan"},
+   {id:"face-pull", n:"Face pull",                   q:"cable face pull proper form", v:"ljgqer1ZpXg", src:"plan"},
+   {id:"y-raise", n:"Bench supine Y raise",        q:"bench supine Y raise prone", v:"7vXXJURCZCQ", c:"Lower trap and rear delt.", src:"prev"},
+   {id:"cable-y-raise", n:"Bench supine cable Y raise",  q:"supine cable Y raise bench shoulder", v:"oDSGrucETfw", src:"prev"},
+   {id:"single-arm-row", n:"Single-arm dumbbell row",     q:"single arm dumbbell row proper form", v:"dFzUjzfih7k", src:"new"},
+   {id:"straight-arm-pull", n:"Straight-arm pulldown",       q:"straight arm pulldown proper form", v:"98W63pVdW38", src:"new"},
+   {id:"back-extension", n:"Back extension",              q:"back extension proper form", v:"G6HG5VzJoNc", src:"new"}
  ]},
 
  {g:"chest", label:"Chest", items:[
-   {id:"db-press",           n:"Dumbbell chest press",        q:"dumbbell bench press proper form", src:"plan"},
-   {id:"incline-press",      n:"Incline dumbbell press",      q:"incline dumbbell press proper form", src:"plan"},
-   {id:"db-incline-bench",   n:"DB incline bench",            q:"dumbbell incline bench press form", c:"30–45° incline, upper chest.", src:"prev"},
-   {id:"barbell-bench",      n:"Barbell bench press",         q:"barbell bench press woman form", c:"The heavy compound press.", src:"prev"},
-   {id:"alt-db-bench",       n:"Alt DB bench hooklying",      q:"alternating dumbbell bench press hooklying", c:"Alternating arms, controlled tempo.", src:"prev"},
-   {id:"alt-db-floor-fly",   n:"Alt DB floor flys",           q:"alternating dumbbell floor fly", c:"Stretch focus, slow eccentric.", src:"prev"},
-   {id:"pushup",             n:"Push-ups",                    q:"push up proper form", src:"plan"},
-   {id:"cable-fly",          n:"Cable fly",                   q:"cable chest fly proper form", src:"new"},
-   {id:"chest-press-mc",     n:"Chest press machine",         q:"chest press machine proper form", src:"new"}
+   {id:"db-press", n:"Dumbbell chest press",        q:"dumbbell bench press proper form", v:"5Y3VZsLb1Ys", src:"plan"},
+   {id:"incline-press", n:"Incline dumbbell press",      q:"incline dumbbell press proper form", v:"hChjZQhX1Ls", src:"plan"},
+   {id:"db-incline-bench", n:"DB incline bench",            q:"dumbbell incline bench press form", v:"8iPEnn-ltC8", c:"30–45° incline, upper chest.", src:"prev"},
+   {id:"barbell-bench", n:"Barbell bench press",         q:"barbell bench press woman form", v:"lWFknlOTbyM", c:"The heavy compound press.", src:"prev"},
+   {id:"alt-db-bench", n:"Alt DB bench hooklying",      q:"alternating dumbbell bench press hooklying", v:"_MMIKPqxuTs", c:"Alternating arms, controlled tempo.", src:"prev"},
+   {id:"alt-db-floor-fly", n:"Alt DB floor flys",           q:"alternating dumbbell floor fly", v:"Z2plyYaToHQ", c:"Stretch focus, slow eccentric.", src:"prev"},
+   {id:"pushup", n:"Push-ups",                    q:"push up proper form", v:"I9fsqKE5XHo", src:"plan"},
+   {id:"cable-fly", n:"Cable fly",                   q:"cable chest fly proper form", v:"JUDTGZh4rhg", src:"new"},
+   {id:"chest-press-mc", n:"Chest press machine",         q:"chest press machine proper form", v:"xUm0BiZCWlQ", src:"new"}
  ]},
 
  {g:"shoulders", label:"Shoulders", items:[
-   {id:"shoulder-press",     n:"Shoulder press",              q:"dumbbell shoulder press proper form", src:"plan"},
-   {id:"lateral-raise",      n:"Lateral raise",               q:"dumbbell lateral raise proper form", c:"Slight forward lean, pinky up at the top.", src:"plan"},
-   {id:"lying-cable-lat",    n:"Lying cable lateral raise",   q:"lying side cable lateral raise medial deltoid", c:"On your side on a bench under the cable.", src:"prev"},
-   {id:"rear-delt-fly",      n:"Rear delt fly",               q:"rear delt fly proper form", src:"new"},
-   {id:"arnold-press",       n:"Arnold press",                q:"arnold press proper form", src:"new"},
-   {id:"upright-row",        n:"Cable upright row",           q:"cable upright row proper form", src:"new"}
+   {id:"shoulder-press", n:"Shoulder press",              q:"dumbbell shoulder press proper form", v:"rO_iEImwHyo", src:"plan"},
+   {id:"lateral-raise", n:"Lateral raise",               q:"dumbbell lateral raise proper form", v:"PzsMitRdI_8", c:"Slight forward lean, pinky up at the top.", src:"plan"},
+   {id:"lying-cable-lat", n:"Lying cable lateral raise",   q:"lying side cable lateral raise medial deltoid", v:"kyUzdHj99JE", c:"On your side on a bench under the cable.", src:"prev"},
+   {id:"rear-delt-fly", n:"Rear delt fly",               q:"rear delt fly proper form", v:"FqfYvaRgKyM", src:"new"},
+   {id:"arnold-press", n:"Arnold press",                q:"arnold press proper form", v:"ris9tKqMwgU", src:"new"},
+   {id:"upright-row", n:"Cable upright row",           q:"cable upright row proper form", v:"nwkLwMRHMQo", src:"new"}
  ]},
 
  {g:"biceps", label:"Biceps", items:[
-   {id:"biceps",             n:"Biceps curl",                 q:"dumbbell biceps curl proper form", src:"plan"},
-   {id:"preacher-curl",      n:"Bench preacher curl",         q:"bench preacher curl form tutorial", src:"prev"},
-   {id:"hammer-curl",        n:"Hammer curl",                 q:"hammer curl proper form", src:"new"},
-   {id:"cable-curl",         n:"Cable curl",                  q:"cable biceps curl proper form", src:"new"}
+   {id:"biceps", n:"Biceps curl",                 q:"dumbbell biceps curl proper form", v:"XE_pHwbst04", src:"plan"},
+   {id:"preacher-curl", n:"Bench preacher curl",         q:"bench preacher curl form tutorial", v:"9WDQqgiwQEY", src:"prev"},
+   {id:"hammer-curl", n:"Hammer curl",                 q:"hammer curl proper form", v:"8XLxfXROrTo", src:"new"},
+   {id:"cable-curl", n:"Cable curl",                  q:"cable biceps curl proper form", v:"2MUEL4nL6hA", src:"new"}
  ]},
 
  {g:"triceps", label:"Triceps", items:[
-   {id:"triceps",            n:"Triceps pushdown",            q:"triceps pushdown proper form", src:"plan"},
-   {id:"cable-tri-pushdown", n:"Cable tricep pushdown",       q:"single arm cable tricep pushdown bench", c:"Single arm, braced on a bench.", src:"prev"},
-   {id:"overhead-ext",       n:"Overhead triceps extension",  q:"overhead triceps extension proper form", src:"new"},
-   {id:"bench-dips",         n:"Bench dips",                  q:"bench dips proper form", src:"new"}
+   {id:"triceps", n:"Triceps pushdown",            q:"triceps pushdown proper form", v:"_w-HpW70nSQ", src:"plan"},
+   {id:"cable-tri-pushdown", n:"Cable tricep pushdown",       q:"single arm cable tricep pushdown bench", v:"RhkRr9eyOzQ", c:"Single arm, braced on a bench.", src:"prev"},
+   {id:"overhead-ext", n:"Overhead triceps extension",  q:"overhead triceps extension proper form", v:"-Vyt2QdsR7E", src:"new"},
+   {id:"bench-dips", n:"Bench dips",                  q:"bench dips proper form", v:"c3ZGl4pAwZ4", src:"new"}
  ]},
 
  {g:"core", label:"Core", items:[
-   {id:"cable-crunch",       n:"Cable crunch",                q:"cable crunch kneeling rope", c:"Kneel facing the cable, rope behind the head.", src:"plan"},
-   {id:"hanging-leg-raise",  n:"Hanging leg raise",           q:"hanging leg raise form", c:"Bent knees if strict is hard.", src:"prev"},
-   {id:"russian-twist",      n:"Russian twists",              q:"russian twist abs form", c:"Feet up, rotate slowly.", src:"prev"},
-   {id:"plank",              n:"Plank",                       q:"front plank proper form", noload:true, src:"plan"},
-   {id:"dead-bug",           n:"Dead bug",                    q:"dead bug exercise proper form", noload:true, src:"plan"},
-   {id:"side-plank",         n:"Side plank",                  q:"side plank proper form", noload:true, src:"new"},
-   {id:"pallof-press",       n:"Pallof press",                q:"pallof press proper form", src:"new"},
-   {id:"ab-wheel",           n:"Ab wheel rollout",            q:"ab wheel rollout beginner form", noload:true, src:"new"},
-   {id:"carry",              n:"Farmer carry",                q:"farmer carry proper form", src:"plan"}
+   {id:"cable-crunch", n:"Cable crunch",                q:"cable crunch kneeling rope", v:"b9FJ4hIK3pI", c:"Kneel facing the cable, rope behind the head.", src:"plan"},
+   {id:"hanging-leg-raise", n:"Hanging leg raise",           q:"hanging leg raise form", v:"_jLskVdzS4o", c:"Bent knees if strict is hard.", src:"prev"},
+   {id:"russian-twist", n:"Russian twists",              q:"russian twist abs form", v:"wkD8rjkodUI", c:"Feet up, rotate slowly.", src:"prev"},
+   {id:"plank", n:"Plank",                       q:"front plank proper form", v:"u6ZelKyUM6g", noload:true, src:"plan"},
+   {id:"dead-bug", n:"Dead bug",                    q:"dead bug exercise proper form", v:"GbSC02oU3To", noload:true, src:"plan"},
+   {id:"side-plank", n:"Side plank",                  q:"side plank proper form", v:"NXr4Fw8q60o", noload:true, src:"new"},
+   {id:"pallof-press", n:"Pallof press",                q:"pallof press proper form", v:"_2xWmYNnFS8", src:"new"},
+   {id:"ab-wheel", n:"Ab wheel rollout",            q:"ab wheel rollout beginner form", v:"ikkOq5mHaho", noload:true, src:"new"},
+   {id:"carry", n:"Farmer carry",                q:"farmer carry proper form", v:"NH7Xv-7NQNQ", src:"plan"}
  ]}
 
 ]},
@@ -488,74 +608,76 @@ const LIBRARY = [
  groups:[
 
  {g:"hiit-formats", label:"Interval formats", items:[
-   {id:"hiit",               n:"HIIT intervals",              q:"hiit bike intervals beginner", c:"30 sec hard, 90 sec easy, 8 rounds.", noload:true, src:"plan"},
-   {id:"hiit-bodyweight",    n:"HIIT bodyweight circuit",     q:"bodyweight hiit 30 60 circuit", c:"8 rounds of 30 sec work, 60 sec easy.", noload:true, src:"prev"},
-   {id:"tabata",             n:"Tabata",                      q:"tabata 20 10 workout", c:"20 sec all out, 10 sec rest, 8 rounds. Four minutes.", noload:true, src:"new"},
-   {id:"emom",               n:"EMOM",                        q:"emom workout beginner", c:"One set at the top of every minute, rest with what is left.", noload:true, src:"new"},
-   {id:"ladder",             n:"Descending ladder",           q:"descending ladder hiit workout", c:"10 reps, then 9, then 8, down to 1.", noload:true, src:"new"}
+   {id:"hiit", n:"HIIT intervals",              q:"hiit bike intervals beginner", v:"Rh8VswzWDow", c:"30 sec hard, 90 sec easy, 8 rounds.", noload:true, src:"plan",
+                            timer:{work:30, rest:90, rounds:8, warmup:300, cooldown:300}},
+   {id:"hiit-bodyweight", n:"HIIT bodyweight circuit",     q:"bodyweight hiit 30 60 circuit", v:"4nPKyvKmFi0", c:"8 rounds of 30 sec work, 60 sec easy.", noload:true, src:"prev",
+                            timer:{work:30, rest:60, rounds:8, warmup:300, cooldown:300}},
+   {id:"tabata", n:"Tabata",                      q:"tabata 20 10 workout", v:"Q5FBqUCpGTM", c:"20 sec all out, 10 sec rest, 8 rounds. Four minutes.", noload:true, src:"new"},
+   {id:"emom", n:"EMOM",                        q:"emom workout beginner", v:"shr9jyL1Vak", c:"One set at the top of every minute, rest with what is left.", noload:true, src:"new"},
+   {id:"ladder", n:"Descending ladder",           q:"descending ladder hiit workout", v:"LeLiGwy7BII", c:"10 reps, then 9, then 8, down to 1.", noload:true, src:"new"}
  ]},
 
  {g:"hiit-fullbody", label:"Full-body explosive", items:[
-   {id:"burpees",            n:"Burpees",                     q:"burpee proper form", c:"Chest to the floor, jump high at the top.", noload:true, src:"prev"},
-   {id:"burpee-broad-jump",  n:"Burpee broad jump",           q:"burpee broad jump form", c:"Burpee, then jump forward as far as you can.", noload:true, src:"new"},
-   {id:"kb-swing",           n:"Kettlebell swing",            q:"kettlebell swing proper form hinge", c:"Hinge, not a squat. Snap the hips.", src:"new"},
-   {id:"db-thruster",        n:"Dumbbell thruster",           q:"dumbbell thruster proper form", c:"Front squat straight into an overhead press.", src:"new"},
-   {id:"devil-press",        n:"Devil press",                 q:"devil press dumbbell form", c:"Burpee with dumbbells, then swing them overhead.", src:"new"},
-   {id:"med-ball-slam",      n:"Medicine ball slam",          q:"medicine ball slam proper form", c:"Full overhead reach, slam hard.", src:"new"},
-   {id:"wall-ball",          n:"Wall ball",                   q:"wall ball shot proper form", c:"Squat, then throw to a high target.", src:"new"},
-   {id:"db-snatch",          n:"Dumbbell snatch",             q:"single arm dumbbell snatch form", c:"One clean pull from floor to overhead.", src:"new"},
-   {id:"sprawl",             n:"Sprawl",                      q:"sprawl exercise form", c:"A burpee without the push-up. Easier on the shoulders.", noload:true, src:"new"},
-   {id:"bear-crawl",         n:"Bear crawl",                  q:"bear crawl proper form", c:"Knees an inch off the floor, hips still.", noload:true, src:"new"}
+   {id:"burpees", n:"Burpees",                     q:"burpee proper form", v:"G2hv_NYhM-A", c:"Chest to the floor, jump high at the top.", noload:true, src:"prev"},
+   {id:"burpee-broad-jump", n:"Burpee broad jump",           q:"burpee broad jump form", v:"UTO-GzRXF-Q", c:"Burpee, then jump forward as far as you can.", noload:true, src:"new"},
+   {id:"kb-swing", n:"Kettlebell swing",            q:"kettlebell swing proper form hinge", v:"hp3qVqIHNOI", c:"Hinge, not a squat. Snap the hips.", src:"new"},
+   {id:"db-thruster", n:"Dumbbell thruster",           q:"dumbbell thruster proper form", v:"-rHJkjHUbmo", c:"Front squat straight into an overhead press.", src:"new"},
+   {id:"devil-press", n:"Devil press",                 q:"devil press dumbbell form", v:"Cwxmji-3k40", c:"Burpee with dumbbells, then swing them overhead.", src:"new"},
+   {id:"med-ball-slam", n:"Medicine ball slam",          q:"medicine ball slam proper form", v:"QxYhFwMd1Ks", c:"Full overhead reach, slam hard.", src:"new"},
+   {id:"wall-ball", n:"Wall ball",                   q:"wall ball shot proper form", v:"t3-CS4e4mus", c:"Squat, then throw to a high target.", src:"new"},
+   {id:"db-snatch", n:"Dumbbell snatch",             q:"single arm dumbbell snatch form", v:"HHsOcHb_IFI", c:"One clean pull from floor to overhead.", src:"new"},
+   {id:"sprawl", n:"Sprawl",                      q:"sprawl exercise form", v:"UFFODmd6RTc", c:"A burpee without the push-up. Easier on the shoulders.", noload:true, src:"new"},
+   {id:"bear-crawl", n:"Bear crawl",                  q:"bear crawl proper form", v:"U3Y58Kyw7Xw", c:"Knees an inch off the floor, hips still.", noload:true, src:"new"}
  ]},
 
  {g:"hiit-lower", label:"Lower body power", items:[
-   {id:"jump-squats",        n:"Jump squats",                 q:"jump squat proper form", c:"Full depth, explode up, land soft.", noload:true, src:"prev"},
-   {id:"jumping-lunges",     n:"Jumping lunges",              q:"jumping lunges proper form", c:"Switch mid-air, land soft.", noload:true, src:"prev"},
-   {id:"skater-jumps",       n:"Skater jumps",                q:"skater jumps proper form", c:"Lateral leap, land on the outside leg.", noload:true, src:"prev"},
-   {id:"plyo-split-jumps",   n:"Plyo split jumps",            q:"plyo split jumps form", noload:true, src:"prev"},
-   {id:"plyo-pogos",         n:"Plyo + pogos",                q:"pogo jumps and plyo split jumps warmup", c:"Pogos 30s, split jumps 30s, rest 30s.", noload:true, src:"prev"},
-   {id:"box-jump",           n:"Box jump",                    q:"box jump proper form beginner", c:"Step down, never jump down.", noload:true, src:"new"},
-   {id:"broad-jump",         n:"Broad jump",                  q:"standing broad jump form", noload:true, src:"new"},
-   {id:"tuck-jump",          n:"Tuck jump",                   q:"tuck jump proper form", noload:true, src:"new"},
-   {id:"lateral-bound",      n:"Lateral bound",               q:"lateral bound plyometric form", c:"Stick the landing for a beat.", noload:true, src:"new"},
-   {id:"step-up-sprint",     n:"Step-up sprints",             q:"fast step up cardio drill", noload:true, src:"new"}
+   {id:"jump-squats", n:"Jump squats",                 q:"jump squat proper form", v:"A-cFYWvaHr0", c:"Full depth, explode up, land soft.", noload:true, src:"prev"},
+   {id:"jumping-lunges", n:"Jumping lunges",              q:"jumping lunges proper form", v:"oKajsQ0kvhU", c:"Switch mid-air, land soft.", noload:true, src:"prev"},
+   {id:"skater-jumps", n:"Skater jumps",                q:"skater jumps proper form", v:"9_jLW6VkU8A", c:"Lateral leap, land on the outside leg.", noload:true, src:"prev"},
+   {id:"plyo-split-jumps", n:"Plyo split jumps",            q:"plyo split jumps form", v:"NVWElWKCsyQ", noload:true, src:"prev"},
+   {id:"plyo-pogos", n:"Plyo + pogos",                q:"pogo jumps and plyo split jumps warmup", v:"j0nl5dWuqN4", c:"Pogos 30s, split jumps 30s, rest 30s.", noload:true, src:"prev"},
+   {id:"box-jump", n:"Box jump",                    q:"box jump proper form beginner", v:"v9cZQqGX1Xk", c:"Step down, never jump down.", noload:true, src:"new"},
+   {id:"broad-jump", n:"Broad jump",                  q:"standing broad jump form", v:"XqpN9AbLMe4", noload:true, src:"new"},
+   {id:"tuck-jump", n:"Tuck jump",                   q:"tuck jump proper form", v:"4hXaSh2WlyE", noload:true, src:"new"},
+   {id:"lateral-bound", n:"Lateral bound",               q:"lateral bound plyometric form", v:"gjiZLF5S6aA", c:"Stick the landing for a beat.", noload:true, src:"new"},
+   {id:"step-up-sprint", n:"Step-up sprints",             q:"fast step up cardio drill", v:"2Aql4qSJ9YY", noload:true, src:"new"}
  ]},
 
  {g:"hiit-upper", label:"Upper body and core under fatigue", items:[
-   {id:"mountain-climbers",  n:"Mountain climbers",           q:"mountain climbers proper form", c:"Strong plank, drive the knees fast.", noload:true, src:"prev"},
-   {id:"plank-taps",         n:"Plank shoulder taps",         q:"plank shoulder taps form", c:"Hips still, tap the opposite shoulder.", noload:true, src:"prev"},
-   {id:"plank-jacks",        n:"Plank jacks",                 q:"plank jacks proper form", noload:true, src:"new"},
-   {id:"renegade-row",       n:"Renegade row",                q:"renegade row proper form", c:"Wide feet, no hip rotation.", src:"new"},
-   {id:"battle-rope-waves",  n:"Battle rope waves",           q:"battle rope alternating waves", c:"Fast small waves, braced core.", noload:true, src:"new"},
-   {id:"battle-rope-slams",  n:"Battle rope slams",           q:"battle rope slams form", noload:true, src:"new"},
-   {id:"pushup-burst",       n:"Push-up burst",               q:"push up proper form", c:"Max clean reps in the work window. Knees are fine.", noload:true, src:"new"}
+   {id:"mountain-climbers", n:"Mountain climbers",           q:"mountain climbers proper form", v:"ZhiCSdOVJp0", c:"Strong plank, drive the knees fast.", noload:true, src:"prev"},
+   {id:"plank-taps", n:"Plank shoulder taps",         q:"plank shoulder taps form", v:"wcKyqAMqueQ", c:"Hips still, tap the opposite shoulder.", noload:true, src:"prev"},
+   {id:"plank-jacks", n:"Plank jacks",                 q:"plank jacks proper form", v:"xcBz0TtHqWI", noload:true, src:"new"},
+   {id:"renegade-row", n:"Renegade row",                q:"renegade row proper form", v:"4qEIChzM4ZA", c:"Wide feet, no hip rotation.", src:"new"},
+   {id:"battle-rope-waves", n:"Battle rope waves",           q:"battle rope alternating waves", v:"xObZ2pAon2o", c:"Fast small waves, braced core.", noload:true, src:"new"},
+   {id:"battle-rope-slams", n:"Battle rope slams",           q:"battle rope slams form", v:"jhNyj3s_H9M", noload:true, src:"new"},
+   {id:"pushup-burst", n:"Push-up burst",               q:"push up proper form", v:"I9fsqKE5XHo", c:"Max clean reps in the work window. Knees are fine.", noload:true, src:"new"}
  ]},
 
  {g:"hiit-cardio", label:"Machines, sprints and skipping", items:[
-   {id:"high-knees",         n:"High knees",                  q:"high knees exercise form", c:"Knees waist-high, pump the arms.", noload:true, src:"prev"},
-   {id:"jumping-jacks",      n:"Jumping jacks",               q:"jumping jacks proper form", noload:true, src:"new"},
-   {id:"jump-rope",          n:"Jump rope",                   q:"jump rope beginner technique", noload:true, src:"new"},
-   {id:"double-unders",      n:"Double unders",               q:"double unders jump rope tutorial", noload:true, src:"new"},
-   {id:"rower",              n:"Rowing sprints",              q:"rowing machine intervals form", c:"250 m hard, 90 sec easy.", noload:true, src:"new"},
-   {id:"bike-intervals",     n:"Assault bike sprints",        q:"assault bike intervals beginner", noload:true, src:"new"},
-   {id:"ski-erg",            n:"Ski erg sprints",             q:"ski erg technique intervals", noload:true, src:"new"},
-   {id:"treadmill-sprint",   n:"Treadmill sprints",           q:"treadmill sprint interval workout", noload:true, src:"new"},
-   {id:"hill-sprint",        n:"Incline sprints",             q:"treadmill incline sprint intervals", c:"Lower impact than flat sprinting.", noload:true, src:"new"},
-   {id:"shuttle-run",        n:"Shuttle runs",                q:"shuttle run drill form", noload:true, src:"new"},
-   {id:"sled-push",          n:"Sled push",                   q:"sled push proper form", src:"new"},
-   {id:"incline-walk",       n:"Incline walk",                q:"incline treadmill walking fat loss", c:"The daily one. Brisk, not wrecking.", noload:true, src:"plan"},
-   {id:"easy-run",           n:"Easy run",                    q:"easy zone 2 jog warmup", c:"Conversational pace.", noload:true, src:"prev"},
-   {id:"long-run",           n:"Run, 20–60 min",              q:"easy zone 2 run pace", noload:true, src:"prev"}
+   {id:"high-knees", n:"High knees",                  q:"high knees exercise form", v:"ymdS7tM0zws", c:"Knees waist-high, pump the arms.", noload:true, src:"prev"},
+   {id:"jumping-jacks", n:"Jumping jacks",               q:"jumping jacks proper form", v:"XR0xeuK5zBU", noload:true, src:"new"},
+   {id:"jump-rope", n:"Jump rope",                   q:"jump rope beginner technique", v:"IFgQfVQT_68", noload:true, src:"new"},
+   {id:"double-unders", n:"Double unders",               q:"double unders jump rope tutorial", v:"pQRnSYfliEc", noload:true, src:"new"},
+   {id:"rower", n:"Rowing sprints",              q:"rowing machine intervals form", v:"ZN0J6qKCIrI", c:"250 m hard, 90 sec easy.", noload:true, src:"new"},
+   {id:"bike-intervals", n:"Assault bike sprints",        q:"assault bike intervals beginner", v:"KC-ZSfOmXgE", noload:true, src:"new"},
+   {id:"ski-erg", n:"Ski erg sprints",             q:"ski erg technique intervals", v:"B0lIgT5PHc8", noload:true, src:"new"},
+   {id:"treadmill-sprint", n:"Treadmill sprints",           q:"treadmill sprint interval workout", v:"q7DfYRKccBU", noload:true, src:"new"},
+   {id:"hill-sprint", n:"Incline sprints",             q:"treadmill incline sprint intervals", v:"Wt5xjf3O1Fs", c:"Lower impact than flat sprinting.", noload:true, src:"new"},
+   {id:"shuttle-run", n:"Shuttle runs",                q:"shuttle run drill form", v:"fZoJVVuqY3U", noload:true, src:"new"},
+   {id:"sled-push", n:"Sled push",                   q:"sled push proper form", v:"9XRRXaUpnLk", src:"new"},
+   {id:"incline-walk", n:"Incline walk",                q:"incline treadmill walking fat loss", v:"NAsObfFJXvE", c:"The daily one. Brisk, not wrecking.", noload:true, src:"plan"},
+   {id:"easy-run", n:"Easy run",                    q:"easy zone 2 jog warmup", v:"qVunIG31ohU", c:"Conversational pace.", noload:true, src:"prev"},
+   {id:"long-run", n:"Run, 20–60 min",              q:"easy zone 2 run pace", v:"UxDDPnckFN0", noload:true, src:"prev"}
  ]}
 
 ]},
 
 {section:"Mobility and recovery", groups:[
  {g:"mobility", label:"Mobility and recovery", items:[
-   {id:"mobility",           n:"Mobility + stretching",       q:"full body mobility routine 15 minutes", noload:true, src:"plan"},
-   {id:"glute-activation",   n:"Banded glute activation",     q:"glute activation warmup banded", c:"Banded bridges and clamshells.", noload:true, src:"prev"},
-   {id:"hip-flexor-stretch", n:"Hip flexor stretch",          q:"couch stretch hip flexor", noload:true, src:"new"},
-   {id:"foam-roll",          n:"Foam rolling",                q:"foam rolling full body routine", noload:true, src:"new"}
+   {id:"mobility", n:"Mobility + stretching",       q:"full body mobility routine 15 minutes", v:"R3WDe7byUXo", noload:true, src:"plan"},
+   {id:"glute-activation", n:"Banded glute activation",     q:"glute activation warmup banded", v:"_GtRRr4dPVw", c:"Banded bridges and clamshells.", noload:true, src:"prev"},
+   {id:"hip-flexor-stretch", n:"Hip flexor stretch",          q:"couch stretch hip flexor", v:"-zoCBsmnF8Y", noload:true, src:"new"},
+   {id:"foam-roll", n:"Foam rolling",                q:"foam rolling full body routine", v:"Oz4xHEgMaLY", noload:true, src:"new"}
  ]}
 ]}
 ];
@@ -730,6 +852,20 @@ function say(msg){
   setTimeout(function(){ if (el("status").textContent === msg) el("status").textContent = ""; }, 4000);
 }
 function ytHref(q){ return "https://www.youtube.com/results?search_query=" + encodeURIComponent(q); }
+/* A specific video if we have one, otherwise fall back to a search. */
+function videoHref(ex){
+  return ex.v ? ("https://www.youtube.com/watch?v=" + ex.v) : ytHref(ex.q);
+}
+function thumbHTML(ex, cls){
+  const href = videoHref(ex);
+  if (!ex.v){
+    return '<a class="video-link' + (cls || "") + '" target="_blank" rel="noopener" href="' + href + '">Watch</a>';
+  }
+  return '<a class="thumb" target="_blank" rel="noopener" href="' + href + '" ' +
+    'aria-label="Watch a form video for ' + esc(ex.n) + '">' +
+    '<img src="https://i.ytimg.com/vi/' + esc(ex.v) + '/mqdefault.jpg" alt="" loading="lazy" decoding="async">' +
+    '<span class="play"></span></a>';
+}
 
 /* split "4 × 8–10" into the sets pill and the reps pill */
 function dosePills(d){
@@ -862,26 +998,26 @@ function renderDays(){
         const last = lastWeight(view, i, ex.id);
 
         const box = ex.noload
-          ? '<div class="noload">&mdash;</div>'
+          ? '<div class="noload">No weight to log</div>'
           : '<input class="weight-input' + (rec.w[ex.id] ? " filled" : "") + '" type="text" inputmode="decimal"' +
-            ' placeholder="kg" aria-label="Heaviest weight for ' + esc(ex.n) + '"' +
+            ' placeholder="max kg" aria-label="Heaviest weight for ' + esc(ex.n) + '"' +
             ' data-w="' + esc(ex.id) + '" value="' + esc(rec.w[ex.id] || "") + '">';
 
         return '<div class="exercise"><div>' +
-              '<div class="ex-name">' + esc(ex.n) +
-                '<a class="video-link" target="_blank" rel="noopener" href="' + ytHref(ex.q) + '" ' +
-                  'aria-label="Watch a form video for ' + esc(ex.n) + '">Watch</a>' +
-              "</div>" +
+              '<div class="ex-name">' + esc(ex.n) + "</div>" +
               '<div class="pills">' + dosePills(doseFor(view, item)) + "</div>" +
               (ex.c ? '<div class="cue">' + esc(ex.c) + "</div>" : "") +
               (isSub ? '<div class="subbed">Swapped in for ' + esc(EX[item.ex].n) + "</div>" : "") +
               (last ? '<div class="last">Last time: ' + esc(last.kg) + " kg · " + esc(last.when) + "</div>" : "") +
+              box +
               '<button class="swap" type="button" data-swap="' + esc(item.ex) + '">Swap this exercise</button>' +
+              (ex.timer ? '<button class="timer-open" type="button" data-timer="' + esc(ex.id) + '">Open the timer &middot; ' +
+                  ex.timer.rounds + ' \u00d7 ' + ex.timer.work + 's / ' + ex.timer.rest + 's</button>' : "") +
               '<div class="subbox" hidden>' +
                 '<select data-sub="' + esc(item.ex) + '">' + libraryOptions(ex.id) + "</select>" +
                 (isSub ? '<button class="swap" type="button" data-unsub="' + esc(item.ex) + '">Put ' + esc(EX[item.ex].n) + " back</button>" : "") +
               "</div>" +
-            "</div>" + box + "</div>";
+            "</div>" + thumbHTML(ex) + "</div>";
       }).join("");
       body += '<div class="cardio"><strong>Cardio</strong><br>' + esc(ses.cardio) + "</div>";
     } else {
@@ -926,7 +1062,7 @@ function renderLibrary(){
               (it.src === "plan" ? "Plan" : it.src === "prev" ? "Previous" : "Added") + "</span>" +
             (it.c ? '<div class="lib-cue">' + esc(it.c) + "</div>" : "") +
           "</div>" +
-          '<a class="video-link" target="_blank" rel="noopener" href="' + ytHref(it.q) + '">Watch</a>' +
+          thumbHTML(it) +
         "</li>";
       }).join("");
       return '<div class="muscle" data-open="' + open + '">' +
@@ -1005,6 +1141,10 @@ function wireDays(){
     });
   });
 
+  planEl.querySelectorAll("[data-timer]").forEach(function(btn){
+    btn.addEventListener("click", function(){ openTimer(btn.dataset.timer); });
+  });
+
   planEl.querySelectorAll("[data-unsub]").forEach(function(btn){
     btn.addEventListener("click", function(){
       const rec = dayRec(view, dayIndexOf(btn));
@@ -1070,6 +1210,275 @@ el("wipe").addEventListener("click", function(){
   if (!confirm("Last check. This cannot be undone.")) return;
   store = { start:store.start, weeks:{} };
   save(); view = currentWeek(); renderAll(); say("All data erased.");
+});
+
+/* ==================================================================
+   7. THE INTERVAL TIMER
+   ------------------------------------------------------------------
+   Warm-up, then rounds of work and rest, then a cool-down. Beeps and
+   vibrates on every change and for the last three seconds of a phase.
+   Lives in a full-screen sheet so redrawing the week cannot disturb it.
+   ================================================================== */
+const ROUTINES = {
+  rotate:{ name:"Rotate 4", blurb:"Four moves, twice through", rounds:[
+    {n:"Burpees",             c:"Chest to floor, jump high at the top"},
+    {n:"Jump squats",         c:"Full depth, explode up, land soft"},
+    {n:"Mountain climbers",   c:"Strong plank, drive the knees fast"},
+    {n:"High knees",          c:"Knees waist-high, pump the arms"},
+    {n:"Burpees",             c:"Chest to floor, jump high at the top"},
+    {n:"Jump squats",         c:"Full depth, explode up, land soft"},
+    {n:"Mountain climbers",   c:"Strong plank, drive the knees fast"},
+    {n:"High knees",          c:"Knees waist-high, pump the arms"}
+  ]},
+  variety:{ name:"Variety 8", blurb:"Eight different moves, no repeats", rounds:[
+    {n:"Burpees",             c:"Chest to floor, jump at the top"},
+    {n:"Jump squats",         c:"Full depth, explode up"},
+    {n:"Push-ups",            c:"Knees if needed, chest to floor"},
+    {n:"Mountain climbers",   c:"Hips low, drive the knees fast"},
+    {n:"Jumping lunges",      c:"Switch mid-air, land soft"},
+    {n:"Plank shoulder taps", c:"Hips still, tap the opposite shoulder"},
+    {n:"Skater jumps",        c:"Lateral leap, land on the outside leg"},
+    {n:"Burpees",             c:"Finisher. Empty the tank"}
+  ]},
+  sprints:{ name:"Sprints", blurb:"One machine: bike, rower or incline", rounds:
+    Array.from({length:8}, function(){ return {n:"Sprint", c:"Max effort, all-out pace"}; })
+  }
+};
+
+const T = {
+  cfg:null, exId:null, routine:"rotate",
+  phase:"idle", left:0, round:0, tick:null, running:false, audio:null, wake:null,
+  endsAt:0, beeped:-1
+};
+
+function tEl(id){ return document.getElementById(id); }
+function mmss(n){
+  const m = Math.floor(n/60), s = n%60;
+  return m + ":" + String(s).padStart(2,"0");
+}
+function rounds(){
+  const r = ROUTINES[T.routine].rounds;
+  const want = T.cfg ? T.cfg.rounds : 8;
+  const out = [];
+  for (let i = 0; i < want; i++) out.push(r[i % r.length]);
+  return out;
+}
+function totalSeconds(){
+  const c = T.cfg;
+  return c.warmup + c.rounds*c.work + (c.rounds-1)*c.rest + c.cooldown;
+}
+
+function beep(times){
+  try{
+    if (!T.audio) T.audio = new (window.AudioContext || window.webkitAudioContext)();
+    if (T.audio.state === "suspended") T.audio.resume();
+    let t = T.audio.currentTime;
+    for (let i = 0; i < times; i++){
+      const osc = T.audio.createOscillator(), gain = T.audio.createGain();
+      osc.connect(gain); gain.connect(T.audio.destination);
+      osc.frequency.value = (i === times-1) ? 880 : 660;
+      gain.gain.setValueAtTime(0.001, t);
+      gain.gain.exponentialRampToValueAtTime(0.35, t + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.25);
+      osc.start(t); osc.stop(t + 0.3);
+      t += 0.4;
+    }
+  }catch(e){}
+}
+function buzz(pattern){ try{ if (navigator.vibrate) navigator.vibrate(pattern); }catch(e){} }
+
+async function keepAwake(on){
+  try{
+    if (on && "wakeLock" in navigator && !T.wake) T.wake = await navigator.wakeLock.request("screen");
+    if (!on && T.wake){ T.wake.release(); T.wake = null; }
+  }catch(e){}
+}
+
+function drawTimer(){
+  const box = tEl("hiitTimer");
+  box.className = "hiit-timer " + T.phase;
+  const rs = rounds();
+  const labels = {idle:"Ready", warmup:"Warm-up", work:"Work", rest:"Rest", cooldown:"Cool-down", done:"Complete"};
+  tEl("hiitPhase").textContent = labels[T.phase];
+
+  if (T.phase === "idle"){
+    tEl("hiitTime").textContent = mmss(totalSeconds());
+    tEl("hiitNow").textContent = "Tap Start to begin";
+    tEl("hiitProgress").textContent =
+      T.cfg.rounds + " × " + T.cfg.work + "s work / " + T.cfg.rest + "s easy · " + ROUTINES[T.routine].blurb;
+    tEl("hiitStart").textContent = "Start";
+    tEl("hiitSkip").hidden = true; tEl("hiitReset").hidden = true;
+  } else if (T.phase === "done"){
+    tEl("hiitTime").textContent = "✓";
+    tEl("hiitNow").textContent = "Session complete";
+    tEl("hiitProgress").textContent = "Close this and tick the day off";
+    tEl("hiitStart").textContent = "Start again";
+    tEl("hiitSkip").hidden = true; tEl("hiitReset").hidden = false;
+  } else {
+    tEl("hiitTime").textContent = mmss(T.left);
+    if (T.phase === "warmup"){
+      tEl("hiitNow").textContent = "Easy pace, move every joint";
+      tEl("hiitProgress").textContent = "Warm-up · first move is " + rs[0].n;
+    } else if (T.phase === "cooldown"){
+      tEl("hiitNow").textContent = "Walk it off and stretch";
+      tEl("hiitProgress").textContent = "Cool-down";
+    } else if (T.phase === "work"){
+      tEl("hiitNow").textContent = rs[T.round].n;
+      tEl("hiitProgress").textContent = "Round " + (T.round+1) + " of " + T.cfg.rounds + " · " + rs[T.round].c;
+    } else {
+      const next = rs[T.round+1];
+      tEl("hiitNow").textContent = next ? "Next: " + next.n : "Last rest";
+      tEl("hiitProgress").textContent = "Recover · breathe deep";
+    }
+    tEl("hiitStart").textContent = T.running ? "Pause" : "Resume";
+    tEl("hiitSkip").hidden = false; tEl("hiitReset").hidden = false;
+  }
+
+  tEl("hiitRounds").innerHTML = rs.map(function(r, i){
+    let cls = "";
+    if (T.phase !== "idle"){
+      if (i < T.round) cls = " done";
+      else if (i === T.round && T.phase === "work") cls = " active";
+      else if (i === T.round && T.phase === "rest") cls = " done";
+      else if (T.phase === "cooldown" || T.phase === "done") cls = " done";
+    }
+    return '<div class="hiit-round' + cls + '">' +
+      '<div class="hiit-round-num"><span>' + (i+1) + "</span></div>" +
+      '<div><div class="hiit-round-name">' + esc(r.n) + "</div>" +
+      '<div class="hiit-round-cue">' + esc(r.c) + "</div></div></div>";
+  }).join("");
+
+  tEl("variants").innerHTML = Object.keys(ROUTINES).map(function(k){
+    return '<button class="variant-btn' + (k === T.routine ? " active" : "") + '" type="button" data-variant="' +
+      k + '">' + esc(ROUTINES[k].name) + "</button>";
+  }).join("");
+  tEl("variants").querySelectorAll("[data-variant]").forEach(function(b){
+    b.addEventListener("click", function(){
+      if (T.phase !== "idle" && !confirm("Change the routine? This restarts the timer.")) return;
+      T.routine = b.dataset.variant;
+      resetTimer();
+    });
+  });
+}
+
+/* Work from a deadline, not from counting ticks. A backgrounded tab throttles
+   setInterval, so counting would run slow; comparing against a timestamp stays
+   right even if the phone sleeps through a whole round. */
+function step(){
+  const left = Math.max(0, Math.ceil((T.endsAt - Date.now()) / 1000));
+  if (left === T.left) return;
+  T.left = left;
+  if (left > 0 && left <= 3 && T.beeped !== left){ T.beeped = left; beep(1); }
+  if (left <= 0){
+    let guard = 0;
+    while (T.running && T.left <= 0 && guard++ < 40) advance();
+  } else {
+    drawTimer();
+  }
+}
+function setPhase(phase, seconds){
+  T.phase = phase;
+  T.left = seconds;
+  T.beeped = -1;
+  T.endsAt = Date.now() + seconds * 1000;
+}
+
+function advance(){
+  const c = T.cfg;
+  if (T.phase === "warmup"){
+    T.round = 0; setPhase("work", c.work); beep(2); buzz([200,100,200]);
+  } else if (T.phase === "work"){
+    if (T.round >= c.rounds - 1){
+      setPhase("cooldown", c.cooldown); beep(3); buzz([300,100,300,100,300]);
+    } else {
+      setPhase("rest", c.rest); beep(1); buzz(150);
+    }
+  } else if (T.phase === "rest"){
+    T.round++; setPhase("work", c.work); beep(2); buzz([200,100,200]);
+  } else if (T.phase === "cooldown"){
+    T.phase = "done"; T.left = 0; stopTick(); beep(3); buzz([400,200,400]); keepAwake(false);
+  }
+  drawTimer();
+}
+
+function stopTick(){
+  T.running = false;
+  if (T.tick){ clearInterval(T.tick); T.tick = null; }
+}
+function startTick(){
+  stopTick();
+  T.running = true;
+  T.endsAt = Date.now() + T.left * 1000;
+  T.tick = setInterval(step, 250);
+}
+function resetTimer(){
+  stopTick(); keepAwake(false);
+  T.phase = "idle"; T.round = 0; T.left = 0; T.endsAt = 0; T.beeped = -1;
+  drawTimer();
+}
+
+function openTimer(exId){
+  const ex = EX[exId];
+  if (!ex || !ex.timer) return;
+  T.cfg = ex.timer; T.exId = exId;
+  tEl("timerEyebrow").textContent = ex.n;
+  resetTimer();
+  tEl("timerSheet").hidden = false;
+  document.body.style.overflow = "hidden";
+  tEl("timerClose").focus();
+}
+function closeTimer(){
+  if (T.running && !confirm("The timer is still running. Close it?")) return;
+  stopTick(); keepAwake(false);
+  tEl("timerSheet").hidden = true;
+  document.body.style.overflow = "";
+}
+
+tEl("hiitStart").addEventListener("click", function(){
+  if (T.phase === "idle" || T.phase === "done"){
+    T.round = 0; setPhase("warmup", T.cfg.warmup);
+    beep(1); keepAwake(true); startTick(); drawTimer();
+  } else if (T.running){
+    stopTick(); drawTimer();
+  } else {
+    startTick(); drawTimer();
+  }
+});
+tEl("hiitSkip").addEventListener("click", function(){ advance(); });
+tEl("hiitReset").addEventListener("click", function(){ resetTimer(); });
+tEl("timerClose").addEventListener("click", closeTimer);
+document.addEventListener("keydown", function(e){
+  if (e.key === "Escape" && !tEl("timerSheet").hidden) closeTimer();
+});
+/* Coming back from a locked screen: catch up immediately, and ask for the
+   wake lock again — the browser drops it when the page is hidden. */
+document.addEventListener("visibilitychange", function(){
+  if (document.visibilityState !== "visible" || tEl("timerSheet").hidden) return;
+  if (T.running){ step(); keepAwake(true); }
+});
+
+/* ==================================================================
+   8. ROLLING OVER AT MIDNIGHT
+   ------------------------------------------------------------------
+   Every date on the page — today's label, which week is current, which
+   card is highlighted — is worked out when the page draws. Leave the app
+   open overnight and it would still show yesterday, so watch for the day
+   changing and redraw. If she was looking at the current week, follow the
+   date forward; if she was reading back over week 3, leave her there.
+   ================================================================== */
+let drawnOn = todayISO();
+function refreshIfNewDay(){
+  const now = todayISO();
+  if (now === drawnOn) return;
+  const wasOnCurrent = (view === currentWeek());
+  drawnOn = now;
+  if (wasOnCurrent) view = currentWeek();
+  renderAll();
+}
+setInterval(refreshIfNewDay, 30000);
+window.addEventListener("focus", refreshIfNewDay);
+document.addEventListener("visibilitychange", function(){
+  if (document.visibilityState === "visible") refreshIfNewDay();
 });
 
 renderAll();

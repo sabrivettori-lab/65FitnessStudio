@@ -26,8 +26,20 @@ know what to beat.
 from the full library. The card remembers what it replaced and offers to put the
 original back.
 
-**Form videos.** Every exercise has a Watch button that opens a YouTube search
-for that movement.
+**Form videos.** Every exercise shows a thumbnail of a specific YouTube video on
+the right. Tap it and the video opens. All 125 are real video ids, checked — the
+thumbnail image was fetched for every one. A caveat: nobody watched them. They
+were chosen by title, channel and length from YouTube's own search results, and
+eleven were corrected by hand where the top result was the wrong exercise. If one
+is unhelpful, replace the `v:"..."` for that exercise in `index.html`.
+
+**The interval timer.** HIIT sessions have an *Open the timer* button. It runs a
+five-minute warm-up, then the rounds from the prescription (8 × 30s/90s in the
+12-week plan, 8 × 30s/60s in the old bodyweight circuit), then a five-minute
+cool-down. It beeps and vibrates on every change and for the last three seconds
+of each phase, and it keeps the screen awake. Three routines: Rotate 4, Variety 8
+and Sprints. It works from a clock deadline rather than counting ticks, so it
+stays accurate even if the phone sleeps through a round.
 
 ---
 
@@ -47,9 +59,15 @@ Each exercise carries a tag saying where it came from:
 - **Previous** — from the earlier version of this app, kept so nothing is lost
 - **Added** — a suggestion, in neither plan
 
-Search the library by name or by muscle group.
+Search the library by name or by muscle group. Every entry has a video thumbnail.
 
 ---
+
+## One thing that leaves this page
+
+Thumbnails are loaded from `i.ytimg.com`, so YouTube sees a request from your
+phone each time the app draws. Nothing about your logs goes with it. If you would
+rather it did not, the thumbnails can be dropped for plain text links.
 
 ## Where your data lives
 
@@ -88,8 +106,15 @@ const DEFAULT_WEEK = ["lower-glutes","upper","hiit-core","lower-legs","upper-sha
 ```
 
 **To add an exercise to the library**, add it to the right muscle group in
-`LIBRARY`. Give it an `id` that is not already taken, a name, and a YouTube
-search string.
+`LIBRARY`. Give it an `id` that is not already taken, a name, a YouTube search
+string, and `v:` set to a video id — the eleven characters after `watch?v=` in a
+YouTube URL. Without `v:` the app falls back to a search link with no thumbnail.
+
+**To change the timer** for an interval session, edit its `timer:` block:
+
+```js
+timer:{work:30, rest:90, rounds:8, warmup:300, cooldown:300}   // seconds
+```
 
 **To make the 12 weeks differ from each other.** Right now the same week repeats
 for all twelve, and only the weight you lift changes. If a week should differ,
