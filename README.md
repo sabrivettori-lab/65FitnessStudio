@@ -24,6 +24,11 @@ walking day. The masthead shows weeks completed out of twelve.
 each day, so a day where you walked but skipped the weights still counts for
 what it was.
 
+**Days start folded.** The week shows seven headers — the date, the workout, how
+many exercises, and whether it is logged and walked. Tap one to open the session.
+Opening a day leaves the others shut, and a card you have opened stays open while
+you tick things off inside it. Moving to another week folds everything again.
+
 **You pick the workout per day.** Every day has a *What I'm doing* dropdown.
 It starts on the planned session, but you can change it to any other session, to
 one of the workouts from the previous plan, or to a rest day. A day set to rest
@@ -45,8 +50,15 @@ established strength, rehab or equipment source, whether the title is actually
 about that movement, and whether the length suits a form check. 91 of the 125 are
 from recognised channels (Jeff Nippard, ATHLEAN-X, Squat University, E3 Rehab,
 Bodybuilding.com, Rogue, Concept2, Physiotutors and similar), 114 have over
-100,000 views and 70 over a million. Five were corrected by hand where the
-popular result was the wrong movement or a duplicate.
+100,000 views and 70 over a million. Twelve were corrected by hand — five where
+the popular result was the wrong movement or a duplicate, seven where it was an
+eight-to-twelve minute lecture when a one-minute demo was what the moment called
+for.
+
+Length: the median is two minutes, 47% are under two and 70% under five. The
+dozen that run over ten minutes are the ones where length is the point — the HIIT
+circuits, the Tabata session, the mobility routine, the foam-rolling routine.
+Those are sessions to follow, not form checks.
 
 Two caveats, both worth knowing. **Nobody watched them** — they were judged on
 title, channel, length and audience, not on content. And a handful of niche

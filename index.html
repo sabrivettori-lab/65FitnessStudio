@@ -84,7 +84,12 @@ body{
 .weeks button[data-state="done"]{background:var(--sage-deep);border-color:var(--sage-deep);color:var(--white)}
 .weeks button[data-state="part"]{border-color:var(--orange);color:var(--ink)}
 .weeks button[data-state="future"]{opacity:.45}
-.weeks button[aria-current="true"]{box-shadow:inset 0 0 0 2px var(--burgundy);color:var(--ink)}
+/* This week is marked with a ring drawn in whatever reads against the chip it
+   sits on — ink on a pale chip, bone on a filled green one. It never changes the
+   number's colour, so the text keeps its contrast in every state. */
+.weeks button[aria-current="true"]{box-shadow:inset 0 0 0 2px var(--ink)}
+.weeks button[data-state="done"][aria-current="true"]{box-shadow:inset 0 0 0 2px var(--bone)}
+.weeks button[data-state="future"][aria-current="true"]{opacity:1}
 
 .weeknav{
   display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;
@@ -105,7 +110,11 @@ body{
 .weekbar{margin-top:14px;font-size:14px;color:var(--ink-3)}
 .weekbar b{color:var(--ink);font-family:var(--mono);font-weight:700}
 .meter{height:6px;border-radius:999px;background:rgba(21,18,16,.1);margin-top:8px;overflow:hidden}
-.meter i{display:block;height:100%;background:linear-gradient(90deg,var(--orange-bright),var(--burgundy));width:0;transition:width .25s}
+.meter i{
+  display:block;height:100%;width:0;
+  background:var(--orange);transition:width .25s,background .25s;
+}
+.meter.full i{background:var(--sage-deep)}
 
 /* ---------- what the week asked for, and what got done ---------- */
 .targets{margin-top:16px;display:grid;gap:2px}
@@ -133,14 +142,32 @@ body{
 .day.done{border-color:var(--sage);border-left:4px solid var(--sage-bright);
   background:linear-gradient(135deg,var(--white) 0%,rgba(122,144,104,.07) 100%)}
 .day.done .cardio{border-left-color:var(--forest-bright)}
-.day.today{border-color:var(--orange);box-shadow:0 0 0 2px rgba(209,90,42,.18)}
+.day.today:not(.done){border-color:var(--orange);box-shadow:0 0 0 2px rgba(209,90,42,.18)}
 .day-head{
   display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;
   padding:15px 18px;background:linear-gradient(135deg,var(--white) 0%,rgba(232,120,65,.06) 100%);
-  border-bottom:1px solid rgba(21,18,16,.08);
 }
+.day.open .day-head{border-bottom:1px solid rgba(21,18,16,.08)}
+/* The header is the control: tap it to open the session. The tick sits outside
+   the button so marking a day done never opens or closes it. */
+.day-toggle{
+  appearance:none;background:none;border:0;padding:0;margin:0;cursor:pointer;
+  font:inherit;color:inherit;text-align:left;min-width:0;
+  display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;
+}
+.day-lines{min-width:0}
+.day-toggle .chev{
+  font-size:17px;line-height:1;color:var(--ink-3);
+  transition:transform .18s ease;flex:0 0 auto;
+}
+.day.open .day-toggle .chev{transform:rotate(90deg)}
+.day-sum{
+  display:block;margin-top:5px;font-family:var(--mono);font-size:10px;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);
+}
+.day.done .day-sum{color:var(--sage-deep)}
 .day-when{
-  font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.1em;
+  display:block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.1em;
   text-transform:uppercase;color:var(--ink-3);
 }
 .day-when b{color:var(--ink-2);font-weight:700}
@@ -148,7 +175,7 @@ body{
   color:var(--white);background:var(--orange);font-weight:700;
   border-radius:999px;padding:1px 7px;margin-left:5px;letter-spacing:.08em;
 }
-.day-title{font-family:var(--display);font-size:19px;color:var(--ink);margin-top:5px;letter-spacing:-.01em}
+.day-title{display:block;font-family:var(--display);font-size:19px;color:var(--ink);margin-top:5px;letter-spacing:-.01em}
 .day.done .day-title{color:var(--sage-deep)}
 .complete{
   appearance:none;width:28px;height:28px;border:2px solid var(--ink-3);border-radius:8px;
@@ -574,21 +601,21 @@ const LIBRARY = [
    {id:"leg-curl", n:"Leg curl",                    q:"lying leg curl proper form", v:"vl5nUdE9mWM", src:"plan"},
    {id:"db-ham-curl", n:"DB ham curl",                 q:"dumbbell hamstring curl prone", v:"ZHlBSI6JPsA", c:"Controlled tempo.", src:"prev"},
    {id:"good-morning", n:"Good morning",                q:"barbell good morning proper form", v:"f23vXjoG2e8", src:"new"},
-   {id:"nordic-curl", n:"Nordic hamstring curl",       q:"nordic hamstring curl beginner", v:"_e9vFU9-tkc", src:"new"}
+   {id:"nordic-curl", n:"Nordic hamstring curl",       q:"nordic hamstring curl beginner", v:"3-4pKUhkzoQ", src:"new"}
  ]},
 
  {g:"quads", label:"Quads", items:[
    {id:"back-squat", n:"Back squat",                  q:"barbell back squat proper form woman", v:"gcNh17Ckjgg", src:"plan"},
    {id:"hack-squat", n:"Hack squat",                  q:"hack squat machine proper form", v:"0tn5K9NlCfo", src:"plan"},
-   {id:"leg-press", n:"Leg press",                   q:"leg press proper form", v:"B6rGDcfyPto", src:"plan"},
+   {id:"leg-press", n:"Leg press",                   q:"leg press proper form", v:"p5dCqF7wWUw", src:"plan"},
    {id:"goblet", n:"Goblet squat",                q:"goblet squat proper form", v:"gm4ln6PO4rc", src:"plan"},
    {id:"lunge", n:"Walking lunges",              q:"dumbbell walking lunges form", v:"Pbmj6xPo-Hw", src:"plan"},
    {id:"poliquin-split", n:"Poliquin split squat",        q:"poliquin split squat quad eccentric", v:"h80lCPi_TpM", c:"Quad eccentric focus.", src:"prev"},
    {id:"cable-sissy-squat", n:"Cable sissy squat",           q:"cable sissy squat heel elevated", v:"UUUSIzjFtn0", c:"Heel elevated, slow eccentric.", src:"prev"},
-   {id:"cable-rev-nordic", n:"Cable reverse Nordics",       q:"cable reverse nordic curl", v:"PvJDjcfZe1c", c:"Plyobox, slow control.", src:"prev"},
+   {id:"cable-rev-nordic", n:"Cable reverse Nordics",       q:"cable reverse nordic curl", v:"GbpDfXXKuk0", c:"Plyobox, slow control.", src:"prev"},
    {id:"thomas-hf", n:"Thomas HF eccentrics",        q:"thomas hip flexor eccentrics", v:"WdTihDw2JN4", c:"KB or monkey feet, controlled.", src:"prev"},
    {id:"leg-extension", n:"Leg extension",               q:"leg extension machine proper form", v:"ljO4jkwv8wQ", src:"new"},
-   {id:"front-squat", n:"Front squat",                 q:"front squat proper form", v:"v-mQm_droHg", src:"new"}
+   {id:"front-squat", n:"Front squat",                 q:"front squat proper form", v:"uYumuL_G_V0", src:"new"}
  ]},
 
  {g:"calves", label:"Calves", items:[
@@ -670,7 +697,7 @@ const LIBRARY = [
    {id:"hiit-bodyweight", n:"HIIT bodyweight circuit",     q:"bodyweight hiit 30 60 circuit", v:"W4eKVKwf3rQ", c:"8 rounds of 30 sec work, 60 sec easy.", noload:true, src:"prev",
                             timer:{work:30, rest:60, rounds:8, warmup:300, cooldown:300}},
    {id:"tabata", n:"Tabata",                      q:"tabata 20 10 workout", v:"rfV9NL67OvI", c:"20 sec all out, 10 sec rest, 8 rounds. Four minutes.", noload:true, src:"new"},
-   {id:"emom", n:"EMOM",                        q:"emom workout beginner", v:"uvUJKoudsnk", c:"One set at the top of every minute, rest with what is left.", noload:true, src:"new"},
+   {id:"emom", n:"EMOM",                        q:"emom workout beginner", v:"eMDG3ZSaavo", c:"One set at the top of every minute, rest with what is left.", noload:true, src:"new"},
    {id:"ladder", n:"Descending ladder",           q:"descending ladder hiit workout", v:"cZnsLVArIt8", c:"10 reps, then 9, then 8, down to 1.", noload:true, src:"new"}
  ]},
 
@@ -680,7 +707,7 @@ const LIBRARY = [
    {id:"kb-swing", n:"Kettlebell swing",            q:"kettlebell swing proper form hinge", v:"sSESeQAir2M", c:"Hinge, not a squat. Snap the hips.", src:"new"},
    {id:"db-thruster", n:"Dumbbell thruster",           q:"dumbbell thruster proper form", v:"1KYPZ-Jzo3w", c:"Front squat straight into an overhead press.", src:"new"},
    {id:"devil-press", n:"Devil press",                 q:"devil press dumbbell form", v:"hc6dfJHRcD0", c:"Burpee with dumbbells, then swing them overhead.", src:"new"},
-   {id:"med-ball-slam", n:"Medicine ball slam",          q:"medicine ball slam proper form", v:"lsMGmkvzFsE", c:"Full overhead reach, slam hard.", src:"new"},
+   {id:"med-ball-slam", n:"Medicine ball slam",          q:"medicine ball slam proper form", v:"QxYhFwMd1Ks", c:"Full overhead reach, slam hard.", src:"new"},
    {id:"wall-ball", n:"Wall ball",                   q:"wall ball shot proper form", v:"fpUD0mcFp_0", c:"Squat, then throw to a high target.", src:"new"},
    {id:"db-snatch", n:"Dumbbell snatch",             q:"single arm dumbbell snatch form", v:"3mlhF3dptAo", c:"One clean pull from floor to overhead.", src:"new"},
    {id:"sprawl", n:"Sprawl",                      q:"sprawl exercise form", v:"UFFODmd6RTc", c:"A burpee without the push-up. Easier on the shoulders.", noload:true, src:"new"},
@@ -723,7 +750,7 @@ const LIBRARY = [
    {id:"shuttle-run", n:"Shuttle runs",                q:"shuttle run drill form", v:"3-iZMS6twcE", noload:true, src:"new"},
    {id:"sled-push", n:"Sled push",                   q:"sled push proper form", v:"9XRRXaUpnLk", src:"new"},
    {id:"incline-walk", n:"Incline walk",                q:"incline treadmill walking fat loss", v:"nTPgToEPa4c", c:"The daily one. Brisk, not wrecking.", noload:true, src:"plan"},
-   {id:"easy-run", n:"Easy run",                    q:"easy zone 2 jog warmup", v:"XhBPB1Hxsp4", c:"Conversational pace.", noload:true, src:"prev"},
+   {id:"easy-run", n:"Easy run",                    q:"easy zone 2 jog warmup", v:"1RqY5EYOM0k", c:"Conversational pace.", noload:true, src:"prev"},
    {id:"long-run", n:"Run, 20–60 min",              q:"easy zone 2 run pace", v:"L5J6sgQLvuE", noload:true, src:"prev"}
  ]}
 
@@ -1037,7 +1064,7 @@ function renderWeeks(){
     if (w === view) b.setAttribute("aria-current", "true");
     b.setAttribute("aria-label", "Week " + w + ", " + n + " of " + t + " done");
     b.addEventListener("click", function(){
-      view = w; renderAll(); window.scrollTo({top:0, behavior:"smooth"});
+      view = w; openDays.clear(); renderAll(); window.scrollTo({top:0, behavior:"smooth"});
     });
     weeksEl.appendChild(b);
   }
@@ -1052,6 +1079,7 @@ function renderWeeks(){
   el("weekbar").innerHTML = "<b>" + n + " of " + t + "</b> sessions done this week" +
     (n >= t ? " &mdash; week complete." : "");
   el("meter").style.width = Math.round(100 * Math.min(1, n / t)) + "%";
+  el("meter").parentElement.classList.toggle("full", n >= t);
   renderTargets();
 }
 
@@ -1067,6 +1095,10 @@ function libraryOptions(selectedId){
   }).join("");
 }
 
+/* Which day cards are expanded. Kept outside the render so ticking a box or
+   swapping an exercise does not fold the session shut under her. */
+let openDays = new Set();
+
 function renderDays(){
   planEl.innerHTML = "";
   const today = todayISO();
@@ -1077,8 +1109,9 @@ function renderDays(){
     const isToday = iso(date) === today;
     const ses = sessionById(rec.s);
 
+    const isOpen = openDays.has(i);
     const card = document.createElement("section");
-    card.className = "day" + (rec.done ? " done" : "") + (isToday ? " today" : "");
+    card.className = "day" + (rec.done ? " done" : "") + (isToday ? " today" : "") + (isOpen ? " open" : "");
 
     const newOpts = SESSIONS.filter(function(s){ return s.src === "new"; }).map(function(s){
       return '<option value="' + s.id + '"' + (s.id === rec.s ? " selected" : "") + ">" + esc(s.name) + "</option>";
@@ -1138,16 +1171,26 @@ function renderDays(){
           (rec.walk ? " checked" : "") + '><span>Walk done</span></label></div>';
     }
 
+    const nEx = ses ? ses.items.length : 0;
+    const summary = (ses ? nEx + " exercise" + (nEx === 1 ? "" : "s") : "Rest") +
+      (rec.done ? " · logged" : "") + (rec.walk ? " · walked" : "");
+
     card.innerHTML =
-      '<div class="day-head"><div>' +
-          '<div class="day-when"><b>' + DAY_NAMES[i] + "</b> &middot; " + fmt(date) +
-            (isToday ? '<span class="istoday">today</span>' : "") + "</div>" +
-          '<div class="day-title">' + esc(ses ? ses.name : "Rest day") + "</div>" +
-        "</div>" +
+      '<div class="day-head">' +
+        '<button class="day-toggle" type="button" data-toggle="' + i + '"' +
+          ' aria-expanded="' + (isOpen ? "true" : "false") + '" aria-controls="body-' + i + '">' +
+          '<span class="day-lines">' +
+            '<span class="day-when"><b>' + DAY_NAMES[i] + "</b> &middot; " + fmt(date) +
+              (isToday ? '<span class="istoday">today</span>' : "") + "</span>" +
+            '<span class="day-title">' + esc(ses ? ses.name : "Rest day") + "</span>" +
+            '<span class="day-sum">' + esc(summary) + "</span>" +
+          "</span>" +
+          '<span class="chev" aria-hidden="true">&rsaquo;</span>' +
+        "</button>" +
         '<input class="complete" type="checkbox" data-done="' + i + '" ' +
           'aria-label="Mark ' + DAY_NAMES[i] + ' done" ' + (rec.done ? "checked" : "") + ">" +
       "</div>" +
-      '<div class="content">' +
+      '<div class="content" id="body-' + i + '"' + (isOpen ? "" : " hidden") + ">" +
         '<div class="picker">' +
           '<select data-session="' + i + '" aria-label="Which workout ' + DAY_NAMES[i] + '">' +
           opts + "</select></div>" +
@@ -1215,6 +1258,20 @@ function dayIndexOf(node){
 }
 
 function wireDays(){
+  /* Toggling flips the DOM directly rather than redrawing, so the page does not
+     jump under her thumb. */
+  planEl.querySelectorAll("[data-toggle]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      const i = Number(btn.dataset.toggle);
+      const body = document.getElementById("body-" + i);
+      const wasOpen = openDays.has(i);
+      if (wasOpen) openDays.delete(i); else openDays.add(i);
+      body.hidden = wasOpen;
+      btn.setAttribute("aria-expanded", wasOpen ? "false" : "true");
+      btn.closest(".day").classList.toggle("open", !wasOpen);
+    });
+  });
+
   planEl.querySelectorAll("[data-session]").forEach(function(sel){
     sel.addEventListener("change", function(){
       dayRec(view, Number(sel.dataset.session)).s = sel.value;
@@ -1260,7 +1317,9 @@ function wireDays(){
   planEl.querySelectorAll("[data-walk]").forEach(function(cb){
     cb.addEventListener("change", function(){
       dayRec(view, Number(cb.dataset.walk)).walk = cb.checked ? 1 : 0;
-      save(); renderWeeks(); renderHeader();
+      /* A full redraw, so the card's own summary line picks up "walked" too.
+         The open cards survive it because openDays is held outside the render. */
+      save(); renderAll();
     });
   });
 
@@ -1277,9 +1336,9 @@ function wireDays(){
   });
 }
 
-el("prev").addEventListener("click", function(){ if (view > 1){ view--; renderAll(); } });
-el("next").addEventListener("click", function(){ if (view < BLOCK_WEEKS){ view++; renderAll(); } });
-el("backToday").addEventListener("click", function(){ view = currentWeek(); renderAll(); });
+el("prev").addEventListener("click", function(){ if (view > 1){ view--; openDays.clear(); renderAll(); } });
+el("next").addEventListener("click", function(){ if (view < BLOCK_WEEKS){ view++; openDays.clear(); renderAll(); } });
+el("backToday").addEventListener("click", function(){ view = currentWeek(); openDays.clear(); renderAll(); });
 el("libSearch").addEventListener("input", function(e){ libFilter = e.target.value; renderLibrary(); });
 
 /* ---------- backup ---------- */
@@ -1304,7 +1363,7 @@ el("importFile").addEventListener("change", function(e){
       if (!confirm("Replace everything currently saved with this backup?")) return;
       store = data;
       if (!store.start) store.start = iso(sundayOf(new Date()));
-      save(); view = currentWeek(); renderAll(); say("Backup restored.");
+      save(); view = currentWeek(); drawnWeek = view; renderAll(); say("Backup restored.");
     } catch(err){ say("That file could not be read as a backup."); }
   };
   r.readAsText(file);
@@ -1318,7 +1377,7 @@ el("setStart").addEventListener("click", function(){
   const d = parseISO(input.trim());
   if (isNaN(d.getTime())){ say("That is not a real date."); return; }
   store.start = iso(sundayOf(d));
-  save(); view = currentWeek(); renderAll();
+  save(); view = currentWeek(); drawnWeek = view; renderAll();
   say("Week 1 now starts " + fmt(parseISO(store.start)) + ".");
 });
 
@@ -1590,12 +1649,18 @@ document.addEventListener("visibilitychange", function(){
    date forward; if she was reading back over week 3, leave her there.
    ================================================================== */
 let drawnOn = todayISO();
+let drawnWeek = currentWeek();
 function refreshIfNewDay(){
   const now = todayISO();
   if (now === drawnOn) return;
-  const wasOnCurrent = (view === currentWeek());
+  /* Compare against the week that was current when the page last drew, not the
+     one that is current now. On the night a week rolls over those differ, and
+     comparing with the new one would decide she had navigated away and leave
+     her stranded on the finished week. */
+  const wasOnCurrent = (view === drawnWeek);
   drawnOn = now;
-  if (wasOnCurrent) view = currentWeek();
+  drawnWeek = currentWeek();
+  if (wasOnCurrent) view = drawnWeek;
   renderAll();
 }
 setInterval(refreshIfNewDay, 30000);
