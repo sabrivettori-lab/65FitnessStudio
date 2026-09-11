@@ -396,7 +396,8 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
   display:grid;grid-template-columns:28px minmax(0,1fr) 26px;gap:12px;align-items:center;
   padding:9px 0;border-top:1px solid rgba(21,18,16,.08);
 }
-.r-row:first-child{border-top:0}
+.r-list > .r-row:first-child{border-top:0}
+.r-subrow + .r-row{border-top:0}
 .r-num{
   width:26px;height:26px;border-radius:50%;background:var(--cream-warm);color:var(--ink);
   display:grid;place-content:center;font-family:var(--display);font-size:11px;
@@ -404,12 +405,22 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
 .r-text{min-width:0}
 .r-name{display:block;font-weight:700;font-size:14.5px;letter-spacing:-.01em}
 .r-cue{display:block;color:var(--ink-3);font-size:12.5px;margin-top:2px}
-.r-vid{
-  width:24px;height:24px;border-radius:50%;border:1px solid var(--burgundy);
-  color:var(--burgundy);text-decoration:none;font-size:9px;
-  display:grid;place-content:center;
+.r-swap{width:26px;height:26px;font-size:12px;margin-top:0}
+.r-reps{
+  font-family:var(--mono);font-size:11px;font-weight:700;color:var(--burgundy);
+  margin-left:6px;
 }
-.r-vid.empty{border:0}
+.pick-label{
+  display:block;margin:9px 0 5px;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);
+}
+.timer-open.hold{background:var(--forest)}
+.timer-open.hold:active{background:var(--forest-bright)}
+.r-row.swapped .r-name{color:var(--orange-deep)}
+.r-row.swapped .r-num{background:var(--orange);color:var(--white)}
+.r-subrow{display:grid;gap:6px;padding:2px 0 10px 40px}
+.r-subrow[hidden]{display:none}
+.r-subrow select{background:var(--white);font-size:13.5px;padding:9px 10px}
 .rounds-warm{
   margin-top:11px;padding-top:10px;border-top:1px solid rgba(21,18,16,.08);
   font-family:var(--serif);font-style:italic;font-size:12.5px;color:var(--ink-3);
@@ -755,9 +766,9 @@ const LIBRARY = [
    {id:"cable-crunch", n:"Cable crunch",                q:"cable crunch kneeling rope", v:"3qjoXDTuyOE", c:"Kneel facing the cable, rope behind the head.", src:"plan"},
    {id:"hanging-leg-raise", n:"Hanging leg raise",           q:"hanging leg raise form", v:"Pr1ieGZ5atk", c:"Bent knees if strict is hard.", src:"prev"},
    {id:"russian-twist", n:"Russian twists",              q:"russian twist abs form", v:"fCHFQTBqm-U", c:"Feet up, rotate slowly.", src:"prev"},
-   {id:"plank", n:"Plank",                       q:"front plank proper form", v:"F-nQ_KJgfCY", noload:true, src:"plan"},
+   {id:"plank", n:"Plank",                       q:"front plank proper form", v:"F-nQ_KJgfCY", noload:true, src:"plan", hold:{work:45, rest:30, rounds:3, warmup:0, cooldown:0}},
    {id:"dead-bug", n:"Dead bug",                    q:"dead bug exercise proper form", v:"4XLEnwUr1d8", noload:true, src:"plan"},
-   {id:"side-plank", n:"Side plank",                  q:"side plank proper form", v:"XeN4pEZZJNI", noload:true, src:"new"},
+   {id:"side-plank", n:"Side plank",                  q:"side plank proper form", v:"XeN4pEZZJNI", noload:true, src:"new", hold:{work:30, rest:30, rounds:3, warmup:0, cooldown:0}},
    {id:"pallof-press", n:"Pallof press",                q:"pallof press proper form", v:"_2xWmYNnFS8", src:"new"},
    {id:"ab-wheel", n:"Ab wheel rollout",            q:"ab wheel rollout beginner form", v:"A3uK5TPzHq8", noload:true, src:"new"},
    {id:"carry", n:"Farmer carry",                q:"farmer carry proper form", v:"p5MNNosenJc", src:"plan"},
@@ -772,66 +783,79 @@ const LIBRARY = [
  groups:[
 
  {g:"hiit-formats", label:"Interval formats", items:[
-   {id:"hiit", n:"HIIT intervals",              q:"hiit bike intervals beginner", v:"ZiGE3-L4vyg", c:"30 sec hard, 90 sec easy, 8 rounds.", noload:true, src:"plan",
+   {id:"hiit", n:"HIIT intervals",              q:"hiit bike intervals beginner", c:"30 sec hard, 90 sec easy, 8 rounds.", noload:true, src:"plan",
                             timer:{work:30, rest:90, rounds:8, warmup:300, cooldown:300}},
-   {id:"hiit-bodyweight", n:"HIIT bodyweight circuit",     q:"bodyweight hiit 30 60 circuit", v:"W4eKVKwf3rQ", c:"8 rounds of 30 sec work, 60 sec easy.", noload:true, src:"prev",
+   {id:"hiit-bodyweight", n:"HIIT bodyweight circuit",     q:"bodyweight hiit 30 60 circuit", c:"8 rounds of 30 sec work, 60 sec easy.", noload:true, src:"prev",
                             timer:{work:30, rest:60, rounds:8, warmup:300, cooldown:300}},
-   {id:"tabata", n:"Tabata",                      q:"tabata 20 10 workout", v:"rfV9NL67OvI", c:"20 sec all out, 10 sec rest, 8 rounds. Four minutes.", noload:true, src:"new"},
-   {id:"emom", n:"EMOM",                        q:"emom workout beginner", v:"eMDG3ZSaavo", c:"One set at the top of every minute, rest with what is left.", noload:true, src:"new"},
-   {id:"ladder", n:"Descending ladder",           q:"descending ladder hiit workout", v:"cZnsLVArIt8", c:"10 reps, then 9, then 8, down to 1.", noload:true, src:"new"}
+   {id:"tabata", n:"Tabata",                      q:"tabata 20 10 workout", c:"20 sec all out, 10 sec rest, 8 rounds. Four minutes.", noload:true, src:"new"},
+   {id:"emom", n:"EMOM",                        q:"emom workout beginner", c:"One set at the top of every minute, rest with what is left.", noload:true, src:"new"},
+   {id:"ladder", n:"Descending ladder",           q:"descending ladder hiit workout", c:"10 reps, then 9, then 8, down to 1.", noload:true, src:"new"}
  ]},
 
  {g:"hiit-fullbody", label:"Full-body explosive", items:[
-   {id:"burpees", n:"Burpees",                     q:"burpee proper form", v:"tJrdJBWBu08", c:"Chest to the floor, jump high at the top.", noload:true, src:"prev"},
-   {id:"burpee-broad-jump", n:"Burpee broad jump",           q:"burpee broad jump form", v:"3eXUefIatHk", c:"Burpee, then jump forward as far as you can.", noload:true, src:"new"},
-   {id:"kb-swing", n:"Kettlebell swing",            q:"kettlebell swing proper form hinge", v:"sSESeQAir2M", c:"Hinge, not a squat. Snap the hips.", src:"new"},
-   {id:"db-thruster", n:"Dumbbell thruster",           q:"dumbbell thruster proper form", v:"1KYPZ-Jzo3w", c:"Front squat straight into an overhead press.", src:"new"},
-   {id:"devil-press", n:"Devil press",                 q:"devil press dumbbell form", v:"hc6dfJHRcD0", c:"Burpee with dumbbells, then swing them overhead.", src:"new"},
-   {id:"med-ball-slam", n:"Medicine ball slam",          q:"medicine ball slam proper form", v:"QxYhFwMd1Ks", c:"Full overhead reach, slam hard.", src:"new"},
-   {id:"wall-ball", n:"Wall ball",                   q:"wall ball shot proper form", v:"fpUD0mcFp_0", c:"Squat, then throw to a high target.", src:"new"},
-   {id:"db-snatch", n:"Dumbbell snatch",             q:"single arm dumbbell snatch form", v:"3mlhF3dptAo", c:"One clean pull from floor to overhead.", src:"new"},
-   {id:"sprawl", n:"Sprawl",                      q:"sprawl exercise form", v:"UFFODmd6RTc", c:"A burpee without the push-up. Easier on the shoulders.", noload:true, src:"new"},
-   {id:"bear-crawl", n:"Bear crawl",                  q:"bear crawl proper form", v:"he1k9F-P4DI", c:"Knees an inch off the floor, hips still.", noload:true, src:"new"}
+   {id:"burpees", n:"Burpees",                     q:"burpee proper form", c:"Chest to the floor, jump high at the top.", noload:true, src:"prev"},
+   {id:"burpee-broad-jump", n:"Burpee broad jump",           q:"burpee broad jump form", c:"Burpee, then jump forward as far as you can.", noload:true, src:"new"},
+   {id:"kb-swing", n:"Kettlebell swing",            q:"kettlebell swing proper form hinge", c:"Hinge, not a squat. Snap the hips.", src:"new"},
+   {id:"db-thruster", n:"Dumbbell thruster",           q:"dumbbell thruster proper form", c:"Front squat straight into an overhead press.", src:"new"},
+   {id:"devil-press", n:"Devil press",                 q:"devil press dumbbell form", c:"Burpee with dumbbells, then swing them overhead.", src:"new"},
+   {id:"med-ball-slam", n:"Medicine ball slam",          q:"medicine ball slam proper form", c:"Full overhead reach, slam hard.", src:"new"},
+   {id:"wall-ball", n:"Wall ball",                   q:"wall ball shot proper form", c:"Squat, then throw to a high target.", src:"new"},
+   {id:"db-snatch", n:"Dumbbell snatch",             q:"single arm dumbbell snatch form", c:"One clean pull from floor to overhead.", src:"new"},
+   {id:"sprawl", n:"Sprawl",                      q:"sprawl exercise form", c:"A burpee without the push-up. Easier on the shoulders.", noload:true, src:"new"},
+   {id:"bear-crawl", n:"Bear crawl",                  q:"bear crawl proper form", c:"Knees an inch off the floor, hips still.", noload:true, src:"new"},
+   {id:"kb-clean-press", n:"Kettlebell clean and press",  q:"kettlebell clean and press form", c:"Clean to the rack, then press overhead.", src:"new"}
  ]},
 
  {g:"hiit-lower", label:"Lower body power", items:[
-   {id:"jump-squats", n:"Jump squats",                 q:"jump squat proper form", v:"A-cFYWvaHr0", c:"Full depth, explode up, land soft.", noload:true, src:"prev"},
-   {id:"jumping-lunges", n:"Jumping lunges",              q:"jumping lunges proper form", v:"O-rntsAALBo", c:"Switch mid-air, land soft.", noload:true, src:"prev"},
-   {id:"skater-jumps", n:"Skater jumps",                q:"skater jumps proper form", v:"JuMXySadYdw", c:"Lateral leap, land on the outside leg.", noload:true, src:"prev"},
-   {id:"plyo-split-jumps", n:"Plyo split jumps",            q:"plyo split jumps form", v:"AmgM_PjBq0I", noload:true, src:"prev"},
-   {id:"plyo-pogos", n:"Plyo + pogos",                q:"pogo jumps and plyo split jumps warmup", v:"4Z_9yMyi1dI", c:"Pogos 30s, split jumps 30s, rest 30s.", noload:true, src:"prev"},
-   {id:"box-jump", n:"Box jump",                    q:"box jump proper form beginner", v:"4VJynYzr3w4", c:"Step down, never jump down.", noload:true, src:"new"},
-   {id:"broad-jump", n:"Broad jump",                  q:"standing broad jump form", v:"uhz-ia-2UcM", noload:true, src:"new"},
-   {id:"tuck-jump", n:"Tuck jump",                   q:"tuck jump proper form", v:"zh1v8jINBZ0", noload:true, src:"new"},
-   {id:"lateral-bound", n:"Lateral bound",               q:"lateral bound plyometric form", v:"gjiZLF5S6aA", c:"Stick the landing for a beat.", noload:true, src:"new"},
-   {id:"step-up-sprint", n:"Step-up sprints",             q:"fast step up cardio drill", v:"nPSN79l4WSQ", noload:true, src:"new"}
+   {id:"jump-squats", n:"Jump squats",                 q:"jump squat proper form", c:"Full depth, explode up, land soft.", noload:true, src:"prev"},
+   {id:"jumping-lunges", n:"Jumping lunges",              q:"jumping lunges proper form", c:"Switch mid-air, land soft.", noload:true, src:"prev"},
+   {id:"skater-jumps", n:"Skater jumps",                q:"skater jumps proper form", c:"Lateral leap, land on the outside leg.", noload:true, src:"prev"},
+   {id:"plyo-split-jumps", n:"Plyo split jumps",            q:"plyo split jumps form", noload:true, src:"prev"},
+   {id:"plyo-pogos", n:"Plyo + pogos",                q:"pogo jumps and plyo split jumps warmup", c:"Pogos 30s, split jumps 30s, rest 30s.", noload:true, src:"prev"},
+   {id:"box-jump", n:"Box jump",                    q:"box jump proper form beginner", c:"Step down, never jump down.", noload:true, src:"new"},
+   {id:"broad-jump", n:"Broad jump",                  q:"standing broad jump form", noload:true, src:"new"},
+   {id:"tuck-jump", n:"Tuck jump",                   q:"tuck jump proper form", noload:true, src:"new"},
+   {id:"lateral-bound", n:"Lateral bound",               q:"lateral bound plyometric form", c:"Stick the landing for a beat.", noload:true, src:"new"},
+   {id:"step-up-sprint", n:"Step-up sprints",             q:"fast step up cardio drill", noload:true, src:"new"}
  ]},
 
  {g:"hiit-upper", label:"Upper body and core under fatigue", items:[
-   {id:"mountain-climbers", n:"Mountain climbers",           q:"mountain climbers proper form", v:"cnyTQDSE884", c:"Strong plank, drive the knees fast.", noload:true, src:"prev"},
-   {id:"plank-taps", n:"Plank shoulder taps",         q:"plank shoulder taps form", v:"wcKyqAMqueQ", c:"Hips still, tap the opposite shoulder.", noload:true, src:"prev"},
-   {id:"plank-jacks", n:"Plank jacks",                 q:"plank jacks proper form", v:"Jo0LKx6c7XM", noload:true, src:"new"},
-   {id:"renegade-row", n:"Renegade row",                q:"renegade row proper form", v:"PJpTBj4ilZw", c:"Wide feet, no hip rotation.", src:"new"},
-   {id:"battle-rope-waves", n:"Battle rope waves",           q:"battle rope alternating waves", v:"1pzpaYrhdOo", c:"Fast small waves, braced core.", noload:true, src:"new"},
-   {id:"battle-rope-slams", n:"Battle rope slams",           q:"battle rope slams form", v:"pQb2xIGioyQ", noload:true, src:"new"},
-   {id:"pushup-burst", n:"Push-up burst",               q:"push up proper form", v:"IODxDxX7oi4", c:"Max clean reps in the work window. Knees are fine.", noload:true, src:"new"}
+   {id:"mountain-climbers", n:"Mountain climbers",           q:"mountain climbers proper form", c:"Strong plank, drive the knees fast.", noload:true, src:"prev"},
+   {id:"plank-taps", n:"Plank shoulder taps",         q:"plank shoulder taps form", c:"Hips still, tap the opposite shoulder.", noload:true, src:"prev"},
+   {id:"plank-jacks", n:"Plank jacks",                 q:"plank jacks proper form", noload:true, src:"new"},
+   {id:"renegade-row", n:"Renegade row",                q:"renegade row proper form", c:"Wide feet, no hip rotation.", src:"new"},
+   {id:"battle-rope-waves", n:"Battle rope waves",           q:"battle rope alternating waves", c:"Fast small waves, braced core.", noload:true, src:"new"},
+   {id:"battle-rope-slams", n:"Battle rope slams",           q:"battle rope slams form", noload:true, src:"new"},
+   {id:"pushup-burst", n:"Push-up burst",               q:"push up proper form", c:"Max clean reps in the work window. Knees are fine.", noload:true, src:"new"},
+   {id:"bicycle-crunch", n:"Bicycle crunch",             q:"bicycle crunch proper form", c:"Slow and deliberate, opposite elbow to knee.", noload:true, src:"new"},
+   {id:"v-up", n:"V-up",                       q:"v up exercise proper form", c:"Reach for the toes, lower under control.", noload:true, src:"new"},
+   {id:"flutter-kicks", n:"Flutter kicks",              q:"flutter kicks proper form", c:"Low back pressed down throughout.", noload:true, src:"new"}
+ ]},
+
+ {g:"hiit-low", label:"Low impact", items:[
+   {id:"squat-thrust", n:"Squat thrust",               q:"squat thrust exercise no jump", c:"A burpee with no jump. Step the feet back and in.", noload:true, src:"new"},
+   {id:"step-jacks", n:"Step jacks",                 q:"step jacks low impact cardio", c:"Jumping jacks, stepping one foot at a time.", noload:true, src:"new"},
+   {id:"march-knees", n:"Marching high knees",        q:"marching high knees low impact", c:"High knees without leaving the floor.", noload:true, src:"new"},
+   {id:"inchworm", n:"Inchworm",                   q:"inchworm exercise proper form", c:"Walk the hands out to a plank and back.", noload:true, src:"new"},
+   {id:"lateral-shuffle", n:"Lateral shuffle",            q:"lateral shuffle drill form", c:"Stay low, quick feet, no crossing over.", noload:true, src:"new"},
+   {id:"butt-kicks", n:"Butt kicks",                 q:"butt kicks exercise form", c:"Heels to the seat, stay tall.", noload:true, src:"new"}
  ]},
 
  {g:"hiit-cardio", label:"Machines, sprints and skipping", items:[
-   {id:"high-knees", n:"High knees",                  q:"high knees exercise form", v:"sTvekaq6vOU", c:"Knees waist-high, pump the arms.", noload:true, src:"prev"},
-   {id:"jumping-jacks", n:"Jumping jacks",               q:"jumping jacks proper form", v:"iSSAk4XCsRA", noload:true, src:"new"},
-   {id:"jump-rope", n:"Jump rope",                   q:"jump rope beginner technique", v:"u3zgHI8QnqE", noload:true, src:"new"},
-   {id:"double-unders", n:"Double unders",               q:"double unders jump rope tutorial", v:"9FLc4h5mhrk", noload:true, src:"new"},
-   {id:"rower", n:"Rowing sprints",              q:"rowing machine intervals form", v:"ZN0J6qKCIrI", c:"250 m hard, 90 sec easy.", noload:true, src:"new"},
-   {id:"bike-intervals", n:"Assault bike sprints",        q:"assault bike intervals beginner", v:"RPY7HTGfOiU", noload:true, src:"new"},
-   {id:"ski-erg", n:"Ski erg sprints",             q:"ski erg technique intervals", v:"B0lIgT5PHc8", noload:true, src:"new"},
-   {id:"treadmill-sprint", n:"Treadmill sprints",           q:"treadmill sprint interval workout", v:"n4I_fmegTRk", noload:true, src:"new"},
-   {id:"hill-sprint", n:"Incline sprints",             q:"treadmill incline sprint intervals", v:"Y3mu91LJ00M", c:"Lower impact than flat sprinting.", noload:true, src:"new"},
-   {id:"shuttle-run", n:"Shuttle runs",                q:"shuttle run drill form", v:"3-iZMS6twcE", noload:true, src:"new"},
-   {id:"sled-push", n:"Sled push",                   q:"sled push proper form", v:"9XRRXaUpnLk", src:"new"},
-   {id:"incline-walk", n:"Incline walk",                q:"incline treadmill walking fat loss", v:"nTPgToEPa4c", c:"The daily one. Brisk, not wrecking.", noload:true, src:"plan"},
-   {id:"easy-run", n:"Easy run",                    q:"easy zone 2 jog warmup", v:"1RqY5EYOM0k", c:"Conversational pace.", noload:true, src:"prev"},
-   {id:"long-run", n:"Run, 20–60 min",              q:"easy zone 2 run pace", v:"L5J6sgQLvuE", noload:true, src:"prev"}
+   {id:"high-knees", n:"High knees",                  q:"high knees exercise form", c:"Knees waist-high, pump the arms.", noload:true, src:"prev"},
+   {id:"jumping-jacks", n:"Jumping jacks",               q:"jumping jacks proper form", noload:true, src:"new"},
+   {id:"jump-rope", n:"Jump rope",                   q:"jump rope beginner technique", noload:true, src:"new"},
+   {id:"double-unders", n:"Double unders",               q:"double unders jump rope tutorial", noload:true, src:"new"},
+   {id:"rower", n:"Rowing sprints",              q:"rowing machine intervals form", c:"250 m hard, 90 sec easy.", noload:true, src:"new"},
+   {id:"bike-intervals", n:"Assault bike sprints",        q:"assault bike intervals beginner", noload:true, src:"new"},
+   {id:"ski-erg", n:"Ski erg sprints",             q:"ski erg technique intervals", noload:true, src:"new"},
+   {id:"treadmill-sprint", n:"Treadmill sprints",           q:"treadmill sprint interval workout", noload:true, src:"new"},
+   {id:"hill-sprint", n:"Incline sprints",             q:"treadmill incline sprint intervals", c:"Lower impact than flat sprinting.", noload:true, src:"new"},
+   {id:"shuttle-run", n:"Shuttle runs",                q:"shuttle run drill form", noload:true, src:"new"},
+   {id:"sled-push", n:"Sled push",                   q:"sled push proper form", src:"new"},
+   {id:"incline-walk", n:"Incline walk",                q:"incline treadmill walking fat loss", unit:"min", c:"Brisk but sustainable, never wrecking.", src:"plan"},
+   {id:"easy-run", n:"Easy run",                    q:"easy zone 2 jog warmup", c:"Conversational pace.", noload:true, src:"prev"},
+   {id:"long-run", n:"Run, 20–60 min",              q:"easy zone 2 run pace", noload:true, src:"prev"}
  ]}
 
 ]},
@@ -897,6 +921,10 @@ const SESSIONS = [
    cardio:"Incline walk: 30–35 min",
    items:[{ex:"goblet",d:"3 × 12"},{ex:"db-rdl",d:"3 × 12"},{ex:"cable-row",d:"3 × 12"},
           {ex:"pushup",d:"3 × 10–12"},{ex:"glute-bridge",d:"3 × 15"},{ex:"carry",d:"3 rounds"}]},
+
+  {id:"long-walk", name:"Long Incline Walk", type:"light", src:"new",
+   cardio:"This is the session, not a warm-up. Steady incline, brisk but sustainable.",
+   items:[{ex:"incline-walk", d:"45\u201375 min"}]},
 
   {id:"recovery", name:"Recovery / Fat-Loss", type:"light", src:"new",
    cardio:"Incline walk: 35–45 min easy to moderate",
@@ -994,6 +1022,8 @@ function dayRec(w, i){
   if (!r.sub) r.sub = {};
   if (!r.walk) r.walk = 0;
   if (!r.routine) r.routine = "rotate";
+  if (!r.rounds) r.rounds = {};
+  if (!r.format) r.format = "circuit";
   return r;
 }
 function planFor(w){ const o = WEEK_OVERRIDES[w]; return (o && o.days) ? o.days : DEFAULT_WEEK; }
@@ -1035,9 +1065,8 @@ function thumbHTML(ex, cls){
       '<img src="' + esc(ex.poster) + '" alt="" loading="lazy" decoding="async">' +
       '<span class="play"></span><span class="own">yours</span></a>';
   }
-  if (!ex.v){
-    return '<a class="video-link' + (cls || "") + '" target="_blank" rel="noopener" href="' + ytHref(ex.q) + '">Watch</a>';
-  }
+  /* No video means no video — the HIIT section deliberately has none. */
+  if (!ex.v) return "";
   return '<a class="thumb" target="_blank" rel="noopener" href="' + videoHref(ex) + '" ' +
     'aria-label="Watch a form video for ' + esc(ex.n) + '">' +
     '<img src="https://i.ytimg.com/vi/' + esc(ex.v) + '/mqdefault.jpg" alt="" loading="lazy" decoding="async">' +
@@ -1177,37 +1206,84 @@ function renderWeeks(){
 
 /* The interval session, written out in full on the card: pick a routine, read
    the rounds, start the timer. Nothing here needs a video to follow. */
-function roundListHTML(ex, rec, dayIndex){
+/* Every HIIT movement in the library, minus the interval formats, which are
+   ways of running a session rather than things you do in a round. */
+function hiitMoveOptions(selectedId){
+  const sec = LIBRARY.filter(function(x){ return x.section === "HIIT and conditioning"; })[0];
+  if (!sec) return "";
+  return sec.groups.filter(function(g){ return g.g !== "hiit-formats"; }).map(function(g){
+    const opts = g.items.map(function(it){
+      return '<option value="' + esc(it.id) + '"' + (it.id === selectedId ? " selected" : "") + ">" +
+        esc(it.n) + "</option>";
+    }).join("");
+    return '<optgroup label="' + esc(g.label) + '">' + opts + "</optgroup>";
+  }).join("");
+}
+
+/* What a given round actually is: the routine's move, or whatever she put in
+   its place. Shared, so the card and the timer can never disagree. */
+function effectiveRounds(rec, want){
   const key = ROUTINES[rec.routine] ? rec.routine : "rotate";
   const rt = ROUTINES[key];
-  const want = ex.timer.rounds;
+  const subs = rec.rounds || {};
+  const out = [];
+  for (let i = 0; i < want; i++){
+    const base = rt.rounds[i % rt.rounds.length];
+    const sid = subs[i];
+    if (sid && EX[sid]) out.push({n:EX[sid].n, c:EX[sid].c || "", id:sid, swapped:true});
+    else out.push({n:base.n, c:base.c, id:base.ex || "", swapped:false});
+  }
+  return out;
+}
+
+function roundListHTML(ex, rec, dayIndex){
+  const fk = formatOf(rec);
+  const fmt = FORMATS[fk];
+  const want = fmt.rounds;
+  const list = effectiveRounds(rec, want);
   let rows = "";
   for (let i = 0; i < want; i++){
-    const r = rt.rounds[i % rt.rounds.length];
-    const lib = r.ex ? EX[r.ex] : null;
-    rows += '<li class="r-row">' +
-        '<span class="r-num">' + (i + 1) + "</span>" +
+    const r = list[i];
+    rows += '<li class="r-row' + (r.swapped ? " swapped" : "") + '">' +
+        '<span class="r-num">' + (fmt.mode === "ladder" ? (want - i) : (i + 1)) + "</span>" +
         '<span class="r-text">' +
-          '<span class="r-name">' + esc(r.n) + "</span>" +
-          '<span class="r-cue">' + esc(r.c) + "</span>" +
+          '<span class="r-name">' + esc(r.n) +
+            (fmt.mode === "ladder" ? ' <span class="r-reps">' + (want - i) + " reps</span>" : "") + "</span>" +
+          (r.c ? '<span class="r-cue">' + esc(r.c) + "</span>" : "") +
         "</span>" +
-        (lib ? '<a class="r-vid" target="_blank" rel="noopener" href="' + videoHref(lib) +
-               '" aria-label="Form video for ' + esc(r.n) + '">&#9654;</a>' : '<span class="r-vid empty"></span>') +
+        '<button class="swap r-swap" type="button" data-round="' + dayIndex + ':' + i + '"' +
+          ' aria-label="Swap round ' + (i + 1) + '" title="Swap this round">\u21C4</button>' +
+      "</li>" +
+      '<li class="r-subrow" hidden>' +
+        '<select data-roundsub="' + dayIndex + ':' + i + '" aria-label="Choose a move for round ' + (i + 1) + '">' +
+          hiitMoveOptions(r.id) + "</select>" +
+        (r.swapped ? '<button class="linkbtn" type="button" data-roundreset="' + dayIndex + ':' + i + '">Put the routine\u2019s move back</button>' : "") +
       "</li>";
   }
-  const picker = Object.keys(ROUTINES).map(function(k){
-    return '<option value="' + k + '"' + (k === key ? " selected" : "") + ">" +
+  const rk = ROUTINES[rec.routine] ? rec.routine : "rotate";
+  const movePicker = Object.keys(ROUTINES).map(function(k){
+    return '<option value="' + k + '"' + (k === rk ? " selected" : "") + ">" +
       esc(ROUTINES[k].name) + " \u00b7 " + esc(ROUTINES[k].blurb) + "</option>";
   }).join("");
+  const fmtPicker = Object.keys(FORMATS).map(function(k){
+    return '<option value="' + k + '"' + (k === fk ? " selected" : "") + ">" +
+      esc(FORMATS[k].label) + " \u00b7 " + esc(FORMATS[k].blurb) + "</option>";
+  }).join("");
+  const dose = (fmt.mode === "ladder")
+    ? want + " rounds \u00b7 descending"
+    : want + " \u00d7 " + fmt.work + "s on / " + fmt.rest + "s off";
 
   return '<div class="rounds">' +
       '<div class="rounds-head">' +
-        '<span class="rounds-label">The rounds</span>' +
-        '<span class="rounds-dose">' + want + " \u00d7 " + ex.timer.work + "s on / " +
-          ex.timer.rest + "s off</span>" +
+        '<span class="rounds-label">The session</span>' +
+        '<span class="rounds-dose">' + dose + "</span>" +
       "</div>" +
-      '<select class="rounds-pick" data-routine="' + dayIndex + '" aria-label="Which routine">' +
-        picker + "</select>" +
+      '<label class="pick-label">Format</label>' +
+      '<select class="rounds-pick" data-format="' + dayIndex + '" aria-label="Which format">' +
+        fmtPicker + "</select>" +
+      '<label class="pick-label">Moves</label>' +
+      '<select class="rounds-pick" data-routine="' + dayIndex + '" aria-label="Which moves">' +
+        movePicker + "</select>" +
       '<ol class="r-list">' + rows + "</ol>" +
       '<p class="rounds-warm">5 min warm-up first, 5 min cool-down after. The timer counts all of it.</p>' +
       '<button class="timer-open" type="button" data-timer="' + esc(ex.id) +
@@ -1245,7 +1321,7 @@ function renderDays(){
     const card = document.createElement("section");
     card.className = "day" + (rec.done ? " done" : "") + (isToday ? " today" : "") + (isOpen ? " open" : "");
 
-    const newOpts = SESSIONS.filter(function(s){ return s.src === "new"; }).map(function(s){
+    const newOpts = SESSIONS.filter(function(s){ return s.src === "new" && s.id !== "long-walk"; }).map(function(s){
       return '<option value="' + s.id + '"' + (s.id === rec.s ? " selected" : "") + ">" + esc(s.name) + "</option>";
     }).join("");
     const oldOpts = SESSIONS.filter(function(s){ return s.src === "prev"; }).map(function(s){
@@ -1255,6 +1331,7 @@ function renderDays(){
       '<optgroup label="12-week plan">' + newOpts + "</optgroup>" +
       '<optgroup label="Previous plan">' + oldOpts + "</optgroup>" +
       '<optgroup label="Other">' +
+        '<option value="long-walk"' + (rec.s === "long-walk" ? " selected" : "") + ">Long Incline Walk</option>" +
         '<option value="rest"' + (rec.s === "rest" ? " selected" : "") + ">Rest day</option>" +
       "</optgroup>";
 
@@ -1265,13 +1342,15 @@ function renderDays(){
         const isSub = !!rec.sub[item.ex] && rec.sub[item.ex] !== item.ex;
         const last = lastWeight(view, i, ex.id);
 
+        /* Most exercises log a heaviest weight. A walk logs minutes. */
+        const unit = ex.unit || "kg";
         const box = ex.noload
-          ? '<div class="noload">No weight to log</div>'
+          ? '<div class="noload">Nothing to log</div>'
           : '<div class="kg-wrap"><input class="weight-input' + (rec.w[ex.id] ? " filled" : "") + '"' +
-            ' type="text" inputmode="decimal" placeholder="max kg"' +
-            ' aria-label="Heaviest weight for ' + esc(ex.n) + '"' +
+            ' type="text" inputmode="decimal" placeholder="' + (unit === "kg" ? "max kg" : "minutes") + '"' +
+            ' aria-label="' + (unit === "kg" ? "Heaviest weight for " : "Minutes for ") + esc(ex.n) + '"' +
             ' data-w="' + esc(ex.id) + '" value="' + esc(rec.w[ex.id] || "") + '">' +
-            '<span class="kg-unit">kg</span></div>';
+            '<span class="kg-unit">' + esc(unit) + "</span></div>";
 
         return '<div class="exercise' + (ex.timer ? " no-thumb" : "") + '">' +
               '<div class="ex-head">' +
@@ -1284,11 +1363,14 @@ function renderDays(){
               '<div class="pills">' + dosePills(doseFor(view, item)) + "</div>" +
               (ex.c ? '<div class="cue">' + esc(ex.c) + "</div>" : "") +
               (isSub ? '<div class="subbed">Swapped in for ' + esc(EX[item.ex].n) + "</div>" : "") +
-              (last ? '<div class="last">Last time: ' + esc(last.kg) + " kg · " + esc(last.when) + "</div>" : "") +
+              (last ? '<div class="last">Last time: ' + esc(last.kg) + " " + esc(unit) + " · " + esc(last.when) + "</div>" : "") +
               box +
             "</div>" + (ex.timer ? "" : thumbHTML(ex)) +
             '<div class="ex-extra">' +
               (ex.timer ? roundListHTML(ex, rec, i) : "") +
+              (ex.hold ? '<button class="timer-open hold" type="button" data-timer="' + esc(ex.id) +
+                  '" data-day="' + i + '">Start the hold timer &middot; ' + ex.hold.rounds +
+                  ' \u00d7 ' + ex.hold.work + 's</button>' : "") +
               '<div class="subbox" hidden>' +
                 '<select data-sub="' + esc(item.ex) + '">' + libraryOptions(ex.id) + "</select>" +
                 (isSub ? '<button class="linkbtn" type="button" data-unsub="' + esc(item.ex) + '">Put ' + esc(EX[item.ex].n) + " back</button>" : "") +
@@ -1449,9 +1531,47 @@ function wireDays(){
     });
   });
 
+  /* Swap a single round for any other HIIT movement. */
+  planEl.querySelectorAll("[data-round]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      const row = btn.closest(".r-row");
+      const box = row.nextElementSibling;
+      box.hidden = !box.hidden;
+      if (!box.hidden) box.querySelector("select").focus();
+    });
+  });
+  planEl.querySelectorAll("[data-roundsub]").forEach(function(sel){
+    sel.addEventListener("change", function(){
+      const parts = sel.dataset.roundsub.split(":");
+      const rec = dayRec(view, Number(parts[0]));
+      rec.rounds[Number(parts[1])] = sel.value;
+      save(); renderDays();
+    });
+  });
+  planEl.querySelectorAll("[data-roundreset]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      const parts = btn.dataset.roundreset.split(":");
+      const rec = dayRec(view, Number(parts[0]));
+      delete rec.rounds[Number(parts[1])];
+      save(); renderDays();
+    });
+  });
+
+  planEl.querySelectorAll("[data-format]").forEach(function(sel){
+    sel.addEventListener("change", function(){
+      dayRec(view, Number(sel.dataset.format)).format = sel.value;
+      save(); renderDays();
+    });
+  });
+
   planEl.querySelectorAll("[data-routine]").forEach(function(sel){
     sel.addEventListener("change", function(){
-      dayRec(view, Number(sel.dataset.routine)).routine = sel.value;
+      const rec = dayRec(view, Number(sel.dataset.routine));
+      if (Object.keys(rec.rounds).length &&
+          !confirm("Switch routine? The rounds you swapped will go back to the new routine's moves.")){
+        sel.value = rec.routine; return;
+      }
+      rec.routine = sel.value; rec.rounds = {};
       save(); renderDays();
     });
   });
@@ -1569,9 +1689,25 @@ const ROUTINES = {
   }
 };
 
+/* ==================================================================
+   THE FORMATS — how a session is structured, as opposed to which moves
+   are in it. Circuit and Tabata are clock-driven: work, rest, repeat.
+   A ladder is not — you go as fast as you can, so it counts upwards and
+   you tap when a round is done.
+   ================================================================== */
+const FORMATS = {
+  circuit:{ label:"Circuit", blurb:"30s hard, 90s easy, 8 rounds",
+            mode:"timed", work:30, rest:90, rounds:8, warmup:300, cooldown:300 },
+  tabata: { label:"Tabata",  blurb:"20s all out, 10s rest, 8 rounds \u00b7 four minutes",
+            mode:"timed", work:20, rest:10, rounds:8, warmup:300, cooldown:300 },
+  ladder: { label:"Ladder",  blurb:"10 reps down to 1, no set rest",
+            mode:"ladder", rounds:10, warmup:300, cooldown:300 }
+};
+function formatOf(rec){ return FORMATS[rec.format] ? rec.format : "circuit"; }
+
 const T = {
   cfg:null, exId:null, routine:"rotate",
-  phase:"idle", left:0, round:0, tick:null, running:false, audio:null, wake:null, day:null,
+  phase:"idle", left:0, round:0, tick:null, running:false, audio:null, wake:null, day:null, holdEx:null, startedAt:0,
   endsAt:0, beeped:-1
 };
 
@@ -1581,14 +1717,24 @@ function mmss(n){
   return m + ":" + String(s).padStart(2,"0");
 }
 function rounds(){
-  const r = ROUTINES[T.routine].rounds;
   const want = T.cfg ? T.cfg.rounds : 8;
+  if (T.holdEx){
+    const out = [];
+    for (let i = 0; i < want; i++) out.push({n:T.holdEx.n, c:T.holdEx.c || ""});
+    return out;
+  }
+  if (T.day !== null){
+    const rec = dayRec(view, T.day);
+    return effectiveRounds({routine:T.routine, rounds:rec.rounds}, want);
+  }
+  const r = ROUTINES[T.routine].rounds;
   const out = [];
   for (let i = 0; i < want; i++) out.push(r[i % r.length]);
   return out;
 }
 function totalSeconds(){
   const c = T.cfg;
+  if (c.mode === "ladder") return 0;   /* its length is up to her */
   return c.warmup + c.rounds*c.work + (c.rounds-1)*c.rest + c.cooldown;
 }
 
@@ -1623,13 +1769,17 @@ function drawTimer(){
   box.className = "hiit-timer " + T.phase;
   const rs = rounds();
   const labels = {idle:"Ready", warmup:"Warm-up", work:"Work", rest:"Rest", cooldown:"Cool-down", done:"Complete"};
+  if (T.cfg && T.cfg.mode === "ladder" && T.phase === "work") labels.work = "Go";
   tEl("hiitPhase").textContent = labels[T.phase];
 
   if (T.phase === "idle"){
-    tEl("hiitTime").textContent = mmss(totalSeconds());
+    tEl("hiitTime").textContent = (T.cfg.mode === "ladder") ? "10\u21921" : mmss(totalSeconds());
     tEl("hiitNow").textContent = "Tap Start to begin";
-    tEl("hiitProgress").textContent =
-      T.cfg.rounds + " × " + T.cfg.work + "s work / " + T.cfg.rest + "s easy · " + ROUTINES[T.routine].blurb;
+    tEl("hiitProgress").textContent = T.holdEx
+      ? (T.cfg.rounds + " holds of " + T.cfg.work + "s, " + T.cfg.rest + "s between")
+      : (T.cfg.mode === "ladder"
+          ? (T.cfg.rounds + " rounds, descending \u00b7 " + ROUTINES[T.routine].blurb)
+          : (T.cfg.rounds + " \u00d7 " + T.cfg.work + "s work / " + T.cfg.rest + "s easy \u00b7 " + ROUTINES[T.routine].blurb));
     tEl("hiitStart").textContent = "Start";
     tEl("hiitSkip").hidden = true; tEl("hiitReset").hidden = true;
   } else if (T.phase === "done"){
@@ -1647,8 +1797,15 @@ function drawTimer(){
       tEl("hiitNow").textContent = "Walk it off and stretch";
       tEl("hiitProgress").textContent = "Cool-down";
     } else if (T.phase === "work"){
-      tEl("hiitNow").textContent = rs[T.round].n;
-      tEl("hiitProgress").textContent = "Round " + (T.round+1) + " of " + T.cfg.rounds + " · " + rs[T.round].c;
+      if (T.cfg.mode === "ladder"){
+        const reps = T.cfg.rounds - T.round;
+        tEl("hiitNow").textContent = reps + " \u00d7 " + rs[T.round].n;
+        tEl("hiitProgress").textContent = "Round " + (T.round+1) + " of " + T.cfg.rounds +
+          " · tap Round done when finished";
+      } else {
+        tEl("hiitNow").textContent = rs[T.round].n;
+        tEl("hiitProgress").textContent = "Round " + (T.round+1) + " of " + T.cfg.rounds + " · " + rs[T.round].c;
+      }
     } else {
       const next = rs[T.round+1];
       tEl("hiitNow").textContent = next ? "Next: " + next.n : "Last rest";
@@ -1656,6 +1813,8 @@ function drawTimer(){
     }
     tEl("hiitStart").textContent = T.running ? "Pause" : "Resume";
     tEl("hiitSkip").hidden = false; tEl("hiitReset").hidden = false;
+    tEl("hiitSkip").textContent =
+      (T.cfg.mode === "ladder" && T.phase === "work") ? "Round done" : "Skip";
   }
 
   tEl("hiitRounds").innerHTML = rs.map(function(r, i){
@@ -1672,6 +1831,7 @@ function drawTimer(){
       '<div class="hiit-round-cue">' + esc(r.c) + "</div></div></div>";
   }).join("");
 
+  if (T.holdEx){ tEl("variants").innerHTML = ""; return; }
   tEl("variants").innerHTML = Object.keys(ROUTINES).map(function(k){
     return '<button class="variant-btn' + (k === T.routine ? " active" : "") + '" type="button" data-variant="' +
       k + '">' + esc(ROUTINES[k].name) + "</button>";
@@ -1690,6 +1850,12 @@ function drawTimer(){
    setInterval, so counting would run slow; comparing against a timestamp stays
    right even if the phone sleeps through a whole round. */
 function step(){
+  /* A ladder has no round clock: the work phase counts up until she taps. */
+  if (T.cfg.mode === "ladder" && T.phase === "work"){
+    T.left = Math.floor((Date.now() - T.startedAt) / 1000);
+    drawTimer();
+    return;
+  }
   const left = Math.max(0, Math.ceil((T.endsAt - Date.now()) / 1000));
   if (left === T.left) return;
   T.left = left;
@@ -1707,9 +1873,28 @@ function setPhase(phase, seconds){
   T.beeped = -1;
   T.endsAt = Date.now() + seconds * 1000;
 }
+function startLadderRound(){
+  T.phase = "work"; T.left = 0; T.beeped = -1;
+  T.startedAt = Date.now(); T.endsAt = 0;
+}
 
 function advance(){
   const c = T.cfg;
+  if (c.mode === "ladder"){
+    if (T.phase === "warmup"){
+      T.round = 0; startLadderRound(); beep(2); buzz([200,100,200]);
+    } else if (T.phase === "work"){
+      if (T.round >= c.rounds - 1){
+        setPhase("cooldown", c.cooldown); beep(3); buzz([300,100,300,100,300]);
+      } else {
+        T.round++; startLadderRound(); beep(1); buzz(150);
+      }
+    } else if (T.phase === "cooldown"){
+      T.phase = "done"; T.left = 0; stopTick(); beep(3); buzz([400,200,400]); keepAwake(false);
+    }
+    drawTimer();
+    return;
+  }
   if (T.phase === "warmup"){
     T.round = 0; setPhase("work", c.work); beep(2); buzz([200,100,200]);
   } else if (T.phase === "work"){
@@ -1733,7 +1918,8 @@ function stopTick(){
 function startTick(){
   stopTick();
   T.running = true;
-  T.endsAt = Date.now() + T.left * 1000;
+  if (T.cfg && T.cfg.mode === "ladder" && T.phase === "work") T.startedAt = Date.now() - T.left * 1000;
+  else T.endsAt = Date.now() + T.left * 1000;
   T.tick = setInterval(step, 250);
 }
 function resetTimer(){
@@ -1744,10 +1930,18 @@ function resetTimer(){
 
 function openTimer(exId, dayIndex){
   const ex = EX[exId];
-  if (!ex || !ex.timer) return;
-  T.cfg = ex.timer; T.exId = exId;
+  if (!ex || (!ex.timer && !ex.hold)) return;
+  T.exId = exId;
   T.day = (dayIndex === undefined || dayIndex === null) ? null : Number(dayIndex);
-  if (T.day !== null) T.routine = dayRec(view, T.day).routine || "rotate";
+  if (ex.hold){
+    T.cfg = Object.assign({mode:"timed"}, ex.hold);
+    T.holdEx = ex;
+  } else {
+    T.holdEx = null;
+    const rec = (T.day !== null) ? dayRec(view, T.day) : {format:"circuit", routine:"rotate", rounds:{}};
+    T.routine = rec.routine || "rotate";
+    T.cfg = FORMATS[formatOf(rec)];
+  }
   tEl("timerEyebrow").textContent = ex.n;
   resetTimer();
   tEl("timerSheet").hidden = false;
@@ -1763,7 +1957,10 @@ function closeTimer(){
 
 tEl("hiitStart").addEventListener("click", function(){
   if (T.phase === "idle" || T.phase === "done"){
-    T.round = 0; setPhase("warmup", T.cfg.warmup);
+    T.round = 0;
+    if (T.cfg.warmup > 0) setPhase("warmup", T.cfg.warmup);
+    else if (T.cfg.mode === "ladder") startLadderRound();
+    else setPhase("work", T.cfg.work);
     beep(1); keepAwake(true); startTick(); drawTimer();
   } else if (T.running){
     stopTick(); drawTimer();
