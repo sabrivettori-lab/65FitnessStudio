@@ -1,119 +1,196 @@
-# 65 Fitness Studio — Workout App
+# 65 Fitness Studio — 12-Week Plan
 
-Personal fitness tracker for the 6-week strength block. Self-contained HTML files with embedded CSS and JavaScript. Logs save locally on your phone via browser storage.
+Personal workout tracker for the 12-week block. One self-contained `index.html`
+with the CSS and JavaScript inside it. Nothing to install, nothing to build.
 
-## What's in this folder
-
-| File | What it does |
-|---|---|
-| `index.html` | Weekly overview — start here. 7 day cards, swap menu (⋯), weekly counter, backup buttons. |
-| `sunday.html` | Back & Chest strength session |
-| `wednesday.html` | Glutes & Hips strength session (primary glute day) |
-| `friday.html` | Legs strength session (heavy back squat) |
-| `saturday.html` | Shoulders & Arms (trimmed polish session) |
-| `hiit.html` | HIIT bodyweight routine with built-in 25-min timer |
+Live at **https://sabrivettori-lab.github.io/65FitnessStudio/**
 
 ---
 
-## How to deploy (15 min, one-time)
+## What it does
 
-You've created a dedicated repo at `github.com/sabrivettori-lab/65FitnessStudio`. To turn it into a live website:
+**The week is the unit.** It runs Sunday to Saturday. You see one week at a
+time, you tick off what you did, and on Sunday the next week starts clean.
+Finished weeks stay readable — tap any number in the 12-week strip to look back.
 
-### Step 1 — Upload the files
+**Weekly targets.** Under the week you get four rows — strength sessions, HIIT
+sessions, light and recovery, incline walks — each with dots and a count, turning
+green when the target is met. Session targets follow whatever the week is set to,
+so putting in a rest day lowers the target rather than leaving you short of one
+you never intended. The walk target is always seven: a rest day is still a
+walking day. The masthead shows weeks completed out of twelve.
 
-1. Go to https://github.com/sabrivettori-lab/65FitnessStudio
-2. Click **Add file → Upload files**
-3. Drag in all 6 HTML files (`index.html`, `sunday.html`, `wednesday.html`, `friday.html`, `saturday.html`, `hiit.html`)
-4. Add a commit message like "Initial upload"
-5. Click **Commit changes**
+**The daily walk is ticked separately** from the session, on the cardio line of
+each day, so a day where you walked but skipped the weights still counts for
+what it was.
 
-### Step 2 — Turn on GitHub Pages
+**Days start folded.** The week shows seven headers — the date, the workout, how
+many exercises, and whether it is logged and walked. Tap one to open the session.
+Opening a day leaves the others shut, and a card you have opened stays open while
+you tick things off inside it. Moving to another week folds everything again.
 
-1. In the repo, click **Settings** (top right)
-2. Click **Pages** in the left sidebar
-3. Under "Source", select **Deploy from a branch**
-4. Branch: `main` · Folder: `/ (root)` · click **Save**
-5. Wait 1–2 minutes for the green checkmark
+**You pick the workout per day.** Every day has a *What I'm doing* dropdown.
+It starts on the planned session, but you can change it to any other session, to
+one of the workouts from the previous plan, or to a rest day. A day set to rest
+stops counting towards that week's target.
 
-### Step 3 — Visit & install
+**One weight per exercise.** Log the heaviest set you managed — a single number,
+not a row per set. Last time's number for that exercise shows underneath, so you
+know what to beat.
 
-1. Your live URL will be: **`https://sabrivettori-lab.github.io/65FitnessStudio/`**
-2. Open it on your phone in Safari
-3. Tap the share icon (square with arrow up)
-4. Scroll down → **Add to Home Screen**
-5. Name it "65 Studio" or whatever feels right
-6. The icon now sits on your home screen like a native app
+**You can swap any exercise.** Tap *Swap this exercise* and choose a replacement
+from the full library. The card remembers what it replaced and offers to put the
+original back.
 
-### Future updates
+**Form videos.** Every exercise shows a thumbnail of a specific YouTube video on
+the right. Tap it and the video opens.
 
-To change a workout later: edit the file on github.com (or push from your laptop), wait a minute, and refresh on your phone. Your logged data is on your phone — file updates won't touch it.
+How they were chosen: each was scored on view count, whether the channel is an
+established strength, rehab or equipment source, whether the title is actually
+about that movement, and whether the length suits a form check. 91 of the first 125 are
+from recognised channels (Jeff Nippard, ATHLEAN-X, Squat University, E3 Rehab,
+Bodybuilding.com, Rogue, Concept2, Physiotutors and similar), 114 have over
+100,000 views and 70 over a million. Twelve were corrected by hand — five where
+the popular result was the wrong movement or a duplicate, seven where it was an
+eight-to-twelve minute lecture when a one-minute demo was what the moment called
+for.
 
----
+Length: the median is two minutes, 47% are under two and 70% under five. The
+dozen that run over ten minutes are the ones where length is the point — the HIIT
+circuits, the Tabata session, the mobility routine, the foam-rolling routine.
+Those are sessions to follow, not form checks.
 
-## How to use
+Two caveats, both worth knowing. **Nobody watched them** — they were judged on
+title, channel, length and audience, not on content. And a handful of niche
+exercises (Thomas hip flexor eccentrics, cable sissy squat, staggered stance
+deadlift) simply have no popular video, so those picks are exact but
+little-watched; exactness seemed more useful than popularity there.
 
-### First time
-1. Open `index.html` (the home screen icon)
-2. Tap any day with a strength badge to see the workout
-3. Log your weights and reps as you go — saves automatically
-4. Tap **Mark complete** at the top when you finish
-5. Return to home — see the day-pip turn green
+Every thumbnail was fetched to confirm the video exists. If one turns out to be
+unhelpful, replace the `v:"..."` for that exercise in `index.html`.
 
-### Daily flow
-- Open the page for today's workout from the index
-- Last week's weights show as faint placeholders ("last: 12.5") — try to beat them
-- Tap **▶ Watch** under any exercise to see a YouTube tutorial
-- Tap **View history** to see your past 6 sessions for that lift
-
-### Swapping days
-- On the index page, tap **⋯** in the top-right of any day card
-- Choose **Move to another day**, **Add a strength workout here**, or **Skip this week**
-- Changes apply only to the current week — resets every Sunday
-
-### HIIT timer
-1. Open `hiit.html`
-2. Pick your routine: Rotate 4 / Tabata 8 / Sprints
-3. Tap **Start** — timer auto-progresses through warmup, 8 rounds, cooldown
-4. Beeps and vibrates between phases
-5. Tap **Mark complete** when done
-
-### Weekly backup
-- Once a week, tap **Export** at the bottom of the index page
-- Saves a `road-to-65-backup-YYYY-MM-DD.json` file
-- AirDrop to yourself, save to iCloud, or email it
-- If you ever switch phones, tap **Import** and pick the backup file
-
----
-
-## Important notes
-
-**Data is stored locally** in your phone's browser. If you clear Safari data, history is gone. Use the Export button weekly as a backup.
-
-**No accounts, no cloud.** Just local files. Your data stays on your phone.
-
-**To update the workout content** (change exercises, rep ranges, etc.) you'd need to edit the HTML files. Let me know what you want to change and I'll generate updated files.
+**The interval timer.** HIIT sessions have an *Open the timer* button. It runs a
+five-minute warm-up, then the rounds from the prescription (8 × 30s/90s in the
+12-week plan, 8 × 30s/60s in the old bodyweight circuit), then a five-minute
+cool-down. It beeps and vibrates on every change and for the last three seconds
+of each phase, and it keeps the screen awake. Three routines: Rotate 4, Variety 8
+and Sprints. It works from a clock deadline rather than counting ticks, so it
+stays accurate even if the phone sleeps through a round.
 
 ---
 
-## Quick reference — the program
+## The exercise library
 
-**Mon–Sat schedule:**
-- **Sunday**: Back & Chest strength
-- **Monday**: HIIT 25 min
-- **Tuesday**: Padel · HIIT · Rest (your choice)
-- **Wednesday**: Glutes & Hips strength
-- **Thursday**: HIIT 25 min
-- **Friday**: Legs strength
-- **Saturday**: Shoulders & Arms strength OR long run
+133 exercises in three parts:
 
-**Targets:**
-- Weight: 68 → 65 kg over ~8 weeks
-- Daily intake: 1,450–1,600 kcal (350–400 kcal deficit)
-- Protein: 130g/day non-negotiable
-- Add weight any session you hit the top of the rep range with clean form
+| Part | Grouped by | Count |
+|---|---|---|
+| Strength | Muscle group — glutes, hamstrings, quads, calves, back, chest, shoulders, biceps, triceps, core | 83 |
+| HIIT and conditioning | Type — interval formats, full-body explosive, lower body power, upper body and core under fatigue, machines and sprints | 46 |
+| Mobility and recovery | — | 4 |
 
-**Block C is always optional** — skip if recovery is poor or session running long.
+Each exercise carries a tag saying where it came from:
+
+- **Plan** — in the current 12-week plan
+- **Previous** — from the earlier version of this app, kept so nothing is lost
+- **Added** — in neither plan: a suggestion, or picked up from another sheet
+
+Search the library by name or by muscle group. Every entry has a video thumbnail.
 
 ---
 
-Built with Anthropic's Claude. Personal use only.
+## One thing that leaves this page
+
+Thumbnails are loaded from `i.ytimg.com`, so YouTube sees a request from your
+phone each time the app draws. Nothing about your logs goes with it. If you would
+rather it did not, the thumbnails can be dropped for plain text links.
+
+## Where your data lives
+
+**In your phone's browser, not on GitHub.** GitHub Pages only serves fixed
+files; it has no database. Everything you type is stored locally under the key
+`r2-65:block-v2`.
+
+This means:
+
+- Clear Safari's website data and your history is gone.
+- A new phone starts empty.
+- Nothing syncs between devices.
+
+So **tap Export about once a week** and keep the file (AirDrop it to yourself,
+save it to iCloud, email it). Import restores it on any device.
+
+---
+
+## Editing the plan
+
+Everything you would want to change sits at the top of the `<script>` block in
+`index.html`.
+
+**To change which session lands on which day by default**, edit `DEFAULT_WEEK`.
+Sunday first:
+
+```js
+const DEFAULT_WEEK = ["lower-glutes","upper","hiit-core","lower-legs","upper-shape","full-body","recovery"];
+```
+
+**To change a session's exercises or sets and reps**, edit that session in
+`SESSIONS`. Each line points at a library `id` and gives a dose:
+
+```js
+{ex:"hip-thrust", d:"4 × 8–10"}
+```
+
+**To add an exercise to the library**, add it to the right muscle group in
+`LIBRARY`. Give it an `id` that is not already taken, a name, a YouTube search
+string, and `v:` set to a video id — the eleven characters after `watch?v=` in a
+YouTube URL. Without `v:` the app falls back to a search link with no thumbnail.
+
+**To change the timer** for an interval session, edit its `timer:` block:
+
+```js
+timer:{work:30, rest:90, rounds:8, warmup:300, cooldown:300}   // seconds
+```
+
+**To make the 12 weeks differ from each other.** Right now the same week repeats
+for all twelve, and only the weight you lift changes. If a week should differ,
+add it to `WEEK_OVERRIDES` — nothing else needs rewriting:
+
+```js
+const WEEK_OVERRIDES = {
+  5: { days:["recovery","upper","hiit-core","lower-legs","upper-shape","full-body","recovery"] },
+  9: { dose:{ "back-squat":"5 × 5", "hip-thrust":"4 × 6" } }
+};
+```
+
+`days` replaces which session lands on which weekday that week.
+`dose` replaces the sets and reps for those exercise ids that week.
+
+**Never change an `id` that already has weights logged against it** — the saved
+history is keyed on the id, and renaming it orphans the data. Change the `n`
+(the displayed name) instead.
+
+---
+
+## History
+
+The previous version of this app was a 6-week block spread over six files
+(`index.html`, `sunday.html`, `wednesday.html`, `friday.html`, `saturday.html`,
+`hiit.html`), with the exercises typed directly into the markup and a row of
+inputs for every set. Those files were removed when this version replaced them.
+All five of their workouts and all of their exercises are preserved here — the
+workouts under *Previous plan* in the day dropdown, the exercises tagged
+**Previous** in the library. The old files remain in the git history if you ever
+need them.
+
+Logs from that version used different storage keys (`r2-65:logs`,
+`r2-65:completed`, `r2-65:swaps`) and are not read by this version. If you want
+that history, export it from the old app before this one replaces it.
+
+---
+
+## Not medical advice
+
+The training rules and any nutrition figures here come from your own plan, not
+from a qualified professional. At a large calorie deficit, one session with a
+registered dietitian is worth having.
