@@ -192,18 +192,26 @@ select{
 }
 select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
 
+/* The name runs the full width of the row rather than competing with the video
+   for space. That frees the second row for the dose, the box and a much larger
+   still — nothing has to be squeezed to fit beside a long exercise name. */
 .exercise{
-  display:grid;grid-template-columns:minmax(0,1fr) 140px;gap:14px;align-items:start;
-  padding:14px 0;border-top:1px solid rgba(21,18,16,.1);
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 190px;
+  grid-template-areas:"head head" "meta thumb";
+  gap:10px 14px;align-items:start;
+  padding:16px 0;border-top:1px solid rgba(21,18,16,.1);
 }
+.ex-meta{grid-area:meta;min-width:0}
+.exercise > .thumb{grid-area:thumb;width:100%}
 /* The exercise name is the loudest thing in the row. Everything else —
    the dose, the cue, the swap control — reads as quieter metadata. */
-.ex-head{display:flex;align-items:flex-start;gap:9px}
+.ex-head{grid-area:head;display:flex;align-items:flex-start;gap:10px}
 .ex-name{
   flex:1 1 auto;min-width:0;
-  font-size:17px;font-weight:800;letter-spacing:-.015em;line-height:1.2;
+  font-size:18.5px;font-weight:800;letter-spacing:-.02em;line-height:1.2;
 }
-.pills{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap}
+.pills{display:flex;gap:5px;flex-wrap:wrap}
 .pill{
   font-family:var(--mono);font-size:10px;font-weight:700;
   padding:2px 7px;border-radius:999px;
@@ -217,7 +225,7 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
 }
 .video-link::before{content:'\25B6';font-size:8px;margin-right:5px}
 .video-link:active{background:var(--burgundy-bright);color:var(--white)}
-.cue{color:var(--ink-3);font-size:12.5px;margin-top:6px;line-height:1.35}
+.cue{color:var(--ink-3);font-size:12.5px;margin-top:7px;line-height:1.35}
 .last{font-family:var(--mono);font-size:11px;color:var(--sage-deep);margin-top:6px;font-weight:600}
 .subbed{font-size:11.5px;color:var(--orange-deep);margin-top:6px;font-weight:600}
 .swap{
@@ -236,16 +244,17 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
 }
 .subbox{margin-top:8px;display:grid;gap:6px}
 .subbox[hidden]{display:none}
-.kg-wrap{position:relative;display:inline-block;margin-top:11px}
+.kg-wrap{position:relative;display:inline-block;margin-top:10px}
 .weight-input{
-  display:block;width:116px;
-  padding:11px 36px 11px 13px;border-radius:10px;border:1.5px solid rgba(21,18,16,.2);
-  background:var(--bone);color:var(--ink);text-align:left;
-  font-family:var(--mono);font-size:16px;font-weight:700;
+  display:block;width:98px;
+  padding:9px 30px 9px 11px;border-radius:9px;border:1px solid rgba(21,18,16,.2);
+  background:var(--bone);color:var(--ink-2);text-align:left;
+  font-family:var(--mono);font-size:14px;font-weight:600;
 }
+.weight-input.filled{color:var(--ink);font-weight:700}
 .kg-unit{
-  position:absolute;right:13px;top:50%;transform:translateY(-50%);pointer-events:none;
-  font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--ink-3);
+  position:absolute;right:11px;top:50%;transform:translateY(-50%);pointer-events:none;
+  font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--ink-3);
 }
 .weight-input:placeholder-shown + .kg-unit{opacity:0}
 .weight-input:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
@@ -337,8 +346,8 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
 }
 .thumb:active{border-color:var(--burgundy)}
 .thumb:active .play::before{border-left-color:var(--orange-bright)}
-.muscle .thumb{width:84px}
-.muscle li{grid-template-columns:1fr 84px}
+.muscle .thumb{width:108px}
+.muscle li{grid-template-columns:1fr 108px}
 
 /* ---------- callouts, buttons ---------- */
 .callout{background:var(--bone);border-top:3px solid var(--orange);border-radius:12px;padding:18px}
@@ -363,6 +372,17 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
 .footer{
   text-align:center;color:var(--ink-3);font-family:var(--mono);font-size:10.5px;
   letter-spacing:.05em;padding:24px 0 10px;
+}
+
+/* ---------- clips stored in the repo ---------- */
+.clip-video{
+  width:100%;border-radius:16px;background:var(--ink);display:block;
+  border:1px solid rgba(21,18,16,.12);
+}
+.thumb .own{
+  position:absolute;left:5px;top:5px;z-index:3;
+  font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  background:var(--orange);color:var(--white);border-radius:999px;padding:1px 6px;
 }
 
 /* ---------- HIIT timer sheet ---------- */
@@ -443,8 +463,9 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
   .wrap{padding:22px 14px 50px}
   .day-head{padding:14px}
   .content{padding:4px 14px 14px}
-  .exercise{grid-template-columns:minmax(0,1fr) 128px;gap:12px}
-  .thumb{width:128px}
+  .exercise{grid-template-columns:minmax(0,1fr) 152px;gap:9px 12px}
+  .muscle .thumb{width:96px}
+  .muscle li{grid-template-columns:1fr 96px}
 }
 @media print{
   body{background:#fff;background-image:none}
@@ -538,6 +559,15 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
   </section>
 
   <div class="footer">TAP &#9654; FOR A FORM VIDEO &middot; THE WEEK RUNS SUNDAY TO SATURDAY</div>
+</div>
+
+<div class="sheet" id="clipSheet" hidden role="dialog" aria-modal="true" aria-label="Clip player">
+  <div class="sheet-inner">
+    <button class="sheet-close" id="clipClose" type="button">&larr; Back to the week</button>
+    <div class="eyebrow" id="clipTitle">Clip</div>
+    <video id="clipVideo" class="clip-video" controls playsinline preload="metadata"></video>
+    <p class="hiit-note" id="clipNote"></p>
+  </div>
 </div>
 
 <div class="sheet" id="timerSheet" hidden role="dialog" aria-modal="true" aria-label="Interval timer">
@@ -768,6 +798,10 @@ const LIBRARY = [
  {g:"mobility", label:"Mobility and recovery", items:[
    {id:"mobility", n:"Mobility + stretching",       q:"full body mobility routine 15 minutes", v:"R3WDe7byUXo", noload:true, src:"plan"},
    {id:"glute-activation", n:"Banded glute activation",     q:"glute activation warmup banded", v:"6ecOt63tW7Q", c:"Banded bridges and clamshells.", noload:true, src:"prev"},
+   {id:"glute-activation-series", n:"Side lying glute activation", file:"clips/glute-activation-series.mp4",
+                            poster:"clips/glute-activation-series.jpg", c:"3:29 \u00b7 your own clip. Both sides.", noload:true, src:"new"},
+   {id:"core-activation-series", n:"Core activation", file:"clips/core-activation-series.mp4",
+                            poster:"clips/core-activation-series.jpg", c:"2:39 \u00b7 your own clip. Follows the glute series.", noload:true, src:"new"},
    {id:"hip-flexor-stretch", n:"Hip flexor stretch",          q:"couch stretch hip flexor", v:"d9pOjXCKGN8", noload:true, src:"new"},
    {id:"foam-roll", n:"Foam rolling",                q:"foam rolling full body routine", v:"KWGsSq0J1Bk", noload:true, src:"new"}
  ]}
@@ -947,14 +981,21 @@ function say(msg){
 function ytHref(q){ return "https://www.youtube.com/results?search_query=" + encodeURIComponent(q); }
 /* A specific video if we have one, otherwise fall back to a search. */
 function videoHref(ex){
+  if (ex.file) return ex.file;
   return ex.v ? ("https://www.youtube.com/watch?v=" + ex.v) : ytHref(ex.q);
 }
 function thumbHTML(ex, cls){
-  const href = videoHref(ex);
-  if (!ex.v){
-    return '<a class="video-link' + (cls || "") + '" target="_blank" rel="noopener" href="' + href + '">Watch</a>';
+  /* Clips held in the repo play on the page. YouTube ones leave. */
+  if (ex.file){
+    return '<a class="thumb" href="' + esc(ex.file) + '" data-clip="' + esc(ex.id) + '" ' +
+      'aria-label="Play ' + esc(ex.n) + '">' +
+      '<img src="' + esc(ex.poster) + '" alt="" loading="lazy" decoding="async">' +
+      '<span class="play"></span><span class="own">yours</span></a>';
   }
-  return '<a class="thumb" target="_blank" rel="noopener" href="' + href + '" ' +
+  if (!ex.v){
+    return '<a class="video-link' + (cls || "") + '" target="_blank" rel="noopener" href="' + ytHref(ex.q) + '">Watch</a>';
+  }
+  return '<a class="thumb" target="_blank" rel="noopener" href="' + videoHref(ex) + '" ' +
     'aria-label="Watch a form video for ' + esc(ex.n) + '">' +
     '<img src="https://i.ytimg.com/vi/' + esc(ex.v) + '/mqdefault.jpg" alt="" loading="lazy" decoding="async">' +
     '<span class="play"></span></a>';
@@ -1149,13 +1190,14 @@ function renderDays(){
             ' data-w="' + esc(ex.id) + '" value="' + esc(rec.w[ex.id] || "") + '">' +
             '<span class="kg-unit">kg</span></div>';
 
-        return '<div class="exercise"><div>' +
+        return '<div class="exercise">' +
               '<div class="ex-head">' +
                 '<div class="ex-name">' + esc(ex.n) + "</div>" +
                 '<button class="swap" type="button" data-swap="' + esc(item.ex) + '" aria-expanded="false"' +
                   ' title="Swap this exercise"' +
                   ' aria-label="Swap ' + esc(ex.n) + ' for another exercise">\u21C4</button>' +
               "</div>" +
+              '<div class="ex-meta">' +
               '<div class="pills">' + dosePills(doseFor(view, item)) + "</div>" +
               (ex.c ? '<div class="cue">' + esc(ex.c) + "</div>" : "") +
               (isSub ? '<div class="subbed">Swapped in for ' + esc(EX[item.ex].n) + "</div>" : "") +
@@ -1637,6 +1679,36 @@ tEl("hiitStart").addEventListener("click", function(){
 tEl("hiitSkip").addEventListener("click", function(){ advance(); });
 tEl("hiitReset").addEventListener("click", function(){ resetTimer(); });
 tEl("timerClose").addEventListener("click", closeTimer);
+
+/* Clips stored in the repo: play them here rather than leaving the page. */
+function openClip(exId){
+  const ex = EX[exId];
+  if (!ex || !ex.file) return;
+  tEl("clipTitle").textContent = ex.n;
+  tEl("clipNote").textContent = ex.c || "";
+  const v = tEl("clipVideo");
+  v.src = ex.file;
+  v.poster = ex.poster || "";
+  tEl("clipSheet").hidden = false;
+  document.body.style.overflow = "hidden";
+  tEl("clipClose").focus();
+}
+function closeClip(){
+  const v = tEl("clipVideo");
+  v.pause(); v.removeAttribute("src"); v.load();
+  tEl("clipSheet").hidden = true;
+  document.body.style.overflow = "";
+}
+tEl("clipClose").addEventListener("click", closeClip);
+document.addEventListener("keydown", function(e){
+  if (e.key === "Escape" && !tEl("clipSheet").hidden) closeClip();
+});
+document.addEventListener("click", function(e){
+  const a = e.target.closest ? e.target.closest("[data-clip]") : null;
+  if (!a) return;
+  e.preventDefault();
+  openClip(a.dataset.clip);
+});
 document.addEventListener("keydown", function(e){
   if (e.key === "Escape" && !tEl("timerSheet").hidden) closeTimer();
 });
