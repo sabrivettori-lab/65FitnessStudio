@@ -973,6 +973,11 @@ const DEFAULT_WEEK = ["lower-glutes","upper","hiit-core","lower-legs","upper-sha
 const WEEK_OVERRIDES = {};
 
 const BLOCK_WEEKS = 12;
+
+/* The Sunday week 1 starts on. Declared rather than guessed, so every device
+   agrees instead of each one dating the block from whenever it first opened
+   the app. The Change start date button still overrides it. */
+const BLOCK_START = "2026-09-13";
 const DAY_NAMES = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
 /* ==================================================================
@@ -1003,10 +1008,26 @@ function currentWeek(){
 const KEY = "r2-65:block-v2";
 let store = null;
 
+function logIsEmpty(){
+  const wk = store.weeks || {};
+  for (const w in wk) for (const d in wk[w]){
+    const r = wk[w][d];
+    if (r.done || r.walk || (r.w && Object.keys(r.w).length)) return false;
+  }
+  return true;
+}
 function load(){
   try { store = JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e){ store = {}; }
-  if (!store.start) store.start = iso(sundayOf(new Date()));
   if (!store.weeks) store.weeks = {};
+  if (!store.start){
+    store.start = BLOCK_START;
+  } else if (store.start !== BLOCK_START && logIsEmpty()){
+    /* A device that opened the app before the block was dated will be sitting
+       on a start it guessed for itself. Adopt the real one — but only while
+       nothing has been logged, since moving the start shifts every week. */
+    store.start = BLOCK_START;
+    try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e){}
+  }
   return store;
 }
 function save(){
@@ -1633,7 +1654,7 @@ el("importFile").addEventListener("change", function(e){
 });
 
 el("setStart").addEventListener("click", function(){
-  const input = prompt("First day of week 1, as YYYY-MM-DD.\nIt will snap back to the Sunday of that week.", store.start);
+  const input = prompt("First day of week 1, as YYYY-MM-DD.\nIt will snap back to the Sunday of that week.\nThe plan's own start is " + BLOCK_START + ".", store.start);
   if (!input) return;
   if (!/^\d{4}-\d{2}-\d{2}$/.test(input.trim())){ say("Use the format 2026-09-13."); return; }
   const d = parseISO(input.trim());
