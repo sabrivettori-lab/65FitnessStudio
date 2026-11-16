@@ -12,11 +12,11 @@ Live at **https://sabrivettori-lab.github.io/65FitnessStudio/**
 | Day | Session |
 |---|---|
 | Sunday | Rest |
-| Monday | Full body A · glutes focus |
+| Monday | Day A · glutes, chest and back |
 | Tuesday | HIIT in the Nike Training Club app, low impact, 20–25 min |
-| Wednesday | Full body B · squat focus |
+| Wednesday | Day B · legs, back and shoulder health |
 | Thursday | Mobility / yoga, about 30 min |
-| Friday | Full body C · hinge focus |
+| Friday | Day C · hamstrings, back and arms |
 | Saturday | HIIT in the NTC app, 20–25 min |
 
 Every day: 6,000 steps.
@@ -34,11 +34,17 @@ each phase.
 | 2 · Strength | 5–8 | 4 × 6–8 | 3 × 8–10 |
 | 3 · Heavy | 9–12 | 4 × 5–6 | 3 × 10–15 |
 
-**Blocks and setup.** Each session runs main lift, then free-weight supersets,
-then cable supersets, then core (one set of each exercise back to back, then
-rest 60–90 s). Where two cable exercises sit at different heights the block says
-so; on a two-column machine set one column for each. Each block header on the
-card names the setup. Day B uses a band-assisted pull-up on the bar.
+**Session order.** Three full-body sessions a week, so glutes are trained about
+three times a week and every other muscle at least twice. Each session runs in
+priority order: main lower-body lift, a push + pull superset, a second leg
+exercise with an accessory, stabilisers and arms, then core together. Superset
+pairs work opposing muscles. Each block header names the setup. This follows
+the research checked on 16 November 2026: training frequency matters little
+once each muscle gets two or more sessions (Schoenfeld, Grgic & Krieger 2019;
+ACSM 2026), full-body and split routines gave the same results in women
+(Pedersen et al. 2022), strength gains are largest for exercises done first
+(Nunes et al. 2021), and opposing-muscle supersets save time without losing
+volume (Weakley et al.).
 
 **Shoulders.** No overhead pressing for now (shoulder press removed; the phase 3
 Pallof press stays at chest height), until the stabilisers are stronger and the
@@ -57,6 +63,12 @@ cleared with the physio before they come up.
 **Hips.** Every warm-up includes hip circles, 90/90 switches and adductor
 rock-backs. Thursday is a hip mobility session of eight exercises. New exercises
 without a chosen video show a *Find a video* box that opens a YouTube search.
+
+**Videos play in the app.** Tapping a thumbnail opens the video in a player on
+the page (via youtube-nocookie.com). "Open in YouTube instead" under the player
+leaves the app only when tapped. Every video in the plan was checked on 16
+November 2026 with YouTube's embed check, so it exists and allows playback
+inside another page.
 
 Weeks 4 and 8 are lighter: same exercises and weights, about half the sets. The
 app halves the sets on screen in those weeks. A 30-minute **Short session

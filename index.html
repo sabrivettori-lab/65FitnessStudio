@@ -316,6 +316,9 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
 #plan{margin-top:6px}
 .thumb.search{display:grid;place-items:center;background:var(--bone);border:1px dashed rgba(21,18,16,.25);text-align:center;
   font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);text-decoration:none}
+.yt-frame{position:relative;width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#000;margin:8px 0 12px}
+.yt-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.yt-out{display:inline-block;margin-top:6px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
 .restnote{padding:16px 0 6px;color:var(--ink-3);font-size:14px;font-style:italic;font-family:var(--serif)}
 
 /* ---------- exercise library ---------- */
@@ -604,7 +607,7 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
         <li>Warm up: 5 min easy cardio, then 2&ndash;3 lighter build-up sets of the first lift.</li>
         <li>Keep 1&ndash;3 reps in reserve on most sets.</li>
         <li>Add weight when every set reaches the top of the rep range with at least 1 rep in reserve. Add the smallest step available.</li>
-        <li>Blocks run main lift, then free weights, then cable, then core. In a superset do one set of each exercise back to back, then rest 60&ndash;90 sec. Each block header shows the setup.</li>
+        <li>Each session runs in priority order: main lift, push + pull, second leg exercise, stabilisers and arms, then core. In a superset do one set of each exercise back to back, then rest 60&ndash;90 sec. Each block header shows the setup.</li>
         <li>Rest 90&ndash;120 sec between sets of the main lift.</li>
         <li>No overhead pressing for now. Build the shoulder stabilisers first; check with your physio before bringing it back.</li>
         <li>Where a block says &ldquo;stabiliser in the rests&rdquo;, do that exercise between sets of the main lift.</li>
@@ -653,7 +656,17 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
     </div>
   </details>
 
-  <div class="footer">TAP &#9654; FOR A FORM VIDEO &middot; THE WEEK RUNS SUNDAY TO SATURDAY<br>BUILD 2026-11-16 &middot; 135 EXERCISES</div>
+  <div class="footer">TAP &#9654; TO PLAY A FORM VIDEO HERE &middot; THE WEEK RUNS SUNDAY TO SATURDAY<br>BUILD 2026-11-16 &middot; 135 EXERCISES</div>
+</div>
+
+<div class="sheet" id="ytSheet" hidden role="dialog" aria-modal="true" aria-label="Form video">
+  <div class="sheet-inner">
+    <button class="sheet-close" id="ytClose" type="button">&larr; Back to the week</button>
+    <div class="eyebrow" id="ytTitle">Form video</div>
+    <div class="yt-frame"><iframe id="ytFrame" title="Form video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
+    <p class="hiit-note" id="ytNote"></p>
+    <a class="yt-out" id="ytOut" target="_blank" rel="noopener" href="#">Open in YouTube instead</a>
+  </div>
 </div>
 
 <div class="sheet" id="clipSheet" hidden role="dialog" aria-modal="true" aria-label="Clip player">
@@ -754,7 +767,7 @@ const LIBRARY = [
    {id:"cs-row", n:"Chest-supported row",         q:"chest supported row proper form", v:"0UBRfiO4zDs", src:"plan"},
    {id:"bent-over-row", n:"Bent-over row",               q:"barbell bent over row form heavy", v:"FWJR5Ve8bnQ", c:"Deep stable hinge, pull to the belly.", src:"prev"},
    {id:"chin-up", n:"Chin-ups (90° knees)",        q:"chin up form 90 degree knees", v:"7KG5UCkNU9U", c:"Band-assist if needed.", src:"prev"},
-   {id:"pullup", n:"Assisted pull-up (band)",     q:"band assisted pull up proper form", sv:true, noload:true, src:"plan",
+   {id:"pullup", n:"Assisted pull-up (band)",     q:"band assisted pull up proper form", v:"5rR_bzBc1NA", noload:true, src:"plan",
                             c:"Loop a band over the bar under a knee or foot. Use the lightest band that lets you reach the reps."},
    {id:"face-pull", n:"Face pull",                   q:"cable face pull proper form", v:"ljgqer1ZpXg", src:"plan"},
    {id:"y-raise", n:"Bench supine Y raise",        q:"bench supine Y raise prone", v:"7NaNt-txiqc", c:"Lower trap and rear delt.", src:"prev"},
@@ -788,11 +801,11 @@ const LIBRARY = [
    {id:"rear-delt-fly", n:"Rear delt fly",               q:"rear delt fly proper form", v:"FqfYvaRgKyM", src:"new"},
    {id:"arnold-press", n:"Arnold press",                q:"arnold press proper form", v:"6Z15_WdXmVw", src:"new"},
    {id:"upright-row", n:"Cable upright row",           q:"cable upright row proper form", v:"nwkLwMRHMQo", src:"new"},
-   {id:"cable-ext-rot", n:"Cable external rotation",   q:"cable external rotation rotator cuff form", sv:true, src:"new",
+   {id:"cable-ext-rot", n:"Cable external rotation",   q:"cable external rotation rotator cuff form", v:"PVdgjHqAes8", src:"new",
                             c:"Shoulder stabiliser. Elbow at your side on a rolled towel, turn the forearm out slowly. Do it in the rests between sets of the first lift."},
-   {id:"sl-ext-rot", n:"Side-lying dumbbell external rotation", q:"side lying dumbbell external rotation rotator cuff", sv:true, src:"new",
+   {id:"sl-ext-rot", n:"Side-lying dumbbell external rotation", q:"side lying dumbbell external rotation rotator cuff", v:"20v3G-odF5c", src:"new",
                             c:"Shoulder stabiliser. Lie on your side, elbow bent at 90\u00b0 on a rolled towel at your waist, rotate the light dumbbell up slowly."},
-   {id:"pushup-plus", n:"Push-up plus",               q:"push up plus serratus anterior", noload:true, sv:true, src:"new",
+   {id:"pushup-plus", n:"Push-up plus",               q:"push up plus serratus anterior", noload:true, v:"JSR6Q26FJZo", src:"new",
                             c:"Shoulder stabiliser. At the top of a push-up, push the floor away so the shoulder blades spread. Knees are fine. Do it in the rests between sets of the first lift."}
  ]},
 
@@ -823,27 +836,27 @@ const LIBRARY = [
    {id:"carry", n:"Farmer carry",                q:"farmer carry proper form", v:"p5MNNosenJc", src:"plan"},
    {id:"woodchopper", n:"Cable woodchopper",          q:"cable woodchopper proper form", v:"pAplQXk3dkU", c:"Rotate from the trunk, not the arms.", src:"new"},
    {id:"oblique-crunch", n:"Oblique cable crunch",       q:"kneeling cable oblique crunch", v:"xUulEXD1AQc", c:"Kneel side-on to the cable. Each side.", src:"new"},
-   {id:"side-plank-dips", n:"Side plank with hip dips", q:"side plank hip dips", noload:true, sv:true, src:"new",
+   {id:"side-plank-dips", n:"Side plank with hip dips", q:"side plank hip dips", noload:true, v:"BWQRVB4LyFI", src:"new",
                             c:"Lower the hip a few centimetres and lift it back, slowly."},
-   {id:"pallof-split", n:"Split-stance Pallof press",  q:"split stance pallof press", sv:true, src:"new",
+   {id:"pallof-split", n:"Split-stance Pallof press",  q:"split stance pallof press", v:"q_SgHjY4fck", src:"new",
                             c:"Press out and hold 2 sec. Do not let the cable turn you."},
-   {id:"rkc-plank", n:"RKC plank",                     q:"RKC plank hardstyle plank", noload:true, sv:true, src:"new",
+   {id:"rkc-plank", n:"RKC plank",                     q:"RKC plank hardstyle plank", noload:true, v:"4hQmAsF9iL4", src:"new",
                             c:"Squeeze glutes, thighs and fists, pull the elbows towards the toes. Short and hard."},
-   {id:"suitcase-carry", n:"Suitcase carry",           q:"suitcase carry proper form", sv:true, src:"new",
+   {id:"suitcase-carry", n:"Suitcase carry",           q:"suitcase carry proper form", v:"y-hn_Ha1-RE", src:"new",
                             c:"One heavy dumbbell on one side. Walk tall, no lean."},
-   {id:"weighted-dead-bug", n:"Weighted dead bug",     q:"weighted dead bug dumbbell", sv:true, src:"new",
+   {id:"weighted-dead-bug", n:"Weighted dead bug",     q:"weighted dead bug dumbbell", v:"oSExv5Iiu80", src:"new",
                             c:"Hold one dumbbell over the chest with both hands. Low back stays down."},
-   {id:"copenhagen", n:"Copenhagen plank",             q:"copenhagen plank progression", noload:true, sv:true, src:"new",
+   {id:"copenhagen", n:"Copenhagen plank",             q:"copenhagen plank progression", noload:true, v:"1NNqUQvMYGc", src:"new",
                             c:"Side plank with the top leg on a bench. Knee on the bench first; foot on the bench once 3 \u00d7 30 s is easy."},
-   {id:"pallof-walkout", n:"Pallof walkout",           q:"pallof walkout", sv:true, src:"new",
+   {id:"pallof-walkout", n:"Pallof walkout",           q:"pallof walkout", v:"FjMofGI6rz8", src:"new",
                             c:"Arms straight out, step away from the cable and back without turning."},
-   {id:"body-saw", n:"Body saw",                       q:"body saw exercise sliders", noload:true, sv:true, src:"new",
+   {id:"body-saw", n:"Body saw",                       q:"body saw exercise sliders", noload:true, v:"Qip3IEgsDzw", src:"new",
                             c:"Forearm plank, feet on sliders, rock forward and back. Check with your physio first."},
-   {id:"pallof-overhead", n:"Pallof press with overhead press-out", q:"pallof press overhead press out", sv:true, src:"new",
+   {id:"pallof-overhead", n:"Pallof press with overhead press-out", q:"pallof press overhead press out", v:"fohWL3eTAGM", src:"new",
                             c:"Press out, then up overhead, without the trunk turning or arching."},
-   {id:"front-rack-carry", n:"Front-rack carry, one side", q:"single arm front rack carry kettlebell", sv:true, src:"new",
+   {id:"front-rack-carry", n:"Front-rack carry, one side", q:"single arm front rack carry kettlebell", v:"M39871Puz6c", src:"new",
                             c:"One weight held at the shoulder. Walk tall, no lean."},
-   {id:"plank-pull-through", n:"Plank pull-through",   q:"plank pull through dumbbell", noload:true, sv:true, src:"new",
+   {id:"plank-pull-through", n:"Plank pull-through",   q:"plank pull through dumbbell", noload:true, v:"Zko5x2SoQmo", src:"new",
                             c:"In a plank, drag a dumbbell across under the body with the opposite hand. Hips still."}
  ]}
 
@@ -873,7 +886,7 @@ const LIBRARY = [
    {id:"wall-ball", n:"Wall ball",                   q:"wall ball shot proper form", c:"Squat, then throw to a high target.", src:"new"},
    {id:"db-snatch", n:"Dumbbell snatch",             q:"single arm dumbbell snatch form", c:"One clean pull from floor to overhead.", src:"new"},
    {id:"sprawl", n:"Sprawl",                      q:"sprawl exercise form", c:"A burpee without the push-up. Easier on the shoulders.", noload:true, src:"new"},
-   {id:"bear-crawl", n:"Bear crawl",                  q:"bear crawl proper form", c:"Knees an inch off the floor, hips still.", noload:true, src:"new"},
+   {id:"bear-crawl", n:"Bear crawl",                  q:"bear crawl proper form", v:"Ee1BQNI6zN4", c:"Knees an inch off the floor, hips still.", noload:true, src:"new"},
    {id:"kb-clean-press", n:"Kettlebell clean and press",  q:"kettlebell clean and press form", c:"Clean to the rack, then press overhead.", src:"new"}
  ]},
 
@@ -894,11 +907,11 @@ const LIBRARY = [
    {id:"mountain-climbers", n:"Mountain climbers",           q:"mountain climbers proper form", c:"Strong plank, drive the knees fast.", noload:true, src:"prev"},
    {id:"plank-taps", n:"Plank shoulder taps",         q:"plank shoulder taps form", c:"Hips still, tap the opposite shoulder.", noload:true, src:"prev"},
    {id:"plank-jacks", n:"Plank jacks",                 q:"plank jacks proper form", noload:true, src:"new"},
-   {id:"renegade-row", n:"Renegade row",                q:"renegade row proper form", c:"Wide feet, no hip rotation.", src:"new"},
+   {id:"renegade-row", n:"Renegade row",                q:"renegade row proper form", v:"wTqlJ0aoJlM", c:"Wide feet, no hip rotation.", src:"new"},
    {id:"battle-rope-waves", n:"Battle rope waves",           q:"battle rope alternating waves", c:"Fast small waves, braced core.", noload:true, src:"new"},
    {id:"battle-rope-slams", n:"Battle rope slams",           q:"battle rope slams form", noload:true, src:"new"},
    {id:"pushup-burst", n:"Push-up burst",               q:"push up proper form", c:"Max clean reps in the work window. Knees are fine.", noload:true, src:"new"},
-   {id:"bicycle-crunch", n:"Bicycle crunch",             q:"bicycle crunch proper form", c:"Slow and deliberate, opposite elbow to knee.", noload:true, src:"new"},
+   {id:"bicycle-crunch", n:"Bicycle crunch",             q:"bicycle crunch proper form", v:"eqg47ZuGZXQ", c:"Slow and deliberate, opposite elbow to knee.", noload:true, src:"new"},
    {id:"v-up", n:"V-up",                       q:"v up exercise proper form", c:"Reach for the toes, lower under control.", noload:true, src:"new"},
    {id:"flutter-kicks", n:"Flutter kicks",              q:"flutter kicks proper form", c:"Low back pressed down throughout.", noload:true, src:"new"}
  ]},
@@ -941,21 +954,21 @@ const LIBRARY = [
                             poster:"clips/core-activation-series.jpg", c:"2:39 \u00b7 your own clip. Follows the glute series.", noload:true, src:"new"},
    {id:"hip-flexor-stretch", n:"Hip flexor stretch",          q:"couch stretch hip flexor", v:"d9pOjXCKGN8", noload:true, src:"new"},
    {id:"foam-roll", n:"Foam rolling",                q:"foam rolling full body routine", v:"KWGsSq0J1Bk", noload:true, src:"new"},
-   {id:"hip-cars", n:"Hip circles (CARs)",              q:"hip CARs controlled articular rotations", noload:true, sv:true, src:"new",
+   {id:"hip-cars", n:"Hip circles (CARs)",              q:"hip CARs controlled articular rotations", noload:true, v:"hRMrq6G81p8", src:"new",
                             c:"Standing, holding a support. Draw the biggest slow circle you can with the knee."},
-   {id:"hip-90-90", n:"90/90 hip switches",             q:"90 90 hip switches", noload:true, sv:true, src:"new",
+   {id:"hip-90-90", n:"90/90 hip switches",             q:"90 90 hip switches", noload:true, v:"m51AZSXMvEA", src:"new",
                             c:"Seated, both knees bent at 90\u00b0. Rotate the knees side to side."},
-   {id:"adductor-rockback", n:"Adductor rock-back",     q:"adductor rock back frog stretch", noload:true, sv:true, src:"new",
+   {id:"adductor-rockback", n:"Adductor rock-back",     q:"adductor rock back frog stretch", noload:true, v:"FkxBaLFrlSE", src:"new",
                             c:"On all fours, knees wide. Rock the hips back and forward."},
-   {id:"figure-4", n:"Figure-4 stretch",                q:"lying figure 4 stretch glute", noload:true, sv:true, src:"new",
+   {id:"figure-4", n:"Figure-4 stretch",                q:"lying figure 4 stretch glute", noload:true, v:"2VE_NLcNMvQ", src:"new",
                             c:"On your back, ankle over the opposite knee, pull the leg in."},
-   {id:"worlds-greatest", n:"World's greatest stretch", q:"worlds greatest stretch", noload:true, sv:true, src:"new",
+   {id:"worlds-greatest", n:"World's greatest stretch", q:"worlds greatest stretch", noload:true, v:"-CiWQ2IvY34", src:"new",
                             c:"Lunge, elbow to the instep, then rotate the arm to the ceiling. Includes trunk rotation: check with your physio."},
-   {id:"deep-squat-hold", n:"Deep squat hold",          q:"deep squat hold assisted", noload:true, sv:true, src:"new",
+   {id:"deep-squat-hold", n:"Deep squat hold",          q:"deep squat hold assisted", noload:true, v:"IHApHfNA2Ag", src:"new",
                             c:"Hold a rack or door frame. Heels down, chest up."},
-   {id:"band-pull-apart", n:"Band pull-apart",          q:"band pull apart proper form", noload:true, sv:true, src:"new",
+   {id:"band-pull-apart", n:"Band pull-apart",          q:"band pull apart proper form", noload:true, v:"stwYTTPXubo", src:"new",
                             c:"Arms straight, pull the band to the chest, squeeze the shoulder blades."},
-   {id:"wall-slide", n:"Wall slides",                   q:"wall slides shoulder", noload:true, sv:true, src:"new",
+   {id:"wall-slide", n:"Wall slides",                   q:"wall slides shoulder", noload:true, v:"oMSVe7PWJ3o", src:"new",
                             c:"Forearms on the wall, slide up while keeping the ribs down."}
  ]}
 ]}
@@ -998,55 +1011,65 @@ const WARM_UP = "5 min easy cardio. Hips: hip circles 5 each way per side, 90/90
 
 /* role "main" or "comp" takes the phase's dose; d is a fixed dose.
    ex can be a list of three, one per phase. */
-/* Each session is a run of blocks, grouped by equipment: the main lift, then
-   free-weight supersets, then cable supersets, then core. One set of each
-   exercise in a block back to back, then rest. Where two cable exercises sit at
-   different heights the setup note says so. {core:n} is the nth exercise of
-   that phase's core pair; {crunch:true} is the bicycle crunch. */
+/* Each session runs in priority order, as the evidence on exercise order
+   suggests (strength gains are largest for what comes first; large before
+   small, multi-joint before single-joint):
+     1 the main lower-body lift
+     2 a push + pull superset
+     3 a second leg exercise + an accessory
+     4 stabilisers / arms
+     5 core, all together
+   Superset pairs work opposing muscles (push with pull, upper with lower),
+   which keeps training volume better than same-muscle pairs. Equipment
+   decides how a pair is set up, shown on each block.
+   {core:n} is the nth exercise of that phase's core pair; {crunch:true} is
+   the bicycle crunch. */
 const STRENGTH = {
-  a:{name:"Full body A \u00b7 glutes focus", blocks:[
+  a:{name:"Day A \u00b7 glutes, chest and back", blocks:[
     {label:"Main lift", setup:"Bench flat", slots:[
       {ex:"hip-thrust", role:"main"}]},
-    {label:"Free-weight superset", setup:"Bench flat \u00b7 dumbbells", slots:[
+    {label:"Push + pull superset", setup:"Bench flat \u00b7 dumbbells", slots:[
+      {ex:"db-press", role:"comp"},
+      {ex:"single-arm-row", role:"comp", per:" / side"}]},
+    {label:"Legs + shoulders superset", setup:"Bench flat \u00b7 dumbbells", slots:[
       {ex:"bulgarian", role:"comp", per:" / leg"},
-      {ex:"db-press", role:"comp"}]},
-    {label:"Free-weight superset", setup:"Bench to incline \u00b7 dumbbells", slots:[
-      {ex:"cs-row", role:"comp"},
       {ex:"lateral-raise", d:"3 \u00d7 12\u201315"}]},
-    {label:"Cable superset", setup:"Cable handle at chest height for both", slots:[
-      {ex:"cable-ext-rot", d:"3 \u00d7 12\u201315 / side"},
-      {core:1}]},
-    {label:"Cable and floor", setup:"Cable ankle strap, low \u00b7 floor or bench next to it", slots:[
+    {label:"Hamstrings + stabiliser superset", setup:"Cable: ankle strap low for the curl, handle at elbow height for the rotation. Use both columns if your machine has two.", slots:[
       {ex:"leg-curl", d:"2 \u00d7 12\u201315"},
+      {ex:"cable-ext-rot", d:"3 \u00d7 12\u201315 / side"}]},
+    {label:"Core", setup:"Cable handle at chest height for the Pallof \u00b7 floor or bench", slots:[
+      {core:1},
       {core:0},
       {crunch:true}]}]},
-  b:{name:"Full body B \u00b7 squat focus", blocks:[
-    {label:"Main lift \u00b7 stabiliser in the rests", setup:"Bench incline for the Y raise", slots:[
+  b:{name:"Day B \u00b7 legs, back and shoulder health", blocks:[
+    {label:"Main lift \u00b7 stabiliser in the rests", setup:"Light dumbbell on the bench or floor for the rotation", slots:[
       {ex:["goblet","back-squat","back-squat"], role:"main"},
-      {ex:"y-raise", d:"3 \u00d7 10\u201312"}]},
-    {label:"Free-weight superset", setup:"Pull-up bar and band \u00b7 light dumbbell, bench or floor", slots:[
-      {ex:"pullup", d:"3 \u00d7 6\u201310"},
       {ex:"sl-ext-rot", d:"3 \u00d7 12\u201315 / side"}]},
-    {label:"Cable superset", setup:"Rope high for the face pull, ankle strap low for the leg curl. Use both columns if your machine has two.", slots:[
-      {ex:"face-pull", d:"3 \u00d7 15"},
-      {ex:"leg-curl", role:"comp"}]},
-    {label:"Core superset", setup:"Floor", slots:[
+    {label:"Pull + push superset", setup:"Pull-up bar and band \u00b7 floor", slots:[
+      {ex:"pullup", d:"3 \u00d7 6\u201310"},
+      {ex:"pushup", d:"3 \u00d7 8\u201312"}]},
+    {label:"Hamstrings + stabiliser superset", setup:"Cable ankle strap, low \u00b7 bench at incline", slots:[
+      {ex:"leg-curl", role:"comp"},
+      {ex:"y-raise", d:"3 \u00d7 10\u201312"}]},
+    {label:"Rear shoulders", setup:"Cable rope, high", slots:[
+      {ex:"face-pull", d:"3 \u00d7 15"}]},
+    {label:"Core", setup:"Floor", slots:[
       {core:0},
       {core:1}]}]},
-  c:{name:"Full body C \u00b7 hinge focus", blocks:[
+  c:{name:"Day C \u00b7 hamstrings, back and arms", blocks:[
     {label:"Main lift \u00b7 stabiliser in the rests", setup:"Floor space for the push-up plus", slots:[
       {ex:["db-rdl","rdl","rdl"], role:"main"},
       {ex:"pushup-plus", d:"3 \u00d7 10\u201312"}]},
-    {label:"Free-weight superset", setup:"Bench incline \u00b7 dumbbells", slots:[
+    {label:"Push + pull superset", setup:"Bench at incline \u00b7 cable handle at mid height", slots:[
+      {ex:"incline-press", role:"comp"},
+      {ex:"cable-row", role:"comp"}]},
+    {label:"Legs + arms superset", setup:"Dumbbells", slots:[
       {ex:"lunge", role:"comp", per:" / leg"},
-      {ex:"incline-press", role:"comp"}]},
-    {label:"Cable superset", setup:"Handle at mid height for the row, rope high for the pushdown. Use both columns if your machine has two.", slots:[
-      {ex:"cable-row", role:"comp"},
-      {ex:"triceps", d:"2 \u00d7 10\u201312"}]},
-    {label:"Cable and free", setup:"Cable ankle strap, low \u00b7 dumbbells next to it", slots:[
-      {ex:"cable-hip-abduction", d:"3 \u00d7 12\u201315 / side"},
       {ex:"biceps", d:"2 \u00d7 10\u201312"}]},
-    {label:"Core superset", setup:"Floor \u00b7 dumbbells", slots:[
+    {label:"Glutes + arms superset", setup:"Cable: ankle strap low for the abduction, rope high for the pushdown. Use both columns if your machine has two.", slots:[
+      {ex:"cable-hip-abduction", d:"3 \u00d7 12\u201315 / side"},
+      {ex:"triceps", d:"2 \u00d7 10\u201312"}]},
+    {label:"Core", setup:"Floor \u00b7 dumbbells", slots:[
       {core:0},
       {core:1},
       {crunch:true}]}]}
@@ -1374,7 +1397,8 @@ function thumbHTML(ex, cls){
     return '<a class="thumb search" target="_blank" rel="noopener" href="' + ytHref(ex.q) + '" ' +
       'aria-label="Search YouTube for a ' + esc(ex.n) + ' video"><span>Find a<br>video</span></a>';
   }
-  return '<a class="thumb" target="_blank" rel="noopener" href="' + videoHref(ex) + '" ' +
+  /* Plays inside the app; the href stays as a fallback if scripts fail. */
+  return '<a class="thumb" href="' + videoHref(ex) + '" data-yt="' + esc(ex.id) + '" ' +
     'aria-label="Watch a form video for ' + esc(ex.n) + '">' +
     '<img src="https://i.ytimg.com/vi/' + esc(ex.v) + '/mqdefault.jpg" alt="" loading="lazy" decoding="async">' +
     '<span class="play"></span></a>';
@@ -2337,6 +2361,36 @@ function closeClip(){
   document.body.style.overflow = "";
 }
 tEl("clipClose").addEventListener("click", closeClip);
+
+/* YouTube form videos play in a sheet on the page. Opening YouTube itself
+   is a separate link, used only when she taps it. */
+function openYT(exId){
+  const ex = EX[exId];
+  if (!ex || !ex.v) return;
+  tEl("ytTitle").textContent = ex.n;
+  tEl("ytNote").textContent = ex.c || "";
+  tEl("ytOut").href = "https://www.youtube.com/watch?v=" + ex.v;
+  tEl("ytFrame").src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(ex.v) +
+    "?autoplay=1&playsinline=1&rel=0&modestbranding=1";
+  tEl("ytSheet").hidden = false;
+  document.body.style.overflow = "hidden";
+  tEl("ytClose").focus();
+}
+function closeYT(){
+  tEl("ytFrame").src = "about:blank";
+  tEl("ytSheet").hidden = true;
+  document.body.style.overflow = "";
+}
+tEl("ytClose").addEventListener("click", closeYT);
+document.addEventListener("keydown", function(e){
+  if (e.key === "Escape" && !tEl("ytSheet").hidden) closeYT();
+});
+document.addEventListener("click", function(e){
+  const a = e.target.closest ? e.target.closest("[data-yt]") : null;
+  if (!a) return;
+  e.preventDefault();
+  openYT(a.dataset.yt);
+});
 document.addEventListener("keydown", function(e){
   if (e.key === "Escape" && !tEl("clipSheet").hidden) closeClip();
 });
