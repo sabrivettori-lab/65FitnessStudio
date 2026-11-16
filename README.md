@@ -35,16 +35,16 @@ each phase.
 | 3 · Heavy | 9–12 | 4 × 5–6 | 3 × 10–15 |
 
 **Session order.** Three full-body sessions a week, so glutes are trained about
-three times a week and every other muscle at least twice. Each session runs in
-priority order: main lower-body lift, a push + pull superset, a second leg
-exercise with an accessory, stabilisers and arms, then core together. Superset
-pairs work opposing muscles. Each block header names the setup. This follows
-the research checked on 16 November 2026: training frequency matters little
-once each muscle gets two or more sessions (Schoenfeld, Grgic & Krieger 2019;
-ACSM 2026), full-body and split routines gave the same results in women
-(Pedersen et al. 2022), strength gains are largest for exercises done first
-(Nunes et al. 2021), and opposing-muscle supersets save time without losing
-volume (Weakley et al.).
+three times a week and every other muscle at least twice. Every session has the
+same four groups: the main lower-body lift on its own, a push + pull superset, a
+circuit of the lighter accessory work (second leg exercise, shoulder
+stabilisers, arms; rounds = the sets shown), then core together. Each group
+header names the setup. This follows the research checked on 16 November 2026:
+training frequency matters little once each muscle gets two or more sessions
+(Schoenfeld, Grgic & Krieger 2019; ACSM 2026), full-body and split routines gave
+the same results in women (Pedersen et al. 2022), strength gains are largest for
+exercises done first (Nunes et al. 2021), and opposing-muscle supersets save time
+without losing volume (Weakley et al.).
 
 **Shoulders.** No overhead pressing for now (shoulder press removed; the phase 3
 Pallof press stays at chest height), until the stabilisers are stronger and the
