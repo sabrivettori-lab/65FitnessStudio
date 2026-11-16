@@ -11,13 +11,13 @@ Live at **https://sabrivettori-lab.github.io/65FitnessStudio/**
 
 | Day | Session |
 |---|---|
-| Sunday | Full body A · glutes focus |
-| Monday | HIIT in the Nike Training Club app, low impact, 20–25 min |
-| Tuesday | Full body B · squat focus |
-| Wednesday | Mobility / yoga, about 30 min |
-| Thursday | Full body C · hinge focus |
-| Friday | HIIT in the NTC app, 20–25 min |
-| Saturday | Rest |
+| Sunday | Rest |
+| Monday | Full body A · glutes focus |
+| Tuesday | HIIT in the Nike Training Club app, low impact, 20–25 min |
+| Wednesday | Full body B · squat focus |
+| Thursday | Mobility / yoga, about 30 min |
+| Friday | Full body C · hinge focus |
+| Saturday | HIIT in the NTC app, 20–25 min |
 
 Every day: 6,000 steps.
 
@@ -34,6 +34,21 @@ each phase.
 | 2 · Strength | 5–8 | 4 × 6–8 | 3 × 8–10 |
 | 3 · Heavy | 9–12 | 4 × 5–6 | 3 × 10–15 |
 
+**Shoulder stabilisers.** Each session has one, done in the rests between sets
+of the first lift: cable external rotation (A), bench Y raise (B), push-up plus
+(C). The warm-up adds band pull-aparts and wall slides.
+
+**Core.** No crunches or other spinal curling, on physio advice (November 2026).
+Two exercises as a superset, 3 sets: A side-focused (side plank with hip dips,
+Copenhagen plank, Pallof variations), B front-focused (RKC plank, bear crawl,
+body saw, renegade row, ab wheel, plank pull-through), C loaded carries and the
+weighted dead bug. Body saw, ab wheel and world's greatest stretch are to be
+cleared with the physio before they come up.
+
+**Hips.** Every warm-up includes hip circles, 90/90 switches and adductor
+rock-backs. Thursday is a hip mobility session of eight exercises. New exercises
+without a chosen video show a *Find a video* box that opens a YouTube search.
+
 Weeks 4 and 8 are lighter: same exercises and weights, about half the sets. The
 app halves the sets on screen in those weeks. A 30-minute **Short session
 (travel)** sits in the day dropdown and counts as strength.
@@ -41,7 +56,7 @@ app halves the sets on screen in those weeks. A 30-minute **Short session
 The plan was reviewed on 16 November 2026 by a separate Claude agent briefed as
 a women's-health coach (not a qualified coach or clinician). Its changes are
 built in: lighter weeks, the short session, a warm-up and progression rule,
-low-impact Monday HIIT, core cut to 2 sets, and a back extension on day A for
+low-impact HIIT the day after A, core cut to 2 sets, and a back extension on day A for
 hamstrings.
 
 ## What it does
@@ -165,7 +180,7 @@ Everything you would want to change sits at the top of the `<script>` block in
 Sunday first; `p` is the phase number:
 
 ```js
-return ["s-a" + p, "ntc-low", "s-b" + p, "mobility-yoga", "s-c" + p, "ntc", "rest"];
+return ["rest", "s-a" + p, "ntc-low", "s-b" + p, "mobility-yoga", "s-c" + p, "ntc"];
 ```
 
 **To change the strength sessions**, edit `STRENGTH` (the exercises and fixed

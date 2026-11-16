@@ -313,6 +313,8 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
 .fold[open] > summary{margin-bottom:12px}
 .fold .stat{margin-bottom:14px}
 #plan{margin-top:6px}
+.thumb.search{display:grid;place-items:center;background:var(--bone);border:1px dashed rgba(21,18,16,.25);text-align:center;
+  font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);text-decoration:none}
 .restnote{padding:16px 0 6px;color:var(--ink-3);font-size:14px;font-style:italic;font-family:var(--serif)}
 
 /* ---------- exercise library ---------- */
@@ -601,13 +603,17 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
         <li>Warm up: 5 min easy cardio, then 2&ndash;3 lighter build-up sets of the first lift.</li>
         <li>Keep 1&ndash;3 reps in reserve on most sets.</li>
         <li>Add weight when every set reaches the top of the rep range with at least 1 rep in reserve. Add the smallest step available.</li>
-        <li>Rest 90&ndash;120 sec on big lifts, 45&ndash;75 sec on smaller ones. Do the two core exercises as a superset.</li>
+        <li>Rest 90&ndash;120 sec on big lifts, 45&ndash;75 sec on smaller ones.</li>
+        <li>The shoulder stabiliser (second on each card) goes in the rests between sets of the first lift.</li>
+        <li>Core: the two exercises as a superset, 3 sets. No crunches. When every set is easy, make it harder: more weight, a longer hold or a longer lever.</li>
+        <li>Check the body saw, ab wheel and world&rsquo;s greatest stretch with your physio before they come up.</li>
         <li>Log the heaviest set you managed. One number per exercise.</li>
       </ul>
       <h3>Every week</h3>
       <ul>
         <li>Weeks 4 and 8 are lighter: same exercises, same weights, about half the sets. The app shows the reduced sets.</li>
-        <li>Monday HIIT: choose a low-impact NTC session, 20&ndash;25 min. It follows a leg day.</li>
+        <li>Sunday is always a rest day.</li>
+        <li>Tuesday HIIT: choose a low-impact NTC session, 20&ndash;25 min. It follows a leg day.</li>
         <li>If sleep or energy is poor, swap HIIT for a walk.</li>
         <li>When the week gets busy, the order is: strength, then steps, then HIIT, then mobility.</li>
         <li>Missed a strength session? Do it in the next HIIT slot. Travelling? Use the Short session.</li>
@@ -777,7 +783,11 @@ const LIBRARY = [
    {id:"lying-cable-lat", n:"Lying cable lateral raise",   q:"lying side cable lateral raise medial deltoid", v:"Z5FA9aq3L6A", c:"On your side on a bench under the cable.", src:"prev"},
    {id:"rear-delt-fly", n:"Rear delt fly",               q:"rear delt fly proper form", v:"FqfYvaRgKyM", src:"new"},
    {id:"arnold-press", n:"Arnold press",                q:"arnold press proper form", v:"6Z15_WdXmVw", src:"new"},
-   {id:"upright-row", n:"Cable upright row",           q:"cable upright row proper form", v:"nwkLwMRHMQo", src:"new"}
+   {id:"upright-row", n:"Cable upright row",           q:"cable upright row proper form", v:"nwkLwMRHMQo", src:"new"},
+   {id:"cable-ext-rot", n:"Cable external rotation",   q:"cable external rotation rotator cuff form", sv:true, src:"new",
+                            c:"Shoulder stabiliser. Elbow at your side on a rolled towel, turn the forearm out slowly. Do it in the rests between sets of the first lift."},
+   {id:"pushup-plus", n:"Push-up plus",               q:"push up plus serratus anterior", noload:true, sv:true, src:"new",
+                            c:"Shoulder stabiliser. At the top of a push-up, push the floor away so the shoulder blades spread. Knees are fine. Do it in the rests between sets of the first lift."}
  ]},
 
  {g:"biceps", label:"Biceps", items:[
@@ -806,7 +816,29 @@ const LIBRARY = [
    {id:"ab-wheel", n:"Ab wheel rollout",            q:"ab wheel rollout beginner form", v:"A3uK5TPzHq8", noload:true, src:"new"},
    {id:"carry", n:"Farmer carry",                q:"farmer carry proper form", v:"p5MNNosenJc", src:"plan"},
    {id:"woodchopper", n:"Cable woodchopper",          q:"cable woodchopper proper form", v:"pAplQXk3dkU", c:"Rotate from the trunk, not the arms.", src:"new"},
-   {id:"oblique-crunch", n:"Oblique cable crunch",       q:"kneeling cable oblique crunch", v:"xUulEXD1AQc", c:"Kneel side-on to the cable. Each side.", src:"new"}
+   {id:"oblique-crunch", n:"Oblique cable crunch",       q:"kneeling cable oblique crunch", v:"xUulEXD1AQc", c:"Kneel side-on to the cable. Each side.", src:"new"},
+   {id:"side-plank-dips", n:"Side plank with hip dips", q:"side plank hip dips", noload:true, sv:true, src:"new",
+                            c:"Lower the hip a few centimetres and lift it back, slowly."},
+   {id:"pallof-split", n:"Split-stance Pallof press",  q:"split stance pallof press", sv:true, src:"new",
+                            c:"Press out and hold 2 sec. Do not let the cable turn you."},
+   {id:"rkc-plank", n:"RKC plank",                     q:"RKC plank hardstyle plank", noload:true, sv:true, src:"new",
+                            c:"Squeeze glutes, thighs and fists, pull the elbows towards the toes. Short and hard."},
+   {id:"suitcase-carry", n:"Suitcase carry",           q:"suitcase carry proper form", sv:true, src:"new",
+                            c:"One heavy dumbbell on one side. Walk tall, no lean."},
+   {id:"weighted-dead-bug", n:"Weighted dead bug",     q:"weighted dead bug dumbbell", sv:true, src:"new",
+                            c:"Hold one dumbbell over the chest with both hands. Low back stays down."},
+   {id:"copenhagen", n:"Copenhagen plank",             q:"copenhagen plank progression", noload:true, sv:true, src:"new",
+                            c:"Side plank with the top leg on a bench. Knee on the bench first; foot on the bench once 3 \u00d7 30 s is easy."},
+   {id:"pallof-walkout", n:"Pallof walkout",           q:"pallof walkout", sv:true, src:"new",
+                            c:"Arms straight out, step away from the cable and back without turning."},
+   {id:"body-saw", n:"Body saw",                       q:"body saw exercise sliders", noload:true, sv:true, src:"new",
+                            c:"Forearm plank, feet on sliders, rock forward and back. Check with your physio first."},
+   {id:"pallof-overhead", n:"Pallof press with overhead press-out", q:"pallof press overhead press out", sv:true, src:"new",
+                            c:"Press out, then up overhead, without the trunk turning or arching."},
+   {id:"front-rack-carry", n:"Front-rack carry, one side", q:"single arm front rack carry kettlebell", sv:true, src:"new",
+                            c:"One weight held at the shoulder. Walk tall, no lean."},
+   {id:"plank-pull-through", n:"Plank pull-through",   q:"plank pull through dumbbell", noload:true, sv:true, src:"new",
+                            c:"In a plank, drag a dumbbell across under the body with the opposite hand. Hips still."}
  ]}
 
 ]},
@@ -902,7 +934,23 @@ const LIBRARY = [
    {id:"core-activation-series", n:"Core activation", file:"clips/core-activation-series.mp4",
                             poster:"clips/core-activation-series.jpg", c:"2:39 \u00b7 your own clip. Follows the glute series.", noload:true, src:"new"},
    {id:"hip-flexor-stretch", n:"Hip flexor stretch",          q:"couch stretch hip flexor", v:"d9pOjXCKGN8", noload:true, src:"new"},
-   {id:"foam-roll", n:"Foam rolling",                q:"foam rolling full body routine", v:"KWGsSq0J1Bk", noload:true, src:"new"}
+   {id:"foam-roll", n:"Foam rolling",                q:"foam rolling full body routine", v:"KWGsSq0J1Bk", noload:true, src:"new"},
+   {id:"hip-cars", n:"Hip circles (CARs)",              q:"hip CARs controlled articular rotations", noload:true, sv:true, src:"new",
+                            c:"Standing, holding a support. Draw the biggest slow circle you can with the knee."},
+   {id:"hip-90-90", n:"90/90 hip switches",             q:"90 90 hip switches", noload:true, sv:true, src:"new",
+                            c:"Seated, both knees bent at 90\u00b0. Rotate the knees side to side."},
+   {id:"adductor-rockback", n:"Adductor rock-back",     q:"adductor rock back frog stretch", noload:true, sv:true, src:"new",
+                            c:"On all fours, knees wide. Rock the hips back and forward."},
+   {id:"figure-4", n:"Figure-4 stretch",                q:"lying figure 4 stretch glute", noload:true, sv:true, src:"new",
+                            c:"On your back, ankle over the opposite knee, pull the leg in."},
+   {id:"worlds-greatest", n:"World's greatest stretch", q:"worlds greatest stretch", noload:true, sv:true, src:"new",
+                            c:"Lunge, elbow to the instep, then rotate the arm to the ceiling. Includes trunk rotation: check with your physio."},
+   {id:"deep-squat-hold", n:"Deep squat hold",          q:"deep squat hold assisted", noload:true, sv:true, src:"new",
+                            c:"Hold a rack or door frame. Heels down, chest up."},
+   {id:"band-pull-apart", n:"Band pull-apart",          q:"band pull apart proper form", noload:true, sv:true, src:"new",
+                            c:"Arms straight, pull the band to the chest, squeeze the shoulder blades."},
+   {id:"wall-slide", n:"Wall slides",                   q:"wall slides shoulder", noload:true, sv:true, src:"new",
+                            c:"Forearms on the wall, slide up while keeping the ribs down."}
  ]}
 ]}
 ];
@@ -938,13 +986,16 @@ const PHASES = [
 /* Lighter weeks: same exercises and weights, about half the sets. */
 const DELOAD_WEEKS = [4, 8];
 const STEP_GOAL = 6000;
-const WARM_UP = "5 min easy cardio, then 2\u20133 lighter build-up sets of the first lift.";
+const WARM_UP = "5 min easy cardio. Hips: hip circles 5 each way per side, 90/90 switches 6 per side, " +
+  "adductor rock-back 8. Shoulders: band pull-apart 15, wall slides 10. " +
+  "Then 2\u20133 lighter build-up sets of the first lift.";
 
 /* role "main" or "comp" takes the phase's dose; d is a fixed dose.
    ex can be a list of three, one per phase. */
 const STRENGTH = {
   a:{name:"Full body A \u00b7 glutes focus", slots:[
     {ex:"hip-thrust", role:"main"},
+    {ex:"cable-ext-rot", d:"3 \u00d7 12\u201315 / side"},
     {ex:"bulgarian", role:"comp", per:" / leg"},
     {ex:"back-extension", d:"2 \u00d7 10\u201312"},
     {ex:"db-press", role:"comp"},
@@ -952,30 +1003,35 @@ const STRENGTH = {
     {ex:"lateral-raise", d:"3 \u00d7 12\u201315"}]},
   b:{name:"Full body B \u00b7 squat focus", slots:[
     {ex:["goblet","back-squat","back-squat"], role:"main"},
+    {ex:"y-raise", d:"3 \u00d7 10\u201312"},
     {ex:"leg-curl", role:"comp"},
     {ex:"pulldown", role:"comp"},
     {ex:"shoulder-press", role:"comp"},
     {ex:"face-pull", d:"3 \u00d7 15"}]},
   c:{name:"Full body C \u00b7 hinge focus", slots:[
     {ex:["db-rdl","rdl","rdl"], role:"main"},
+    {ex:"pushup-plus", d:"3 \u00d7 10\u201312"},
     {ex:"lunge", role:"comp", per:" / leg"},
     {ex:"incline-press", role:"comp"},
     {ex:"cable-row", role:"comp"},
-    {ex:"abduction", d:"3 \u00d7 15\u201320"},
+    {ex:"cable-hip-abduction", d:"3 \u00d7 12\u201315 / side"},
     {ex:"biceps", d:"2 \u00d7 10\u201312"},
     {ex:"triceps", d:"2 \u00d7 10\u201312"}]}
 };
-/* Two core exercises at the end of every session, done as a superset. */
+/* Two core exercises at the end of every session, done as a superset.
+   No crunches or other spinal curling (physio, Nov 2026). A is side-focused,
+   B front-focused, C loaded carries. Make each one harder when every set is
+   easy: more weight, a longer hold or a longer lever. */
 const CORE = {
-  1:{a:[["dead-bug","2 \u00d7 10 / side"],["pallof-press","2 \u00d7 10 / side"]],
-     b:[["plank","2 \u00d7 30\u201345 sec"],["side-plank","2 \u00d7 20\u201330 sec / side"]],
-     c:[["cable-crunch","2 \u00d7 12\u201315"],["carry","2 \u00d7 30\u201340 m"]]},
-  2:{a:[["cable-crunch","2 \u00d7 12\u201315"],["woodchopper","2 \u00d7 10 / side"]],
-     b:[["hanging-leg-raise","2 \u00d7 10"],["side-plank","2 \u00d7 30\u201340 sec / side"]],
-     c:[["dead-bug","2 \u00d7 12 / side"],["oblique-crunch","2 \u00d7 12 / side"]]},
-  3:{a:[["ab-wheel","2 \u00d7 8"],["pallof-press","2 \u00d7 12 / side"]],
-     b:[["hanging-leg-raise","2 \u00d7 12"],["woodchopper","2 \u00d7 12 / side"]],
-     c:[["cable-crunch","2 \u00d7 15"],["carry","2 \u00d7 40 m, heavier"]]}
+  1:{a:[["side-plank-dips","3 \u00d7 10 / side"],["pallof-split","3 \u00d7 10 / side"]],
+     b:[["rkc-plank","3 \u00d7 20\u201330 sec"],["bear-crawl","3 \u00d7 15\u201320 m"]],
+     c:[["suitcase-carry","3 \u00d7 30 m / side"],["weighted-dead-bug","3 \u00d7 8 / side"]]},
+  2:{a:[["copenhagen","3 \u00d7 15\u201325 sec / side, knee on bench"],["pallof-walkout","3 \u00d7 8 / side"]],
+     b:[["body-saw","3 \u00d7 8\u201310"],["renegade-row","3 \u00d7 6 / side"]],
+     c:[["suitcase-carry","3 \u00d7 40 m / side, heavier"],["weighted-dead-bug","3 \u00d7 10 / side"]]},
+  3:{a:[["copenhagen","3 \u00d7 20\u201330 sec / side, foot on bench"],["pallof-overhead","3 \u00d7 10 / side"]],
+     b:[["ab-wheel","3 \u00d7 8\u201310"],["plank-pull-through","3 \u00d7 10 / side"]],
+     c:[["front-rack-carry","3 \u00d7 40 m / side"],["weighted-dead-bug","3 \u00d7 10 / side, heavier"]]}
 };
 
 const PLAN_SESSIONS = [];
@@ -998,8 +1054,11 @@ PLAN_SESSIONS.push(
    note:"Any NTC HIIT session, 20\u201325 min. If sleep or energy is poor, walk instead. Tick the box when done.",
    items:[]},
   {id:"mobility-yoga", name:"Mobility / yoga", type:"mobility", src:"v3",
-   note:"About 30 min. An NTC yoga session instead of this list counts too.",
-   items:[{ex:"mobility",d:"15\u201320 min"},{ex:"hip-flexor-stretch",d:"2 \u00d7 45 sec / side"},{ex:"foam-roll",d:"5\u201310 min"}]},
+   note:"Hip mobility, about 25\u201330 min. An NTC yoga session instead of this list counts too.",
+   items:[{ex:"hip-cars",d:"2 \u00d7 3\u20135 each way / side"},{ex:"hip-90-90",d:"2 \u00d7 8 / side"},
+          {ex:"adductor-rockback",d:"2 \u00d7 10"},{ex:"hip-flexor-stretch",d:"2 \u00d7 45 sec / side"},
+          {ex:"figure-4",d:"2 \u00d7 45 sec / side"},{ex:"worlds-greatest",d:"2 \u00d7 5 / side"},
+          {ex:"deep-squat-hold",d:"2 \u00d7 30\u201345 sec"},{ex:"foam-roll",d:"5 min, optional"}]},
   {id:"short", name:"Short session (travel)", type:"strength", src:"v3",
    warm:"30 min with dumbbells or bands, for travel or a heavy week. Counts as a strength session.",
    items:[{ex:"goblet",d:"3 \u00d7 10\u201312"},{ex:"db-rdl",d:"3 \u00d7 10\u201312"},{ex:"pushup",d:"3 \u00d7 8\u201312"},
@@ -1076,11 +1135,26 @@ const SESSIONS = PLAN_SESSIONS.concat([
 ]);
 
 /* The default week, Sunday first. Change any day inside the app.
-   Sun A · Mon HIIT · Tue B · Wed mobility · Thu C · Fri HIIT · Sat rest */
+   Sun rest · Mon A · Tue HIIT · Wed B · Thu mobility · Fri C · Sat HIIT */
 function phaseOf(w){ return w <= 4 ? 1 : (w <= 8 ? 2 : 3); }
 function defaultWeek(w){
   const p = phaseOf(w);
-  return ["s-a" + p, "ntc-low", "s-b" + p, "mobility-yoga", "s-c" + p, "ntc", "rest"];
+  return ["rest", "s-a" + p, "ntc-low", "s-b" + p, "mobility-yoga", "s-c" + p, "ntc"];
+}
+/* Bump when defaultWeek changes. Days not yet used are re-planned on load. */
+const PLAN_V = 2;
+function replanUnused(){
+  if (store.planV === PLAN_V) return;
+  Object.keys(store.weeks).forEach(function(w){
+    Object.keys(store.weeks[w]).forEach(function(d){
+      const r = store.weeks[w][d];
+      /* Steps do not tie a day to a session, so they do not count as use. */
+      const used = r.done || (r.w && Object.keys(r.w).length) || (r.sub && Object.keys(r.sub).length);
+      if (!used) delete r.s;
+    });
+  });
+  store.planV = PLAN_V;
+  try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e){}
 }
 
 /* ------------------------------------------------------------------
@@ -1211,6 +1285,7 @@ function stepsOK(rec){ return stepsOf(rec) >= STEP_GOAL; }
 function sessionById(id){ return SESSIONS.filter(function(s){ return s.id === id; })[0] || null; }
 
 load();
+replanUnused();
 let view = currentWeek();
 
 /* ==================================================================
@@ -1243,7 +1318,12 @@ function thumbHTML(ex, cls){
       '<span class="play"></span><span class="own">yours</span></a>';
   }
   /* No video means no video — the HIIT section deliberately has none. */
-  if (!ex.v) return "";
+  /* New exercises carry a search link until a specific video is chosen. */
+  if (!ex.v){
+    if (!ex.sv) return "";
+    return '<a class="thumb search" target="_blank" rel="noopener" href="' + ytHref(ex.q) + '" ' +
+      'aria-label="Search YouTube for a ' + esc(ex.n) + ' video"><span>Find a<br>video</span></a>';
+  }
   return '<a class="thumb" target="_blank" rel="noopener" href="' + videoHref(ex) + '" ' +
     'aria-label="Watch a form video for ' + esc(ex.n) + '">' +
     '<img src="https://i.ytimg.com/vi/' + esc(ex.v) + '/mqdefault.jpg" alt="" loading="lazy" decoding="async">' +
