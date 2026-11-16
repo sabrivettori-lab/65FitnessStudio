@@ -300,6 +300,7 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
 .steps-input.ok{border-color:var(--forest);color:var(--forest);font-weight:700}
 .steps-goal{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
 .steps-goal.ok{color:var(--forest);font-weight:700}
+.blk-setup{display:block;margin-top:3px;font-weight:500;letter-spacing:.04em;text-transform:none;color:var(--ink-3);font-size:11px}
 .core-head{
   margin:16px 0 2px;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;
   text-transform:uppercase;color:var(--orange);
@@ -603,7 +604,8 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
         <li>Warm up: 5 min easy cardio, then 2&ndash;3 lighter build-up sets of the first lift.</li>
         <li>Keep 1&ndash;3 reps in reserve on most sets.</li>
         <li>Add weight when every set reaches the top of the rep range with at least 1 rep in reserve. Add the smallest step available.</li>
-        <li>Rest 90&ndash;120 sec on big lifts, 45&ndash;75 sec on smaller ones.</li>
+        <li>Supersets: one set of each exercise back to back, then rest 60&ndash;90 sec. Each card shows the setup for every block.</li>
+        <li>Rest 90&ndash;120 sec between sets of the main lift.</li>
         <li>The shoulder stabiliser (second on each card) goes in the rests between sets of the first lift.</li>
         <li>Core: the two exercises as a superset, 3 sets. A and C end with a slow bicycle (criss-cross) crunch; no other crunches. When every set is easy, make it harder: more weight, a longer hold or a longer lever.</li>
         <li>Check the body saw, ab wheel and world&rsquo;s greatest stretch with your physio before they come up.</li>
@@ -751,7 +753,8 @@ const LIBRARY = [
    {id:"cs-row", n:"Chest-supported row",         q:"chest supported row proper form", v:"0UBRfiO4zDs", src:"plan"},
    {id:"bent-over-row", n:"Bent-over row",               q:"barbell bent over row form heavy", v:"FWJR5Ve8bnQ", c:"Deep stable hinge, pull to the belly.", src:"prev"},
    {id:"chin-up", n:"Chin-ups (90° knees)",        q:"chin up form 90 degree knees", v:"7KG5UCkNU9U", c:"Band-assist if needed.", src:"prev"},
-   {id:"pullup", n:"Assisted pull-up",            q:"assisted pull up machine form", v:"wFj808u2HWU", src:"plan"},
+   {id:"pullup", n:"Assisted pull-up (band)",     q:"band assisted pull up proper form", sv:true, noload:true, src:"plan",
+                            c:"Loop a band over the bar under a knee or foot. Use the lightest band that lets you reach the reps."},
    {id:"face-pull", n:"Face pull",                   q:"cable face pull proper form", v:"ljgqer1ZpXg", src:"plan"},
    {id:"y-raise", n:"Bench supine Y raise",        q:"bench supine Y raise prone", v:"7NaNt-txiqc", c:"Lower trap and rear delt.", src:"prev"},
    {id:"cable-y-raise", n:"Bench supine cable Y raise",  q:"supine cable Y raise bench shoulder", v:"oDSGrucETfw", src:"prev"},
@@ -992,32 +995,49 @@ const WARM_UP = "5 min easy cardio. Hips: hip circles 5 each way per side, 90/90
 
 /* role "main" or "comp" takes the phase's dose; d is a fixed dose.
    ex can be a list of three, one per phase. */
+/* Each session is a run of blocks. Block 1 is the main lift on its own, with
+   the shoulder stabiliser done in its rests. The other blocks are supersets:
+   one set of each, back to back, then rest. A superset never holds two cable
+   exercises or two bench angles, so nothing is re-rigged mid-superset, and it
+   pairs upper with lower or push with pull. "setup" is shown on the card. */
 const STRENGTH = {
-  a:{name:"Full body A \u00b7 glutes focus", slots:[
-    {ex:"hip-thrust", role:"main"},
-    {ex:"cable-ext-rot", d:"3 \u00d7 12\u201315 / side"},
-    {ex:"bulgarian", role:"comp", per:" / leg"},
-    {ex:"leg-curl", d:"2 \u00d7 12\u201315"},
-    {ex:"db-press", role:"comp"},
-    {ex:"cs-row", role:"comp"},
-    {ex:"lateral-raise", d:"3 \u00d7 12\u201315"}]},
-  b:{name:"Full body B \u00b7 squat focus", slots:[
-    {ex:["goblet","back-squat","back-squat"], role:"main"},
-    {ex:"y-raise", d:"3 \u00d7 10\u201312"},
-    {ex:"leg-curl", role:"comp"},
-    {ex:"pulldown", role:"comp"},
-    {ex:"shoulder-press", role:"comp"},
-    {ex:"face-pull", d:"3 \u00d7 15"}]},
-  c:{name:"Full body C \u00b7 hinge focus", slots:[
-    {ex:["db-rdl","rdl","rdl"], role:"main"},
-    {ex:"pushup-plus", d:"3 \u00d7 10\u201312"},
-    {ex:"lunge", role:"comp", per:" / leg"},
-    {ex:"incline-press", role:"comp"},
-    {ex:"cable-row", role:"comp"},
-    {ex:"cable-hip-abduction", d:"3 \u00d7 12\u201315 / side"},
-    {ex:"biceps", d:"2 \u00d7 10\u201312"},
-    {ex:"triceps", d:"2 \u00d7 10\u201312"}]}
+  a:{name:"Full body A \u00b7 glutes focus", blocks:[
+    {label:"Main lift \u00b7 stabiliser in the rests", setup:"Bench flat \u00b7 cable handle at elbow height", slots:[
+      {ex:"hip-thrust", role:"main"},
+      {ex:"cable-ext-rot", d:"3 \u00d7 12\u201315 / side"}]},
+    {label:"Superset", setup:"Bench flat \u00b7 dumbbells", slots:[
+      {ex:"bulgarian", role:"comp", per:" / leg"},
+      {ex:"lateral-raise", d:"3 \u00d7 12\u201315"}]},
+    {label:"Superset", setup:"Bench flat \u00b7 cable ankle strap, low", slots:[
+      {ex:"db-press", role:"comp"},
+      {ex:"leg-curl", d:"2 \u00d7 12\u201315"}]},
+    {label:"Straight sets", setup:"Bench to incline", slots:[
+      {ex:"cs-row", role:"comp"}]}]},
+  b:{name:"Full body B \u00b7 squat focus", blocks:[
+    {label:"Main lift \u00b7 stabiliser in the rests", setup:"Bench incline for the Y raise", slots:[
+      {ex:["goblet","back-squat","back-squat"], role:"main"},
+      {ex:"y-raise", d:"3 \u00d7 10\u201312"}]},
+    {label:"Superset", setup:"Pull-up bar and band \u00b7 cable ankle strap, low", slots:[
+      {ex:"pullup", d:"3 \u00d7 6\u201310"},
+      {ex:"leg-curl", role:"comp"}]},
+    {label:"Superset", setup:"Dumbbells \u00b7 cable rope, high", slots:[
+      {ex:"shoulder-press", role:"comp"},
+      {ex:"face-pull", d:"3 \u00d7 15"}]}]},
+  c:{name:"Full body C \u00b7 hinge focus", blocks:[
+    {label:"Main lift \u00b7 stabiliser in the rests", setup:"Floor space for the push-up plus", slots:[
+      {ex:["db-rdl","rdl","rdl"], role:"main"},
+      {ex:"pushup-plus", d:"3 \u00d7 10\u201312"}]},
+    {label:"Superset", setup:"Dumbbells \u00b7 cable handle, mid height", slots:[
+      {ex:"lunge", role:"comp", per:" / leg"},
+      {ex:"cable-row", role:"comp"}]},
+    {label:"Superset", setup:"Bench incline \u00b7 cable ankle strap, low", slots:[
+      {ex:"incline-press", role:"comp"},
+      {ex:"cable-hip-abduction", d:"3 \u00d7 12\u201315 / side"}]},
+    {label:"Superset", setup:"Dumbbells \u00b7 cable rope, high", slots:[
+      {ex:"biceps", d:"2 \u00d7 10\u201312"},
+      {ex:"triceps", d:"2 \u00d7 10\u201312"}]}]}
 };
+const CORE_SETUP = {a:"Floor \u00b7 cable handle at chest height for the Pallof", b:"Floor", c:"Floor \u00b7 dumbbells"};
 /* Two core exercises at the end of every session, done as a superset.
    Crunches limited on physio advice (Nov 2026): only a slow bicycle crunch
    on A and C (CRUNCH_DAYS). A is side-focused,
@@ -1043,11 +1063,19 @@ const PLAN_SESSIONS = [];
 PHASES.forEach(function(ph){
   ["a","b","c"].forEach(function(k){
     const t = STRENGTH[k];
-    const items = t.slots.map(function(sl){
-      const ex = Array.isArray(sl.ex) ? sl.ex[ph.n - 1] : sl.ex;
-      return {ex:ex, d: sl.d || ((sl.role === "main" ? ph.main : ph.comp) + (sl.per || ""))};
-    }).concat(CORE[ph.n][k].map(function(c){ return {ex:c[0], d:c[1], core:true}; }))
-      .concat(CRUNCH_DAYS.indexOf(k) > -1 ? [{ex:"bicycle-crunch", d:CRUNCH_DOSE, core:true}] : []);
+    const items = [];
+    t.blocks.forEach(function(bl, bi){
+      bl.slots.forEach(function(sl, si){
+        const ex = Array.isArray(sl.ex) ? sl.ex[ph.n - 1] : sl.ex;
+        items.push({ex:ex, d: sl.d || ((sl.role === "main" ? ph.main : ph.comp) + (sl.per || "")),
+                    blk: si === 0 ? {label:(bi + 1) + " \u00b7 " + bl.label, setup:bl.setup} : null});
+      });
+    });
+    items.push.apply(items, CORE[ph.n][k].map(function(c, ci){
+      return {ex:c[0], d:c[1], core:true,
+              blk: ci === 0 ? {label:(t.blocks.length + 1) + " \u00b7 Core superset", setup:CORE_SETUP[k]} : null};
+    }));
+    if (CRUNCH_DAYS.indexOf(k) > -1) items.push({ex:"bicycle-crunch", d:CRUNCH_DOSE, core:true});
     PLAN_SESSIONS.push({id:"s-" + k + ph.n, name:t.name, type:"strength", src:"v3", phase:ph.n,
                         warm:WARM_UP, items:items});
   });
@@ -1623,13 +1651,14 @@ function renderDays(){
 
     let body = "";
     if (ses){
-      let coreShown = false;
       const intro = ses.warm
         ? '<div class="cardio"><strong>Warm-up</strong>' + esc(ses.warm) + "</div>"
         : (ses.note ? '<div class="cardio"><strong>' + (ses.type === "hiit" ? "NTC" : "Note") + "</strong>" + esc(ses.note) + "</div>" : "");
       body = intro + ses.items.map(function(item){
-        const coreHead = (item.core && !coreShown) ? '<div class="core-head">Core \u00b7 superset</div>' : "";
-        if (item.core) coreShown = true;
+        const coreHead = item.blk
+          ? '<div class="core-head">' + esc(item.blk.label) +
+            (item.blk.setup ? '<span class="blk-setup">' + esc(item.blk.setup) + "</span>" : "") + "</div>"
+          : "";
         const ex = effective(rec, item);
         const isSub = !!rec.sub[item.ex] && rec.sub[item.ex] !== item.ex;
         const last = lastWeight(view, i, ex.id);

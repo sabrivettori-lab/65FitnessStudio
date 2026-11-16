@@ -34,6 +34,14 @@ each phase.
 | 2 · Strength | 5–8 | 4 × 6–8 | 3 × 8–10 |
 | 3 · Heavy | 9–12 | 4 × 5–6 | 3 × 10–15 |
 
+**Supersets and setup.** Each session is a run of numbered blocks. Block 1 is
+the main lift, with the shoulder stabiliser in its rests. The rest are supersets
+(one set of each, back to back, then rest 60–90 s). A superset never holds two
+cable exercises or two bench angles, so nothing is re-rigged mid-superset, and it
+pairs upper with lower or push with pull. Each block header on the card names the
+setup (bench angle, cable attachment and height). Day B uses a band-assisted
+pull-up on the bar in place of the lat pulldown.
+
 **Shoulder stabilisers.** Each session has one, done in the rests between sets
 of the first lift: cable external rotation (A), bench Y raise (B), push-up plus
 (C). The warm-up adds band pull-aparts and wall slides.
