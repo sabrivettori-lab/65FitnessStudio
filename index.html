@@ -288,6 +288,31 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
 .walkdone input:checked{background:var(--forest);border-color:var(--forest)}
 .walkdone input:checked::after{content:"\2713";color:var(--white);font-size:13px;font-weight:900}
 .walkdone input:checked ~ span{color:var(--forest)}
+.steps-row{
+  display:flex;align-items:center;gap:10px;margin-top:14px;padding:12px 15px;border-radius:12px;
+  background:rgba(43,82,52,.06);border-left:3px solid var(--forest);
+}
+.steps-row label{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--forest)}
+.steps-input{
+  width:96px;padding:8px 10px;border:1px solid rgba(21,18,16,.2);border-radius:8px;
+  font-family:var(--mono);font-size:15px;background:var(--white);color:var(--ink);
+}
+.steps-input.ok{border-color:var(--forest);color:var(--forest);font-weight:700}
+.steps-goal{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.steps-goal.ok{color:var(--forest);font-weight:700}
+.core-head{
+  margin:16px 0 2px;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--orange);
+}
+.phase-line{margin:12px 0 4px;font-size:13px;color:var(--ink-2)}
+.phase-line b{color:var(--burgundy)}
+.fold > summary{cursor:pointer;list-style:none;margin-bottom:0;padding:6px 0}
+.fold > summary::-webkit-details-marker{display:none}
+.fold > summary::after{content:'\25B8';margin-left:auto;color:var(--ink-3);font-size:13px;transition:transform .15s}
+.fold[open] > summary::after{transform:rotate(90deg)}
+.fold[open] > summary{margin-bottom:12px}
+.fold .stat{margin-bottom:14px}
+#plan{margin-top:6px}
 .restnote{padding:16px 0 6px;color:var(--ink-3);font-size:14px;font-style:italic;font-family:var(--serif)}
 
 /* ---------- exercise library ---------- */
@@ -536,67 +561,75 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
     <div class="day-label" id="todayLabel">Today</div>
     <h1 class="title"><span class="accent">65</span><br><span class="ink">Fitness</span><br>Studio</h1>
     <div class="meta-row">
-      <span>4 strength</span><span class="dot"></span>
-      <span>1 light full body</span><span class="dot"></span>
-      <span>1 HIIT</span><span class="dot"></span>
-      <span>daily incline walk</span>
-    </div>
-    <div class="stats">
-      <div class="stat"><div class="stat-num" id="weeksDone">0 of 12</div><div class="stat-label">Weeks completed</div></div>
+      <span>3 strength</span><span class="dot"></span>
+      <span>2 HIIT (NTC)</span><span class="dot"></span>
+      <span>1 mobility</span><span class="dot"></span>
+      <span>6,000 steps a day</span>
     </div>
   </header>
 
   <section class="band">
-    <div class="band-head">The block</div>
+    <div class="band-head">This week</div>
     <div class="panel">
-      <div class="weeks" id="weeks" role="group" aria-label="Jump to a week"></div>
       <div class="weeknav">
         <button id="prev" type="button" aria-label="Previous week">&lsaquo;</button>
         <div class="label"><b id="weekTitle"></b><span id="weekDates"></span></div>
         <button id="next" type="button" aria-label="Next week">&rsaquo;</button>
       </div>
       <button class="backtoday" id="backToday" type="button" hidden>Back to this week</button>
-      <p class="weekbar" id="weekbar"></p>
-      <div class="meter"><i id="meter"></i></div>
+      <p class="phase-line" id="phaseLine"></p>
       <div class="targets" id="targets"></div>
     </div>
-  </section>
-
-  <section class="band">
-    <div class="band-head">The week</div>
     <div id="plan"></div>
   </section>
 
-  <section class="band">
-    <div class="band-head">Exercise library</div>
+  <details class="band fold">
+    <summary class="band-head">The 12 weeks</summary>
+    <div class="panel">
+      <div class="stat"><div class="stat-num" id="weeksDone">0 of 12</div><div class="stat-label">Weeks completed</div></div>
+      <div class="weeks" id="weeks" role="group" aria-label="Jump to a week"></div>
+      <p class="weekbar" id="weekbar"></p>
+      <div class="meter"><i id="meter"></i></div>
+    </div>
+  </details>
+
+  <details class="band fold">
+    <summary class="band-head">Training rules</summary>
+    <div class="callout">
+      <h3>Every session</h3>
+      <ul>
+        <li>Warm up: 5 min easy cardio, then 2&ndash;3 lighter build-up sets of the first lift.</li>
+        <li>Keep 1&ndash;3 reps in reserve on most sets.</li>
+        <li>Add weight when every set reaches the top of the rep range with at least 1 rep in reserve. Add the smallest step available.</li>
+        <li>Rest 90&ndash;120 sec on big lifts, 45&ndash;75 sec on smaller ones. Do the two core exercises as a superset.</li>
+        <li>Log the heaviest set you managed. One number per exercise.</li>
+      </ul>
+      <h3>Every week</h3>
+      <ul>
+        <li>Weeks 4 and 8 are lighter: same exercises, same weights, about half the sets. The app shows the reduced sets.</li>
+        <li>Monday HIIT: choose a low-impact NTC session, 20&ndash;25 min. It follows a leg day.</li>
+        <li>If sleep or energy is poor, swap HIIT for a walk.</li>
+        <li>When the week gets busy, the order is: strength, then steps, then HIIT, then mobility.</li>
+        <li>Missed a strength session? Do it in the next HIIT slot. Travelling? Use the Short session.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="band fold">
+    <summary class="band-head">Exercise library</summary>
     <div class="panel">
       <p class="legend">
-        <span class="tag plan">Plan</span> in your 12-week plan
-        <span class="tag prev">Previous</span> from your earlier app
-        <span class="tag new">Added</span> in neither plan
+        <span class="tag plan">Plan</span> in the earlier 12-week plan
+        <span class="tag prev">Previous</span> from your first app
+        <span class="tag new">Added</span> in neither
       </p>
       <input class="lib-search" id="libSearch" type="search" placeholder="Search the library…" aria-label="Search exercises">
       <div id="library"></div>
     </div>
-  </section>
+  </details>
 
-  <section class="band">
-    <div class="band-head">Training rules</div>
-    <div class="callout">
-      <h3>Every week</h3>
-      <ul>
-        <li>Keep 1&ndash;3 reps in reserve on most strength sets.</li>
-        <li>Rest 90&ndash;120 sec on big lifts, 45&ndash;75 sec on smaller ones.</li>
-        <li>Log the heaviest set you managed. One number per exercise.</li>
-        <li>Hold or slowly add weight while dieting. Holding is a win.</li>
-        <li>Incline walking should feel brisk but sustainable, never wrecking.</li>
-        <li>One HIIT session a week to start. Add a second only once that feels easy.</li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="band">
-    <div class="band-head">Back up your data</div>
+  <details class="band fold">
+    <summary class="band-head">Back up your data</summary>
     <div class="panel">
       <p class="fineprint">Your logs are saved in this phone's browser, not on GitHub. Tap Export every week or so and keep the file somewhere safe. If you change phone or clear Safari, Import restores it.</p>
       <button class="btn primary" id="export" type="button">Export<small>Download a backup file</small></button>
@@ -609,9 +642,9 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
       <button class="btn" id="wipe" type="button">Erase all 12 weeks</button>
       <p id="status" role="status"></p>
     </div>
-  </section>
+  </details>
 
-  <div class="footer">TAP &#9654; FOR A FORM VIDEO &middot; THE WEEK RUNS SUNDAY TO SATURDAY<br>BUILD 2026-09-11 &middot; 135 EXERCISES</div>
+  <div class="footer">TAP &#9654; FOR A FORM VIDEO &middot; THE WEEK RUNS SUNDAY TO SATURDAY<br>BUILD 2026-11-16 &middot; 135 EXERCISES</div>
 </div>
 
 <div class="sheet" id="clipSheet" hidden role="dialog" aria-modal="true" aria-label="Clip player">
@@ -766,9 +799,9 @@ const LIBRARY = [
    {id:"cable-crunch", n:"Cable crunch",                q:"cable crunch kneeling rope", v:"3qjoXDTuyOE", c:"Kneel facing the cable, rope behind the head.", src:"plan"},
    {id:"hanging-leg-raise", n:"Hanging leg raise",           q:"hanging leg raise form", v:"Pr1ieGZ5atk", c:"Bent knees if strict is hard.", src:"prev"},
    {id:"russian-twist", n:"Russian twists",              q:"russian twist abs form", v:"fCHFQTBqm-U", c:"Feet up, rotate slowly.", src:"prev"},
-   {id:"plank", n:"Plank",                       q:"front plank proper form", v:"F-nQ_KJgfCY", noload:true, src:"plan", hold:{work:45, rest:30, rounds:3, warmup:0, cooldown:0}},
+   {id:"plank", n:"Plank",                       q:"front plank proper form", v:"F-nQ_KJgfCY", noload:true, src:"plan", hold:{work:45, rest:30, rounds:2, warmup:0, cooldown:0}},
    {id:"dead-bug", n:"Dead bug",                    q:"dead bug exercise proper form", v:"4XLEnwUr1d8", noload:true, src:"plan"},
-   {id:"side-plank", n:"Side plank",                  q:"side plank proper form", v:"XeN4pEZZJNI", noload:true, src:"new", hold:{work:30, rest:30, rounds:3, warmup:0, cooldown:0}},
+   {id:"side-plank", n:"Side plank",                  q:"side plank proper form", v:"XeN4pEZZJNI", noload:true, src:"new", hold:{work:30, rest:30, rounds:2, warmup:0, cooldown:0}},
    {id:"pallof-press", n:"Pallof press",                q:"pallof press proper form", v:"_2xWmYNnFS8", src:"new"},
    {id:"ab-wheel", n:"Ab wheel rollout",            q:"ab wheel rollout beginner form", v:"A3uK5TPzHq8", noload:true, src:"new"},
    {id:"carry", n:"Farmer carry",                q:"farmer carry proper form", v:"p5MNNosenJc", src:"plan"},
@@ -889,7 +922,92 @@ LIBRARY.forEach(function(sec){
    src "new"  = your friend's current 12-week plan
    src "prev" = the workouts from your earlier app, kept so nothing is lost
    ================================================================== */
-const SESSIONS = [
+/* ------------------------------------------------------------------
+   THE CURRENT PLAN (from 15 Nov 2026)
+   Three full-body strength sessions. The exercises stay the same for all
+   12 weeks so the weight can go up; what changes by phase is sets and reps.
+   Two exceptions: the squat and the hinge start on dumbbells for four weeks
+   and move to the barbell from week 5. The core pair changes each phase.
+   HIIT is done in the Nike Training Club app, so here it is a tick only.
+   ------------------------------------------------------------------ */
+const PHASES = [
+  {n:1, name:"Base",     weeks:[1,4],  main:"3 \u00d7 10\u201312", comp:"3 \u00d7 10\u201312"},
+  {n:2, name:"Strength", weeks:[5,8],  main:"4 \u00d7 6\u20138",   comp:"3 \u00d7 8\u201310"},
+  {n:3, name:"Heavy",    weeks:[9,12], main:"4 \u00d7 5\u20136",   comp:"3 \u00d7 10\u201315"}
+];
+/* Lighter weeks: same exercises and weights, about half the sets. */
+const DELOAD_WEEKS = [4, 8];
+const STEP_GOAL = 6000;
+const WARM_UP = "5 min easy cardio, then 2\u20133 lighter build-up sets of the first lift.";
+
+/* role "main" or "comp" takes the phase's dose; d is a fixed dose.
+   ex can be a list of three, one per phase. */
+const STRENGTH = {
+  a:{name:"Full body A \u00b7 glutes focus", slots:[
+    {ex:"hip-thrust", role:"main"},
+    {ex:"bulgarian", role:"comp", per:" / leg"},
+    {ex:"back-extension", d:"2 \u00d7 10\u201312"},
+    {ex:"db-press", role:"comp"},
+    {ex:"cs-row", role:"comp"},
+    {ex:"lateral-raise", d:"3 \u00d7 12\u201315"}]},
+  b:{name:"Full body B \u00b7 squat focus", slots:[
+    {ex:["goblet","back-squat","back-squat"], role:"main"},
+    {ex:"leg-curl", role:"comp"},
+    {ex:"pulldown", role:"comp"},
+    {ex:"shoulder-press", role:"comp"},
+    {ex:"face-pull", d:"3 \u00d7 15"}]},
+  c:{name:"Full body C \u00b7 hinge focus", slots:[
+    {ex:["db-rdl","rdl","rdl"], role:"main"},
+    {ex:"lunge", role:"comp", per:" / leg"},
+    {ex:"incline-press", role:"comp"},
+    {ex:"cable-row", role:"comp"},
+    {ex:"abduction", d:"3 \u00d7 15\u201320"},
+    {ex:"biceps", d:"2 \u00d7 10\u201312"},
+    {ex:"triceps", d:"2 \u00d7 10\u201312"}]}
+};
+/* Two core exercises at the end of every session, done as a superset. */
+const CORE = {
+  1:{a:[["dead-bug","2 \u00d7 10 / side"],["pallof-press","2 \u00d7 10 / side"]],
+     b:[["plank","2 \u00d7 30\u201345 sec"],["side-plank","2 \u00d7 20\u201330 sec / side"]],
+     c:[["cable-crunch","2 \u00d7 12\u201315"],["carry","2 \u00d7 30\u201340 m"]]},
+  2:{a:[["cable-crunch","2 \u00d7 12\u201315"],["woodchopper","2 \u00d7 10 / side"]],
+     b:[["hanging-leg-raise","2 \u00d7 10"],["side-plank","2 \u00d7 30\u201340 sec / side"]],
+     c:[["dead-bug","2 \u00d7 12 / side"],["oblique-crunch","2 \u00d7 12 / side"]]},
+  3:{a:[["ab-wheel","2 \u00d7 8"],["pallof-press","2 \u00d7 12 / side"]],
+     b:[["hanging-leg-raise","2 \u00d7 12"],["woodchopper","2 \u00d7 12 / side"]],
+     c:[["cable-crunch","2 \u00d7 15"],["carry","2 \u00d7 40 m, heavier"]]}
+};
+
+const PLAN_SESSIONS = [];
+PHASES.forEach(function(ph){
+  ["a","b","c"].forEach(function(k){
+    const t = STRENGTH[k];
+    const items = t.slots.map(function(sl){
+      const ex = Array.isArray(sl.ex) ? sl.ex[ph.n - 1] : sl.ex;
+      return {ex:ex, d: sl.d || ((sl.role === "main" ? ph.main : ph.comp) + (sl.per || ""))};
+    }).concat(CORE[ph.n][k].map(function(c){ return {ex:c[0], d:c[1], core:true}; }));
+    PLAN_SESSIONS.push({id:"s-" + k + ph.n, name:t.name, type:"strength", src:"v3", phase:ph.n,
+                        warm:WARM_UP, items:items});
+  });
+});
+PLAN_SESSIONS.push(
+  {id:"ntc-low", name:"HIIT \u00b7 NTC, low impact", type:"hiit", src:"v3",
+   note:"Choose a low-impact NTC session, 20\u201325 min. It follows a leg day, so skip jump-heavy ones. Tick the box when done.",
+   items:[]},
+  {id:"ntc", name:"HIIT \u00b7 NTC", type:"hiit", src:"v3",
+   note:"Any NTC HIIT session, 20\u201325 min. If sleep or energy is poor, walk instead. Tick the box when done.",
+   items:[]},
+  {id:"mobility-yoga", name:"Mobility / yoga", type:"mobility", src:"v3",
+   note:"About 30 min. An NTC yoga session instead of this list counts too.",
+   items:[{ex:"mobility",d:"15\u201320 min"},{ex:"hip-flexor-stretch",d:"2 \u00d7 45 sec / side"},{ex:"foam-roll",d:"5\u201310 min"}]},
+  {id:"short", name:"Short session (travel)", type:"strength", src:"v3",
+   warm:"30 min with dumbbells or bands, for travel or a heavy week. Counts as a strength session.",
+   items:[{ex:"goblet",d:"3 \u00d7 10\u201312"},{ex:"db-rdl",d:"3 \u00d7 10\u201312"},{ex:"pushup",d:"3 \u00d7 8\u201312"},
+          {ex:"single-arm-row",d:"3 \u00d7 10 / side"},{ex:"plank",d:"2 \u00d7 30\u201345 sec"}]}
+);
+
+/* ---- the earlier 12-week plan and the first app, kept so nothing is lost ---- */
+const SESSIONS = PLAN_SESSIONS.concat([
   {id:"lower-glutes", name:"Lower Body / Glutes", type:"strength", src:"new",
    cardio:"Incline walk: 25 min • 7–10% incline • comfortable brisk pace",
    items:[{ex:"hip-thrust",d:"4 × 8–10"},{ex:"rdl",d:"3 × 8–10"},{ex:"bulgarian",d:"3 × 10 / leg"},
@@ -955,10 +1073,15 @@ const SESSIONS = [
    cardio:"8 × 30 sec hard / 60 sec easy",
    items:[{ex:"hiit-bodyweight",d:"8 rounds"},{ex:"cable-crunch",d:"3 × 12–15"},{ex:"hanging-leg-raise",d:"3 × 10–12"},
           {ex:"russian-twist",d:"3 × 20"},{ex:"plank",d:"3 × 45–60 sec"}]}
-];
+]);
 
-/* The default week, Sunday first. Change any day inside the app. */
-const DEFAULT_WEEK = ["lower-glutes","upper","hiit-core","lower-legs","upper-shape","full-body","recovery"];
+/* The default week, Sunday first. Change any day inside the app.
+   Sun A · Mon HIIT · Tue B · Wed mobility · Thu C · Fri HIIT · Sat rest */
+function phaseOf(w){ return w <= 4 ? 1 : (w <= 8 ? 2 : 3); }
+function defaultWeek(w){
+  const p = phaseOf(w);
+  return ["s-a" + p, "ntc-low", "s-b" + p, "mobility-yoga", "s-c" + p, "ntc", "rest"];
+}
 
 /* ------------------------------------------------------------------
    WEEK OVERRIDES — the same week repeats for all 12 weeks unless a week
@@ -977,7 +1100,7 @@ const BLOCK_WEEKS = 12;
 /* The Sunday week 1 starts on. Declared rather than guessed, so every device
    agrees instead of each one dating the block from whenever it first opened
    the app. The Change start date button still overrides it. */
-const BLOCK_START = "2026-09-13";
+const BLOCK_START = "2026-11-15";
 const DAY_NAMES = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
 /* ==================================================================
@@ -1005,20 +1128,46 @@ function currentWeek(){
      weeks:{ "<1-12>":{ "<0-6>":{ s:sessionId|"rest", done:0|1,
                                   w:{exId:"kg"}, sub:{slotExId:exId} } } } }
    ================================================================== */
-const KEY = "r2-65:block-v2";
+const KEY = "r2-65:block-v3";
+/* The block that ran 13 Sep to 5 Dec 2026. Left untouched in the browser;
+   only its last weight per exercise is read, so "Last time" carries over. */
+const OLD_KEY = "r2-65:block-v2";
+function carryFromOld(){
+  try {
+    const old = JSON.parse(localStorage.getItem(OLD_KEY));
+    if (!old || !old.weeks) return {};
+    const start = parseISO(old.start || "2026-09-13");
+    const out = {};
+    Object.keys(old.weeks).map(Number).sort(function(x, y){ return x - y; }).forEach(function(w){
+      for (let d = 0; d < 7; d++){
+        const r = old.weeks[w][d];
+        if (!r || !r.w) continue;
+        Object.keys(r.w).forEach(function(id){
+          if (r.w[id]) out[id] = {kg:r.w[id], when:fmt(addDays(start, (w - 1) * 7 + d))};
+        });
+      }
+    });
+    return out;
+  } catch(e){ return {}; }
+}
 let store = null;
 
 function logIsEmpty(){
   const wk = store.weeks || {};
   for (const w in wk) for (const d in wk[w]){
     const r = wk[w][d];
-    if (r.done || r.walk || (r.w && Object.keys(r.w).length)) return false;
+    if (r.done || r.walk || r.steps || (r.w && Object.keys(r.w).length)) return false;
   }
   return true;
 }
 function load(){
   try { store = JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e){ store = {}; }
   if (!store.weeks) store.weeks = {};
+  store.v = 3;
+  if (!store.carry){
+    store.carry = carryFromOld();
+    try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e){}
+  }
   if (!store.start){
     store.start = BLOCK_START;
   } else if (store.start !== BLOCK_START && logIsEmpty()){
@@ -1042,16 +1191,23 @@ function dayRec(w, i){
   if (!r.w) r.w = {};
   if (!r.sub) r.sub = {};
   if (!r.walk) r.walk = 0;
+  if (r.steps === undefined) r.steps = "";
   if (!r.routine) r.routine = "rotate";
   if (!r.rounds) r.rounds = {};
   if (!r.format) r.format = "circuit";
   return r;
 }
-function planFor(w){ const o = WEEK_OVERRIDES[w]; return (o && o.days) ? o.days : DEFAULT_WEEK; }
+function planFor(w){ const o = WEEK_OVERRIDES[w]; return (o && o.days) ? o.days : defaultWeek(w); }
+function isDeload(w){ return DELOAD_WEEKS.indexOf(w) > -1; }
 function doseFor(w, item){
   const o = WEEK_OVERRIDES[w];
-  return (o && o.dose && o.dose[item.ex]) ? o.dose[item.ex] : item.d;
+  let d = (o && o.dose && o.dose[item.ex]) ? o.dose[item.ex] : item.d;
+  /* A lighter week halves the sets, rounding up. Reps and weight stay. */
+  if (isDeload(w)) d = String(d).replace(/^\s*(\d+)\s*\u00d7/, function(m, n){ return Math.ceil(Number(n) / 2) + " \u00d7"; });
+  return d;
 }
+function stepsOf(rec){ return Number(String(rec.steps || "").replace(/[^\d]/g, "")) || 0; }
+function stepsOK(rec){ return stepsOf(rec) >= STEP_GOAL; }
 function sessionById(id){ return SESSIONS.filter(function(s){ return s.id === id; })[0] || null; }
 
 load();
@@ -1116,7 +1272,8 @@ function lastWeight(w, i, exId){
       if (r && r.w && r.w[exId]) return { kg:r.w[exId], when:fmt(dayDate(ww, dd)) };
     }
   }
-  return null;
+  const c = store.carry && store.carry[exId];
+  return c ? { kg:c.kg, when:c.when + " (last block)" } : null;
 }
 function weekCount(w){
   const days = store.weeks[w];
@@ -1144,20 +1301,21 @@ function totalDone(){
    Targets follow whatever is assigned to the days, so putting a rest day in
    lowers the target rather than leaving her short of an impossible one. */
 const TARGET_ROWS = [
-  {k:"strength", label:"Strength sessions"},
-  {k:"hiit",     label:"HIIT sessions"},
+  {k:"strength", label:"Strength"},
+  {k:"hiit",     label:"HIIT (NTC)"},
+  {k:"mobility", label:"Mobility / yoga"},
   {k:"light",    label:"Light and recovery"},
-  {k:"walk",     label:"Incline walks"}
+  {k:"steps",    label:"Days at 6,000 steps"}
 ];
 function weekTargets(w){
   /* The walk is a daily habit, so its target is always seven — a rest day is
      still a walking day. Session targets follow what the week is set to. */
-  const t = {strength:{d:0,t:0}, hiit:{d:0,t:0}, light:{d:0,t:0}, walk:{d:0,t:7}};
+  const t = {strength:{d:0,t:0}, hiit:{d:0,t:0}, mobility:{d:0,t:0}, light:{d:0,t:0}, steps:{d:0,t:7}};
   const days = store.weeks[w] || {};
   for (let i = 0; i < 7; i++){
     const rec = days[i] || {};
     const sid = (rec.s !== undefined) ? rec.s : planFor(w)[i];
-    if (rec.walk) t.walk.d++;
+    if (stepsOK(rec)) t.steps.d++;
     if (sid === "rest") continue;
     const ses = sessionById(sid);
     if (!ses) continue;
@@ -1206,12 +1364,16 @@ function renderWeeks(){
     if (w === view) b.setAttribute("aria-current", "true");
     b.setAttribute("aria-label", "Week " + w + ", " + n + " of " + t + " done");
     b.addEventListener("click", function(){
-      view = w; openDays.clear(); renderAll(); window.scrollTo({top:0, behavior:"smooth"});
+      view = w; openToday(); renderAll(); window.scrollTo({top:0, behavior:"smooth"});
     });
     weeksEl.appendChild(b);
   }
   const s = weekStart(view), e = addDays(s, 6);
   el("weekTitle").textContent = "Week " + view + (view === cur ? " · this week" : "");
+  const ph = PHASES[phaseOf(view) - 1];
+  el("phaseLine").innerHTML = "<b>Phase " + ph.n + " \u00b7 " + esc(ph.name) + "</b> \u00b7 weeks " +
+    ph.weeks[0] + "\u2013" + ph.weeks[1] +
+    (isDeload(view) ? "<br>Lighter week: about half the sets, same weights." : "");
   el("weekDates").textContent = fmt(s) + " – " + fmt(e);
   el("prev").disabled = view === 1;
   el("next").disabled = view === BLOCK_WEEKS;
@@ -1327,6 +1489,13 @@ function libraryOptions(selectedId){
 /* Which day cards are expanded. Kept outside the render so ticking a box or
    swapping an exercise does not fold the session shut under her. */
 let openDays = new Set();
+/* The current week opens with today's card already expanded. */
+function openToday(){
+  openDays.clear();
+  if (view !== currentWeek()) return;
+  const t = Math.round((parseISO(todayISO()) - weekStart(view)) / 86400000);
+  if (t >= 0 && t < 7) openDays.add(t);
+}
 
 function renderDays(){
   planEl.innerHTML = "";
@@ -1342,23 +1511,39 @@ function renderDays(){
     const card = document.createElement("section");
     card.className = "day" + (rec.done ? " done" : "") + (isToday ? " today" : "") + (isOpen ? " open" : "");
 
-    const newOpts = SESSIONS.filter(function(s){ return s.src === "new" && s.id !== "long-walk"; }).map(function(s){
-      return '<option value="' + s.id + '"' + (s.id === rec.s ? " selected" : "") + ">" + esc(s.name) + "</option>";
-    }).join("");
-    const oldOpts = SESSIONS.filter(function(s){ return s.src === "prev"; }).map(function(s){
-      return '<option value="' + s.id + '"' + (s.id === rec.s ? " selected" : "") + ">" + esc(s.name) + "</option>";
-    }).join("");
+    const curPhase = phaseOf(view);
+    const optOf = function(s, label){
+      return '<option value="' + s.id + '"' + (s.id === rec.s ? " selected" : "") + ">" + esc(label || s.name) + "</option>";
+    };
+    const thisOpts = SESSIONS.filter(function(s){ return s.src === "v3" && (!s.phase || s.phase === curPhase); })
+      .map(function(s){ return optOf(s); }).join("");
+    const otherPhaseOpts = SESSIONS.filter(function(s){ return s.src === "v3" && s.phase && s.phase !== curPhase; })
+      .map(function(s){ return optOf(s, s.name + " \u00b7 phase " + s.phase); }).join("");
+    const earlierOpts = SESSIONS.filter(function(s){ return s.src === "new" || s.src === "prev"; })
+      .map(function(s){ return optOf(s); }).join("");
     const opts =
-      '<optgroup label="12-week plan">' + newOpts + "</optgroup>" +
-      '<optgroup label="Previous plan">' + oldOpts + "</optgroup>" +
+      '<optgroup label="This phase">' + thisOpts + "</optgroup>" +
+      '<optgroup label="Other phases">' + otherPhaseOpts + "</optgroup>" +
+      '<optgroup label="Earlier plans">' + earlierOpts + "</optgroup>" +
       '<optgroup label="Other">' +
-        '<option value="long-walk"' + (rec.s === "long-walk" ? " selected" : "") + ">Long Incline Walk</option>" +
         '<option value="rest"' + (rec.s === "rest" ? " selected" : "") + ">Rest day</option>" +
       "</optgroup>";
 
+    const ok = stepsOK(rec);
+    const stepsHTML = '<div class="steps-row"><label for="steps-' + i + '">Steps</label>' +
+      '<input id="steps-' + i + '" class="steps-input' + (ok ? " ok" : "") + '" type="text" inputmode="numeric"' +
+      ' placeholder="0" data-steps="' + i + '" value="' + esc(rec.steps || "") + '">' +
+      '<span class="steps-goal' + (ok ? " ok" : "") + '">' + (ok ? "\u2713 6,000 reached" : "goal 6,000") + "</span></div>";
+
     let body = "";
     if (ses){
-      body = ses.items.map(function(item){
+      let coreShown = false;
+      const intro = ses.warm
+        ? '<div class="cardio"><strong>Warm-up</strong>' + esc(ses.warm) + "</div>"
+        : (ses.note ? '<div class="cardio"><strong>' + (ses.type === "hiit" ? "NTC" : "Note") + "</strong>" + esc(ses.note) + "</div>" : "");
+      body = intro + ses.items.map(function(item){
+        const coreHead = (item.core && !coreShown) ? '<div class="core-head">Core \u00b7 superset</div>' : "";
+        if (item.core) coreShown = true;
         const ex = effective(rec, item);
         const isSub = !!rec.sub[item.ex] && rec.sub[item.ex] !== item.ex;
         const last = lastWeight(view, i, ex.id);
@@ -1373,7 +1558,7 @@ function renderDays(){
             ' data-w="' + esc(ex.id) + '" value="' + esc(rec.w[ex.id] || "") + '">' +
             '<span class="kg-unit">' + esc(unit) + "</span></div>";
 
-        return '<div class="exercise' + (ex.timer ? " no-thumb" : "") + '">' +
+        return coreHead + '<div class="exercise' + (ex.timer ? " no-thumb" : "") + '">' +
               '<div class="ex-head">' +
                 '<div class="ex-name">' + esc(ex.n) + "</div>" +
                 '<button class="swap" type="button" data-swap="' + esc(item.ex) + '" aria-expanded="false"' +
@@ -1399,19 +1584,16 @@ function renderDays(){
             "</div>" +
           "</div>";
       }).join("");
-      body += '<div class="cardio"><strong>Cardio</strong>' + esc(ses.cardio) +
-        '<label class="walkdone"><input type="checkbox" data-walk="' + i + '"' +
-          (rec.walk ? " checked" : "") + '><span>Walk done</span></label></div>';
+      if (ses.cardio) body += '<div class="cardio"><strong>Cardio</strong>' + esc(ses.cardio) + "</div>";
+      body += stepsHTML;
     } else {
-      body = '<p class="restnote">Rest day. Walk if you feel like it.</p>' +
-        '<div class="cardio"><strong>Optional</strong>An easy walk still counts.' +
-        '<label class="walkdone"><input type="checkbox" data-walk="' + i + '"' +
-          (rec.walk ? " checked" : "") + '><span>Walk done</span></label></div>';
+      body = '<p class="restnote">Rest day.</p>' + stepsHTML;
     }
 
     const nEx = ses ? ses.items.length : 0;
-    const summary = (ses ? nEx + " exercise" + (nEx === 1 ? "" : "s") : "Rest") +
-      (rec.done ? " · logged" : "") + (rec.walk ? " · walked" : "");
+    const summary = (ses ? (nEx ? nEx + " exercise" + (nEx === 1 ? "" : "s") : "In the NTC app") : "Rest") +
+      (rec.done ? " · done" : "") +
+      (stepsOf(rec) ? " · " + stepsOf(rec).toLocaleString() + " steps" + (ok ? " \u2713" : "") : "");
 
     card.innerHTML =
       '<div class="day-head">' +
@@ -1597,6 +1779,16 @@ function wireDays(){
     });
   });
 
+  planEl.querySelectorAll("[data-steps]").forEach(function(inp){
+    inp.addEventListener("input", function(){
+      dayRec(view, Number(inp.dataset.steps)).steps = inp.value.trim();
+      save();
+    });
+    /* Redraw on leaving the box, so the targets and the tick catch up
+       without stealing focus while she types. */
+    inp.addEventListener("change", function(){ save(); renderAll(); });
+  });
+
   planEl.querySelectorAll("[data-walk]").forEach(function(cb){
     cb.addEventListener("change", function(){
       dayRec(view, Number(cb.dataset.walk)).walk = cb.checked ? 1 : 0;
@@ -1619,9 +1811,9 @@ function wireDays(){
   });
 }
 
-el("prev").addEventListener("click", function(){ if (view > 1){ view--; openDays.clear(); renderAll(); } });
-el("next").addEventListener("click", function(){ if (view < BLOCK_WEEKS){ view++; openDays.clear(); renderAll(); } });
-el("backToday").addEventListener("click", function(){ view = currentWeek(); openDays.clear(); renderAll(); });
+el("prev").addEventListener("click", function(){ if (view > 1){ view--; openToday(); renderAll(); } });
+el("next").addEventListener("click", function(){ if (view < BLOCK_WEEKS){ view++; openToday(); renderAll(); } });
+el("backToday").addEventListener("click", function(){ view = currentWeek(); openToday(); renderAll(); });
 el("libSearch").addEventListener("input", function(e){ libFilter = e.target.value; renderLibrary(); });
 
 /* ---------- backup ---------- */
@@ -1643,6 +1835,7 @@ el("importFile").addEventListener("change", function(e){
     try {
       const data = JSON.parse(r.result);
       if (!data || typeof data !== "object" || !data.weeks) throw new Error("not a backup");
+      if (data.v !== 3){ say("That backup is from the previous block, so it was not loaded."); return; }
       if (!confirm("Replace everything currently saved with this backup?")) return;
       store = data;
       if (!store.start) store.start = iso(sundayOf(new Date()));
@@ -1673,7 +1866,7 @@ el("clearWeek").addEventListener("click", function(){
 el("wipe").addEventListener("click", function(){
   if (!confirm("Erase all 12 weeks of logged data? Export a backup first if you want to keep it.")) return;
   if (!confirm("Last check. This cannot be undone.")) return;
-  store = { start:store.start, weeks:{} };
+  store = { start:store.start, weeks:{}, carry:store.carry, v:3 };
   save(); view = currentWeek(); renderAll(); say("All data erased.");
 });
 
@@ -2053,7 +2246,7 @@ function refreshIfNewDay(){
   const wasOnCurrent = (view === drawnWeek);
   drawnOn = now;
   drawnWeek = currentWeek();
-  if (wasOnCurrent) view = drawnWeek;
+  if (wasOnCurrent){ view = drawnWeek; openToday(); }
   renderAll();
 }
 setInterval(refreshIfNewDay, 30000);
@@ -2062,6 +2255,7 @@ document.addEventListener("visibilitychange", function(){
   if (document.visibilityState === "visible") refreshIfNewDay();
 });
 
+openToday();
 renderAll();
 renderLibrary();
 </script>

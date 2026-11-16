@@ -7,27 +7,58 @@ Live at **https://sabrivettori-lab.github.io/65FitnessStudio/**
 
 ---
 
+## The plan (block from 15 November 2026)
+
+| Day | Session |
+|---|---|
+| Sunday | Full body A · glutes focus |
+| Monday | HIIT in the Nike Training Club app, low impact, 20–25 min |
+| Tuesday | Full body B · squat focus |
+| Wednesday | Mobility / yoga, about 30 min |
+| Thursday | Full body C · hinge focus |
+| Friday | HIIT in the NTC app, 20–25 min |
+| Saturday | Rest |
+
+Every day: 6,000 steps.
+
+**Strength.** Three full-body sessions, each with a lower-body lead lift, a
+push, a pull, a shoulder or arm exercise and a two-exercise core superset. The
+exercises stay the same for all twelve weeks so the weight can go up. Two
+exceptions: the squat (goblet, then back squat) and the hinge (dumbbell RDL,
+then barbell RDL) move to the barbell from week 5, and the core pair changes
+each phase.
+
+| Phase | Weeks | Main lift | Other compound lifts |
+|---|---|---|---|
+| 1 · Base | 1–4 | 3 × 10–12 | 3 × 10–12 |
+| 2 · Strength | 5–8 | 4 × 6–8 | 3 × 8–10 |
+| 3 · Heavy | 9–12 | 4 × 5–6 | 3 × 10–15 |
+
+Weeks 4 and 8 are lighter: same exercises and weights, about half the sets. The
+app halves the sets on screen in those weeks. A 30-minute **Short session
+(travel)** sits in the day dropdown and counts as strength.
+
+The plan was reviewed on 16 November 2026 by a separate Claude agent briefed as
+a women's-health coach (not a qualified coach or clinician). Its changes are
+built in: lighter weeks, the short session, a warm-up and progression rule,
+low-impact Monday HIIT, core cut to 2 sets, and a back extension on day A for
+hamstrings.
+
 ## What it does
 
-**The week is the unit.** It runs Sunday to Saturday. You see one week at a
-time, you tick off what you did, and on Sunday the next week starts clean.
-Finished weeks stay readable — tap any number in the 12-week strip to look back.
+**The week is the unit.** It runs Sunday to Saturday. The page opens on this
+week with today's card already open. The 12-week strip, the training rules, the
+exercise library and the backup buttons are folded underneath.
 
-**Weekly targets.** Under the week you get four rows — strength sessions, HIIT
-sessions, light and recovery, incline walks — each with dots and a count, turning
-green when the target is met. Session targets follow whatever the week is set to,
-so putting in a rest day lowers the target rather than leaving you short of one
-you never intended. The walk target is always seven: a rest day is still a
-walking day. The masthead shows weeks completed out of twelve.
+**Weekly targets.** Strength 3, HIIT 2, mobility 1, and days at 6,000 steps out
+of 7. Each turns green when met. Session targets follow whatever the week is set
+to, so a rest day lowers the target rather than leaving you short.
 
-**The daily walk is ticked separately** from the session, on the cardio line of
-each day, so a day where you walked but skipped the weights still counts for
-what it was.
+**Confirming a session** is the tick box on the right of each day. HIIT days
+have no exercises, only the tick, because the session itself is in NTC.
 
-**Days start folded.** The week shows seven headers — the date, the workout, how
-many exercises, and whether it is logged and walked. Tap one to open the session.
-Opening a day leaves the others shut, and a card you have opened stays open while
-you tick things off inside it. Moving to another week folds everything again.
+**Steps** are typed into the box on each day. A day counts once it reaches
+6,000.
 
 **You pick the workout per day.** Every day has a *What I'm doing* dropdown.
 It starts on the planned session, but you can change it to any other session, to
@@ -109,7 +140,10 @@ rather it did not, the thumbnails can be dropped for plain text links.
 
 **In your phone's browser, not on GitHub.** GitHub Pages only serves fixed
 files; it has no database. Everything you type is stored locally under the key
-`r2-65:block-v2`.
+`r2-65:block-v3`. The previous block (13 Sep – 5 Dec 2026) stays untouched under
+`r2-65:block-v2`; the new block reads only its last weight per exercise, so
+"Last time" carries over, marked *(last block)*. A backup from the previous
+block cannot be imported into this one.
 
 This means:
 
@@ -127,12 +161,16 @@ save it to iCloud, email it). Import restores it on any device.
 Everything you would want to change sits at the top of the `<script>` block in
 `index.html`.
 
-**To change which session lands on which day by default**, edit `DEFAULT_WEEK`.
-Sunday first:
+**To change which session lands on which day by default**, edit `defaultWeek()`.
+Sunday first; `p` is the phase number:
 
 ```js
-const DEFAULT_WEEK = ["lower-glutes","upper","hiit-core","lower-legs","upper-shape","full-body","recovery"];
+return ["s-a" + p, "ntc-low", "s-b" + p, "mobility-yoga", "s-c" + p, "ntc", "rest"];
 ```
+
+**To change the strength sessions**, edit `STRENGTH` (the exercises and fixed
+doses), `PHASES` (sets and reps per phase), `CORE` (the core pair per phase) and
+`DELOAD_WEEKS`. The nine phase sessions are built from these.
 
 **To change a session's exercises or sets and reps**, edit that session in
 `SESSIONS`. Each line points at a library `id` and gives a dose:
