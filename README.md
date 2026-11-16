@@ -38,7 +38,8 @@ each phase.
 of the first lift: cable external rotation (A), bench Y raise (B), push-up plus
 (C). The warm-up adds band pull-aparts and wall slides.
 
-**Core.** No crunches or other spinal curling, on physio advice (November 2026).
+**Core.** Crunches limited on physio advice (November 2026): only a slow bicycle
+(criss-cross) crunch, 2 sets, at the end of A and C.
 Two exercises as a superset, 3 sets: A side-focused (side plank with hip dips,
 Copenhagen plank, Pallof variations), B front-focused (RKC plank, bear crawl,
 body saw, renegade row, ab wheel, plank pull-through), C loaded carries and the
@@ -56,8 +57,8 @@ app halves the sets on screen in those weeks. A 30-minute **Short session
 The plan was reviewed on 16 November 2026 by a separate Claude agent briefed as
 a women's-health coach (not a qualified coach or clinician). Its changes are
 built in: lighter weeks, the short session, a warm-up and progression rule,
-low-impact HIIT the day after A, core cut to 2 sets, and a back extension on day A for
-hamstrings.
+low-impact HIIT the day after A, core cut to 2 sets, and a leg curl on day A for
+hamstrings (in place of the back extension, which needs equipment not available).
 
 ## What it does
 

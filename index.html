@@ -605,7 +605,7 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
         <li>Add weight when every set reaches the top of the rep range with at least 1 rep in reserve. Add the smallest step available.</li>
         <li>Rest 90&ndash;120 sec on big lifts, 45&ndash;75 sec on smaller ones.</li>
         <li>The shoulder stabiliser (second on each card) goes in the rests between sets of the first lift.</li>
-        <li>Core: the two exercises as a superset, 3 sets. No crunches. When every set is easy, make it harder: more weight, a longer hold or a longer lever.</li>
+        <li>Core: the two exercises as a superset, 3 sets. A and C end with a slow bicycle (criss-cross) crunch; no other crunches. When every set is easy, make it harder: more weight, a longer hold or a longer lever.</li>
         <li>Check the body saw, ab wheel and world&rsquo;s greatest stretch with your physio before they come up.</li>
         <li>Log the heaviest set you managed. One number per exercise.</li>
       </ul>
@@ -997,7 +997,7 @@ const STRENGTH = {
     {ex:"hip-thrust", role:"main"},
     {ex:"cable-ext-rot", d:"3 \u00d7 12\u201315 / side"},
     {ex:"bulgarian", role:"comp", per:" / leg"},
-    {ex:"back-extension", d:"2 \u00d7 10\u201312"},
+    {ex:"leg-curl", d:"2 \u00d7 12\u201315"},
     {ex:"db-press", role:"comp"},
     {ex:"cs-row", role:"comp"},
     {ex:"lateral-raise", d:"3 \u00d7 12\u201315"}]},
@@ -1019,7 +1019,8 @@ const STRENGTH = {
     {ex:"triceps", d:"2 \u00d7 10\u201312"}]}
 };
 /* Two core exercises at the end of every session, done as a superset.
-   No crunches or other spinal curling (physio, Nov 2026). A is side-focused,
+   Crunches limited on physio advice (Nov 2026): only a slow bicycle crunch
+   on A and C (CRUNCH_DAYS). A is side-focused,
    B front-focused, C loaded carries. Make each one harder when every set is
    easy: more weight, a longer hold or a longer lever. */
 const CORE = {
@@ -1034,6 +1035,10 @@ const CORE = {
      c:[["front-rack-carry","3 \u00d7 40 m / side"],["weighted-dead-bug","3 \u00d7 10 / side, heavier"]]}
 };
 
+/* The only crunch kept: a slow bicycle crunch at the end of A and C. */
+const CRUNCH_DAYS = ["a", "c"];
+const CRUNCH_DOSE = "2 \u00d7 12\u201315 / side, slow";
+
 const PLAN_SESSIONS = [];
 PHASES.forEach(function(ph){
   ["a","b","c"].forEach(function(k){
@@ -1041,7 +1046,8 @@ PHASES.forEach(function(ph){
     const items = t.slots.map(function(sl){
       const ex = Array.isArray(sl.ex) ? sl.ex[ph.n - 1] : sl.ex;
       return {ex:ex, d: sl.d || ((sl.role === "main" ? ph.main : ph.comp) + (sl.per || ""))};
-    }).concat(CORE[ph.n][k].map(function(c){ return {ex:c[0], d:c[1], core:true}; }));
+    }).concat(CORE[ph.n][k].map(function(c){ return {ex:c[0], d:c[1], core:true}; }))
+      .concat(CRUNCH_DAYS.indexOf(k) > -1 ? [{ex:"bicycle-crunch", d:CRUNCH_DOSE, core:true}] : []);
     PLAN_SESSIONS.push({id:"s-" + k + ph.n, name:t.name, type:"strength", src:"v3", phase:ph.n,
                         warm:WARM_UP, items:items});
   });
