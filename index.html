@@ -607,7 +607,9 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
         <li>Warm up: 5 min easy cardio, then 2&ndash;3 lighter build-up sets of the first lift.</li>
         <li>Keep 1&ndash;3 reps in reserve on most sets.</li>
         <li>Add weight when every set reaches the top of the rep range with at least 1 rep in reserve. Add the smallest step available.</li>
-        <li>Every session has four groups: main lift, a push + pull superset, a circuit, then core. Superset: one set of each, back to back, then rest 60&ndash;90 sec. Circuit: go through the list once, rest 60&ndash;90 sec, and repeat. The number of rounds is the sets shown: 3, or 2 in a lighter week. Each group header shows the setup.</li>
+        <li>Every session has five groups: main lift 1, main lift 2, a free-weight superset, a machine superset, then core. The main lifts are straight sets with full rest. Supersets: one set of each exercise back to back, rest 60&ndash;90 sec, and repeat for the sets shown.</li>
+        <li>Set both cable columns and the bar at the start of the session, as the Machine box says. Nothing changes inside a superset.</li>
+        <li>Supersets pair opposing or unrelated muscles, never two exercises for the same muscle (that costs reps).</li>
         <li>Rest 90&ndash;120 sec between sets of the main lift.</li>
         <li>No overhead pressing for now. Build the shoulder stabilisers first; check with your physio before bringing it back.</li>
         <li>Core: the two exercises as a superset, 3 sets. A and C end with a slow bicycle (criss-cross) crunch; no other crunches. When every set is easy, make it harder: more weight, a longer hold or a longer lever.</li>
@@ -1010,57 +1012,70 @@ const WARM_UP = "5 min easy cardio. Hips: hip circles 5 each way per side, 90/90
 
 /* role "main" or "comp" takes the phase's dose; d is a fixed dose.
    ex can be a list of three, one per phase. */
-/* Every session has the same four groups, in priority order:
-     1 Main lift          the heaviest lower-body lift, on its own
-     2 Superset           a push + a pull, one set of each back to back
-     3 Circuit            the lighter accessory work (a second leg exercise,
-                          shoulder stabilisers, arms), done in a loop
-     4 Core               all core exercises together
-   Strength gains are largest for what is done first, so the main lift and
-   the push + pull pair come before the accessories. {core:n} is the nth
-   exercise of that phase's core pair; {crunch:true} is the bicycle crunch. */
+/* Every session has the same five groups, in this order:
+     1 Main lift 1        the heaviest lift, straight sets, full rest
+     2 Main lift 2        the next most demanding lift, straight sets
+     3 Free-weight superset
+     4 Machine superset   both cable columns and the bar are set once at the
+                          start of the session (see "machine"), so nothing is
+                          reconfigured inside a superset
+     5 Core
+   Equipment changes only between groups. Strength gains are largest for what
+   is done first, so the main lifts come first and stand alone.
+   {core:n} is the nth exercise of that phase's core pair; {crunch:true} is the
+   bicycle crunch. */
 const STRENGTH = {
-  a:{name:"Day A \u00b7 glutes, chest and back", blocks:[
-    {label:"Main lift", setup:"Bench flat", slots:[
+  a:{name:"Day A \u00b7 glutes, chest and back",
+     machine:"Left column: ankle strap, low. Right column: handle, chest height.",
+     blocks:[
+    {label:"Main lift 1", setup:"Bench flat", slots:[
       {ex:"hip-thrust", role:"main"}]},
-    {label:"Superset \u00b7 push + pull", setup:"Bench flat \u00b7 dumbbells", slots:[
+    {label:"Main lift 2", setup:"Same bench, dumbbells", slots:[
+      {ex:"bulgarian", role:"comp", per:" / leg"}]},
+    {label:"Free-weight superset", setup:"Flat bench \u00b7 dumbbells", slots:[
       {ex:"db-press", role:"comp"},
-      {ex:"single-arm-row", role:"comp", per:" / side"}]},
-    {label:"Circuit", setup:"Bench flat and dumbbells \u00b7 cable: ankle strap low for the curl, handle at elbow height for the rotation (both columns if your machine has two)", slots:[
-      {ex:"bulgarian", role:"comp", per:" / leg"},
-      {ex:"lateral-raise", d:"3 \u00d7 12\u201315"},
+      {ex:"single-arm-row", role:"comp", per:" / side"},
+      {ex:"lateral-raise", d:"3 \u00d7 12\u201315"}]},
+    {label:"Machine superset", setup:"Left column for the curl and abduction, right column for the rotation", slots:[
       {ex:"leg-curl", d:"3 \u00d7 12\u201315"},
+      {ex:"cable-hip-abduction", d:"3 \u00d7 12\u201315 / side"},
       {ex:"cable-ext-rot", d:"3 \u00d7 12\u201315 / side"}]},
-    {label:"Core", setup:"Cable handle at chest height for the Pallof \u00b7 floor or bench", slots:[
+    {label:"Core", setup:"Right column for the Pallof \u00b7 floor next to the machine", slots:[
       {core:1},
       {core:0},
       {crunch:true}]}]},
-  b:{name:"Day B \u00b7 legs, back and shoulder health", blocks:[
-    {label:"Main lift", setup:"Dumbbell or barbell", slots:[
+  b:{name:"Day B \u00b7 squat, back and shoulder health",
+     machine:"Left column: rope, high. Right column: ankle strap, low. Bar: band looped on.",
+     blocks:[
+    {label:"Main lift 1", setup:"Dumbbell or barbell", slots:[
       {ex:["goblet","back-squat","back-squat"], role:"main"}]},
-    {label:"Superset \u00b7 pull + push", setup:"Pull-up bar and band \u00b7 floor", slots:[
-      {ex:"pullup", d:"3 \u00d7 6\u201310"},
-      {ex:"pushup", d:"3 \u00d7 8\u201312"}]},
-    {label:"Circuit", setup:"Cable: ankle strap low for the curl, rope high for the face pull (both columns if your machine has two) \u00b7 bench at incline \u00b7 light dumbbell", slots:[
-      {ex:"leg-curl", role:"comp"},
-      {ex:"face-pull", d:"3 \u00d7 15"},
+    {label:"Main lift 2", setup:"Pull-up bar and band", slots:[
+      {ex:"pullup", d:"3 \u00d7 6\u201310"}]},
+    {label:"Free-weight superset", setup:"Bench at incline \u00b7 light dumbbell \u00b7 floor", slots:[
+      {ex:"pushup", d:"3 \u00d7 8\u201312"},
       {ex:"y-raise", d:"3 \u00d7 10\u201312"},
       {ex:"sl-ext-rot", d:"3 \u00d7 12\u201315 / side"}]},
+    {label:"Machine superset", setup:"Left column for the face pull and pushdown, right column for the curl", slots:[
+      {ex:"face-pull", d:"3 \u00d7 15"},
+      {ex:"triceps", d:"3 \u00d7 10\u201312"},
+      {ex:"leg-curl", role:"comp"}]},
     {label:"Core", setup:"Floor", slots:[
       {core:0},
       {core:1}]}]},
-  c:{name:"Day C \u00b7 hamstrings, back and arms", blocks:[
-    {label:"Main lift", setup:"Dumbbells or barbell", slots:[
+  c:{name:"Day C \u00b7 hamstrings, back and arms",
+     machine:"Left column: handle, mid height. Right column: handle, elbow height.",
+     blocks:[
+    {label:"Main lift 1", setup:"Dumbbells or barbell", slots:[
       {ex:["db-rdl","rdl","rdl"], role:"main"}]},
-    {label:"Superset \u00b7 push + pull", setup:"Bench at incline \u00b7 cable handle at mid height", slots:[
-      {ex:"incline-press", role:"comp"},
-      {ex:"cable-row", role:"comp"}]},
-    {label:"Circuit", setup:"Dumbbells \u00b7 cable: ankle strap low for the abduction, rope high for the pushdown (both columns if your machine has two) \u00b7 floor", slots:[
+    {label:"Main lift 2", setup:"Bench at incline \u00b7 dumbbells", slots:[
+      {ex:"incline-press", role:"comp"}]},
+    {label:"Free-weight superset", setup:"Dumbbells \u00b7 floor", slots:[
       {ex:"lunge", role:"comp", per:" / leg"},
-      {ex:"cable-hip-abduction", d:"3 \u00d7 12\u201315 / side"},
-      {ex:"pushup-plus", d:"3 \u00d7 10\u201312"},
       {ex:"biceps", d:"3 \u00d7 10\u201312"},
-      {ex:"triceps", d:"3 \u00d7 10\u201312"}]},
+      {ex:"pushup-plus", d:"3 \u00d7 10\u201312"}]},
+    {label:"Machine superset", setup:"Left column for the row, right column for the rotation", slots:[
+      {ex:"cable-row", role:"comp"},
+      {ex:"cable-ext-rot", d:"3 \u00d7 12\u201315 / side"}]},
     {label:"Core", setup:"Floor \u00b7 dumbbells", slots:[
       {core:0},
       {core:1},
@@ -1108,7 +1123,7 @@ PHASES.forEach(function(ph){
       });
     });
     PLAN_SESSIONS.push({id:"s-" + k + ph.n, name:t.name, type:"strength", src:"v3", phase:ph.n,
-                        warm:WARM_UP, items:items});
+                        warm:WARM_UP, machine:t.machine, items:items});
   });
 });
 PLAN_SESSIONS.push(
@@ -1686,7 +1701,9 @@ function renderDays(){
       const intro = ses.warm
         ? '<div class="cardio"><strong>Warm-up</strong>' + esc(ses.warm) + "</div>"
         : (ses.note ? '<div class="cardio"><strong>' + (ses.type === "hiit" ? "NTC" : "Note") + "</strong>" + esc(ses.note) + "</div>" : "");
-      body = intro + ses.items.map(function(item){
+      const machineBox = ses.machine
+        ? '<div class="cardio"><strong>Machine</strong>Set once for the whole session. ' + esc(ses.machine) + "</div>" : "";
+      body = intro + machineBox + ses.items.map(function(item){
         const coreHead = item.blk
           ? '<div class="core-head">' + esc(item.blk.label) +
             (item.blk.setup ? '<span class="blk-setup">' + esc(item.blk.setup) + "</span>" : "") + "</div>"
