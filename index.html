@@ -319,6 +319,13 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
 .yt-frame{position:relative;width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#000;margin:8px 0 12px}
 .yt-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .yt-out{display:inline-block;margin-top:6px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.cue.tempo{color:var(--forest);font-weight:600}
+.effort{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0 12px}
+.effort th,.effort td{text-align:left;vertical-align:top;padding:8px 6px;border-bottom:1px solid rgba(21,18,16,.12)}
+.effort th{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.effort td:first-child{white-space:nowrap;color:var(--burgundy);font-weight:600}
+.effort-notes{padding-left:18px;font-size:13px;color:var(--ink-2)}
+.effort-notes li{margin:6px 0}
 .restnote{padding:16px 0 6px;color:var(--ink-3);font-size:14px;font-style:italic;font-family:var(--serif)}
 
 /* ---------- exercise library ---------- */
@@ -605,8 +612,10 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
       <h3>Every session</h3>
       <ul>
         <li>Warm up: 5 min easy cardio, then 2&ndash;3 lighter build-up sets of the first lift.</li>
-        <li>Keep 1&ndash;3 reps in reserve on most sets.</li>
-        <li>Add weight when every set reaches the top of the rep range with at least 1 rep in reserve. Add the smallest step available.</li>
+        <li>Weeks 1&ndash;2 ease in: back squat with 3&ndash;4 reps in reserve, and dumbbell RDL in place of the barbell RDL. The barbell RDL takes over from week 3.</li>
+        <li>Main lifts: fast up, slow down. Drive the weight up as fast as you can with control, lower it over 2&ndash;3 seconds. End the set when a rep slows to a grind.</li>
+        <li>Effort is set as reps in reserve: how many more reps you could have done. The target for the phase is under the week title, and the full table is in &ldquo;How hard to push&rdquo;. Main lifts never go to failure. Other exercises go to 0&ndash;1 in reserve on the last set from phase 2.</li>
+        <li>Add weight when every set reaches the top of the rep range at the phase&rsquo;s effort target. Add the smallest step available. If you reach the top of the range in the first set with far more in reserve, the weight is too light: go up straight away.</li>
         <li>Every session has five groups: main lift 1, main lift 2, a free-weight superset, a machine superset, then core. The main lifts are straight sets with full rest. Supersets: one set of each exercise back to back, rest 60&ndash;90 sec, and repeat for the sets shown.</li>
         <li>Set both cable columns and the bar at the start of the session, as the Machine box says. Nothing changes inside a superset.</li>
         <li>Supersets pair opposing or unrelated muscles, never two exercises for the same muscle (that costs reps).</li>
@@ -624,6 +633,27 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
         <li>If sleep or energy is poor, swap HIIT for a walk.</li>
         <li>When the week gets busy, the order is: strength, then steps, then HIIT, then mobility.</li>
         <li>Missed a strength session? Do it in the next HIIT slot. Travelling? Use the Short session.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="band fold">
+    <summary class="band-head">How hard to push</summary>
+    <div class="panel">
+      <p class="fineprint">Effort is counted in <b>reps in reserve</b>: how many more clean reps you could have done when you stop the set.</p>
+      <table class="effort">
+        <thead><tr><th>Phase</th><th>Main lifts 1 and 2</th><th>Everything else</th></tr></thead>
+        <tbody>
+          <tr><td>1 &middot; weeks 1&ndash;4</td><td>2&ndash;3 in reserve</td><td>2 in reserve</td></tr>
+          <tr><td>2 &middot; weeks 5&ndash;8</td><td>1&ndash;2 in reserve</td><td><b>Last set: 0&ndash;1 in reserve</b> (all-out)</td></tr>
+          <tr><td>3 &middot; weeks 9&ndash;12</td><td>1&ndash;2 in reserve, <b>never to failure</b></td><td><b>Last set: 0&ndash;1 in reserve</b></td></tr>
+          <tr><td>Lighter weeks 4 and 8</td><td>3&ndash;4 in reserve</td><td>3&ndash;4 in reserve</td></tr>
+        </tbody>
+      </table>
+      <ul class="effort-notes">
+        <li><b>Why main lifts never go to failure:</b> strength gains are similar whether you stop near failure or further from it, so failing a heavy squat or RDL adds risk without adding strength.</li>
+        <li><b>Why the others go all-out on the last set:</b> training closer to failure helps muscle growth, and smaller exercises are safe to push.</li>
+        <li><b>When to add weight:</b> once every set reaches the top of the rep range at the effort target, add the smallest step next time. If the first set is far too easy, go up straight away.</li>
       </ul>
     </div>
   </details>
@@ -998,11 +1028,21 @@ LIBRARY.forEach(function(sec){
    and move to the barbell from week 5. The core pair changes each phase.
    HIIT is done in the Nike Training Club app, so here it is a tick only.
    ------------------------------------------------------------------ */
+/* main = main lift 1, main2 = main lift 2, comp = the other compound lifts.
+   Strength responds best to heavy loads, muscle size to a wide range, so the
+   main lifts get heavier by phase and the rest stays in moderate ranges.
+   effort = reps in reserve (RIR): how many more reps you could have done. */
 const PHASES = [
-  {n:1, name:"Base",     weeks:[1,4],  main:"3 \u00d7 10\u201312", comp:"3 \u00d7 10\u201312"},
-  {n:2, name:"Strength", weeks:[5,8],  main:"4 \u00d7 6\u20138",   comp:"3 \u00d7 8\u201310"},
-  {n:3, name:"Heavy",    weeks:[9,12], main:"4 \u00d7 5\u20136",   comp:"3 \u00d7 10\u201315"}
+  {n:1, name:"Base",     weeks:[1,4],  main:"3 \u00d7 8\u201310", main2:"3 \u00d7 10\u201312", comp:"3 \u00d7 10\u201312",
+   effort:"Main lifts: stop with 2\u20133 reps in reserve. Everything else: 2 in reserve."},
+  {n:2, name:"Strength", weeks:[5,8],  main:"4 \u00d7 6\u20138",  main2:"3 \u00d7 8\u201310",  comp:"3 \u00d7 8\u201310",
+   effort:"Main lifts: 1\u20132 reps in reserve. Everything else: last set to 0\u20131 in reserve."},
+  {n:3, name:"Heavy",    weeks:[9,12], main:"4 \u00d7 4\u20136",  main2:"3 \u00d7 6\u20138",   comp:"3 \u00d7 10\u201315",
+   effort:"Main lifts: 1\u20132 reps in reserve, never to failure. Everything else: last set to 0\u20131 in reserve."}
 ];
+const DELOAD_EFFORT = "Effort: 3\u20134 reps in reserve on everything.";
+const MAIN_CUE = "Fast up, slow down: drive the weight up as fast as you can while staying in control, " +
+  "then lower it over 2\u20133 seconds. End the set when a rep slows to a grind.";
 /* Lighter weeks: same exercises and weights, about half the sets. */
 const DELOAD_WEEKS = [4, 8];
 const STEP_GOAL = 6000;
@@ -1031,7 +1071,7 @@ const STRENGTH = {
     {label:"Main lift 1", setup:"Bench flat", slots:[
       {ex:"hip-thrust", role:"main"}]},
     {label:"Main lift 2", setup:"Same bench, dumbbells", slots:[
-      {ex:"bulgarian", role:"comp", per:" / leg"}]},
+      {ex:"bulgarian", role:"main2", per:" / leg"}]},
     {label:"Free-weight superset", setup:"Flat bench \u00b7 dumbbells", slots:[
       {ex:"db-press", role:"comp"},
       {ex:"single-arm-row", role:"comp", per:" / side"},
@@ -1047,8 +1087,8 @@ const STRENGTH = {
   b:{name:"Day B \u00b7 squat, back and shoulder health",
      machine:"Left column: rope, high. Right column: ankle strap, low. Bar: band looped on.",
      blocks:[
-    {label:"Main lift 1", setup:"Dumbbell or barbell", slots:[
-      {ex:["goblet","back-squat","back-squat"], role:"main"}]},
+    {label:"Main lift 1", setup:"Barbell, squat rack", slots:[
+      {ex:"back-squat", intro:"back-squat", introCue:"Weeks 1\u20132: ease in on the barbell, keep 3\u20134 reps in reserve.", role:"main"}]},
     {label:"Main lift 2", setup:"Pull-up bar and band", slots:[
       {ex:"pullup", d:"3 \u00d7 6\u201310"}]},
     {label:"Free-weight superset", setup:"Bench at incline \u00b7 light dumbbell \u00b7 floor", slots:[
@@ -1065,10 +1105,10 @@ const STRENGTH = {
   c:{name:"Day C \u00b7 hamstrings, back and arms",
      machine:"Left column: handle, mid height. Right column: handle, elbow height.",
      blocks:[
-    {label:"Main lift 1", setup:"Dumbbells or barbell", slots:[
-      {ex:["db-rdl","rdl","rdl"], role:"main"}]},
+    {label:"Main lift 1", setup:"Barbell", slots:[
+      {ex:"rdl", intro:"db-rdl", role:"main"}]},
     {label:"Main lift 2", setup:"Bench at incline \u00b7 dumbbells", slots:[
-      {ex:"incline-press", role:"comp"}]},
+      {ex:"incline-press", role:"main2"}]},
     {label:"Free-weight superset", setup:"Dumbbells \u00b7 floor", slots:[
       {ex:"lunge", role:"comp", per:" / leg"},
       {ex:"biceps", d:"3 \u00d7 10\u201312"},
@@ -1102,28 +1142,44 @@ const CORE = {
 const CRUNCH_DOSE = "2 \u00d7 12\u201315 / side, slow";
 
 const PLAN_SESSIONS = [];
+/* Weeks 1-2 ease in with dumbbell versions of the barbell main lifts ("intro");
+   the barbell takes over from week 3. */
+const INTRO_WEEKS = 2;
+const INTRO_CUE = "Weeks 1\u20132: dumbbell version to ease in. Barbell from week 3.";
+function buildStrength(ph, k, intro){
+  const t = STRENGTH[k];
+  const items = [];
+  t.blocks.forEach(function(bl, bi){
+    bl.slots.forEach(function(sl, si){
+      let it;
+      if (sl.core !== undefined){
+        const c = CORE[ph.n][k][sl.core];
+        it = {ex:c[0], d:c[1], core:true};
+      } else if (sl.crunch){
+        it = {ex:"bicycle-crunch", d:CRUNCH_DOSE, core:true};
+      } else {
+        const ex = (intro && sl.intro) ? sl.intro : (Array.isArray(sl.ex) ? sl.ex[ph.n - 1] : sl.ex);
+        const dose = sl.role === "main" ? ph.main : (sl.role === "main2" ? ph.main2 : ph.comp);
+        it = {ex:ex, d: sl.d || (dose + (sl.per || ""))};
+        if (bi < 2) it.cue = (intro && sl.intro) ? (sl.introCue || INTRO_CUE) + " " + MAIN_CUE : MAIN_CUE;
+      }
+      const setup = (intro && bi === 0 && bl.slots.some(function(x){ return x.intro && x.intro !== x.ex; })) ? "Dumbbells" : bl.setup;
+      it.blk = si === 0 ? {label:(bi + 1) + " \u00b7 " + bl.label, setup:setup} : null;
+      items.push(it);
+    });
+  });
+  return items;
+}
 PHASES.forEach(function(ph){
   ["a","b","c"].forEach(function(k){
     const t = STRENGTH[k];
-    const items = [];
-    t.blocks.forEach(function(bl, bi){
-      bl.slots.forEach(function(sl, si){
-        let it;
-        if (sl.core !== undefined){
-          const c = CORE[ph.n][k][sl.core];
-          it = {ex:c[0], d:c[1], core:true};
-        } else if (sl.crunch){
-          it = {ex:"bicycle-crunch", d:CRUNCH_DOSE, core:true};
-        } else {
-          const ex = Array.isArray(sl.ex) ? sl.ex[ph.n - 1] : sl.ex;
-          it = {ex:ex, d: sl.d || ((sl.role === "main" ? ph.main : ph.comp) + (sl.per || ""))};
-        }
-        it.blk = si === 0 ? {label:(bi + 1) + " \u00b7 " + bl.label, setup:bl.setup} : null;
-        items.push(it);
-      });
-    });
     PLAN_SESSIONS.push({id:"s-" + k + ph.n, name:t.name, type:"strength", src:"v3", phase:ph.n,
-                        warm:WARM_UP, machine:t.machine, items:items});
+                        warm:WARM_UP, machine:t.machine, items:buildStrength(ph, k, false)});
+    const hasIntro = t.blocks.some(function(bl){ return bl.slots.some(function(x){ return x.intro; }); });
+    if (ph.n === 1 && hasIntro){
+      PLAN_SESSIONS.push({id:"s-" + k + "1i", name:t.name + " \u00b7 easy start", type:"strength", src:"v3", phase:1,
+                          warm:WARM_UP, machine:t.machine, items:buildStrength(ph, k, true)});
+    }
   });
 });
 PLAN_SESSIONS.push(
@@ -1219,10 +1275,11 @@ const SESSIONS = PLAN_SESSIONS.concat([
 function phaseOf(w){ return w <= 4 ? 1 : (w <= 8 ? 2 : 3); }
 function defaultWeek(w){
   const p = phaseOf(w);
-  return ["rest", "s-a" + p, "ntc-low", "s-b" + p, "mobility-yoga", "s-c" + p, "ntc"];
+  const i = w <= INTRO_WEEKS ? "i" : "";
+  return ["rest", "s-a" + p, "ntc-low", "s-b" + p + i, "mobility-yoga", "s-c" + p + i, "ntc"];
 }
 /* Bump when defaultWeek changes. Days not yet used are re-planned on load. */
-const PLAN_V = 2;
+const PLAN_V = 3;
 function replanUnused(){
   if (store.planV === PLAN_V) return;
   Object.keys(store.weeks).forEach(function(w){
@@ -1534,7 +1591,8 @@ function renderWeeks(){
   const ph = PHASES[phaseOf(view) - 1];
   el("phaseLine").innerHTML = "<b>Phase " + ph.n + " \u00b7 " + esc(ph.name) + "</b> \u00b7 weeks " +
     ph.weeks[0] + "\u2013" + ph.weeks[1] +
-    (isDeload(view) ? "<br>Lighter week: about half the sets, same weights." : "");
+    (isDeload(view) ? "<br>Lighter week: about half the sets, same weights. " + esc(DELOAD_EFFORT)
+                    : "<br>Effort: " + esc(ph.effort));
   el("weekDates").textContent = fmt(s) + " – " + fmt(e);
   el("prev").disabled = view === 1;
   el("next").disabled = view === BLOCK_WEEKS;
@@ -1732,6 +1790,7 @@ function renderDays(){
               '<div class="ex-meta">' +
               '<div class="pills">' + dosePills(doseFor(view, item)) + "</div>" +
               (ex.c ? '<div class="cue">' + esc(ex.c) + "</div>" : "") +
+              (item.cue ? '<div class="cue tempo">' + esc(item.cue) + "</div>" : "") +
               (isSub ? '<div class="subbed">Swapped in for ' + esc(EX[item.ex].n) + "</div>" : "") +
               (last ? '<div class="last">Last time: ' + esc(last.kg) + " " + esc(unit) + " · " + esc(last.when) + "</div>" : "") +
               box +

@@ -21,18 +21,20 @@ Live at **https://sabrivettori-lab.github.io/65FitnessStudio/**
 
 Every day: 6,000 steps.
 
-**Strength.** Three full-body sessions, each with a lower-body lead lift, a
-push, a pull, a shoulder or arm exercise and a two-exercise core superset. The
-exercises stay the same for all twelve weeks so the weight can go up. Two
-exceptions: the squat (goblet, then back squat) and the hinge (dumbbell RDL,
-then barbell RDL) move to the barbell from week 5, and the core pair changes
-each phase.
+**Strength.** Three full-body sessions, each led by two main lifts done as straight sets. The exercises stay the same for all twelve weeks so the weight can go up; sets, reps and effort change by phase.
 
-| Phase | Weeks | Main lift | Other compound lifts |
-|---|---|---|---|
-| 1 · Base | 1–4 | 3 × 10–12 | 3 × 10–12 |
-| 2 · Strength | 5–8 | 4 × 6–8 | 3 × 8–10 |
-| 3 · Heavy | 9–12 | 4 × 5–6 | 3 × 10–15 |
+| Phase | Weeks | Main lift 1 | Main lift 2 | Other compound lifts | Effort (reps in reserve) |
+|---|---|---|---|---|---|
+| 1 · Base | 1–4 | 3 × 8–10 | 3 × 10–12 | 3 × 10–12 | Main 2–3; others 2 |
+| 2 · Strength | 5–8 | 4 × 6–8 | 3 × 8–10 | 3 × 8–10 | Main 1–2; others' last set 0–1 |
+| 3 · Heavy | 9–12 | 4 × 4–6 | 3 × 6–8 | 3 × 10–15 | Main 1–2, never failure; others' last set 0–1 |
+
+Main lifts are done "fast up, slow down": the lifting phase as fast as possible
+with control, the lowering over 2–3 seconds, ending the set when a rep grinds.
+Lighter weeks are 3–4 reps in reserve. Loads are never fixed: they are set by
+the rep range and effort target, so the plan scales to a stronger-than-average
+lifter. Weeks 1–2 ease in: back squat kept at 3–4 reps in reserve (the goblet
+squat was too light), and dumbbell RDL; the barbell RDL takes over from week 3.
 
 **Session order.** Three full-body sessions a week, so glutes are trained about
 three times a week and every other muscle at least twice. Every session has the
