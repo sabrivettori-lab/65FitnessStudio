@@ -1103,13 +1103,12 @@ const STRENGTH = {
     {label:"Main lift superset", setup:"Barbell and squat rack \u00b7 pull-up bar and band", slots:[
       {ex:"back-squat", intro:"back-squat", introCue:"Weeks 1\u20132: ease in on the barbell, keep 3\u20134 reps in reserve.", role:"main"},
       {ex:"pullup", d:"3 \u00d7 6\u201310"}]},
-    {label:"Free-weight superset", setup:"Floor next to the bench \u00b7 bench at incline \u00b7 dumbbells", slots:[
-      {ex:"db-floor-press", role:"comp"},
+    {label:"Stabiliser superset", setup:"Bench at incline \u00b7 light dumbbells", slots:[
       {ex:"y-raise", d:"3 \u00d7 10\u201312"},
       {ex:"sl-ext-rot", d:"3 \u00d7 12\u201315 / side"}]},
-    {label:"Machine superset", setup:"Left column for the face pull and pushdown, right column for the curl", slots:[
+    {label:"Machine superset", setup:"Left column for the face pull, right column (same ankle strap) for the kickback and the curl", slots:[
       {ex:"face-pull", d:"3 \u00d7 15"},
-      {ex:"triceps", d:"3 \u00d7 10\u201312"},
+      {ex:"kickback", d:"3 \u00d7 12\u201315 / side"},
       {ex:"leg-curl", role:"comp"}]},
     {label:"Core", setup:"Floor", slots:[
       {core:0},
@@ -1235,7 +1234,7 @@ PLAN_SESSIONS.push(
     ["Core", "Floor", [["side-plank-dips","3 \u00d7 10 / side"],["bicycle-crunch","2 \u00d7 12\u201315 / side, slow"]]]]),
   travel("travel-b", "Travel B \u00b7 squat, back and shoulder health", [
     ["Main superset", "Heaviest dumbbell \u00b7 band anchored high (or a pull-up bar)", [["goblet","3 \u00d7 12\u201315, 3 s down, 2 s pause at the bottom"],["band-pulldown","3 \u00d7 12\u201315"]]],
-    ["Superset", "Floor next to a bench \u00b7 dumbbells \u00b7 band anchored at face height", [["db-floor-press","3 \u00d7 10\u201315"],["band-face-pull","3 \u00d7 15"],["y-raise","3 \u00d7 10\u201312"]]],
+    ["Superset", "Bench or step \u00b7 dumbbells \u00b7 band anchored at face height", [["step-up","3 \u00d7 10\u201312 / leg"],["band-face-pull","3 \u00d7 15"],["y-raise","3 \u00d7 10\u201312"]]],
     ["Core", "Floor", [["rkc-plank","3 \u00d7 20\u201330 sec"],["bear-crawl","3 \u00d7 15\u201320 m"]]]]),
   travel("travel-c", "Travel C \u00b7 hamstrings, back and arms", [
     ["Main superset", "Dumbbells \u00b7 bench at incline", [["staggered-deadlift","3 \u00d7 10\u201312 / leg"],["incline-press","3 \u00d7 10\u201315"]]],

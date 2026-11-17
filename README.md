@@ -43,7 +43,13 @@ upper-body lift, with 60–90 s rest after each set so each lift keeps 2–3 min
 between its own sets), a free-weight superset, a machine superset, then core.
 Main lift pairs: hip thrust + dumbbell chest press (A), back squat + assisted
 pull-up (B), RDL + incline dumbbell press (C). Push-ups are left to the HIIT
-sessions; Day B uses the dumbbell floor press. Both cable columns and the
+sessions.
+
+**Emphasis.** Glutes and core are the priority; chest and arms are kept at
+maintenance (16 November 2026). Chest gets two presses a week (A flat, C
+incline), arms one curl (C) with triceps worked by the presses. Day B carries a
+cable glute kickback on the leg curl's ankle strap, so every session has direct
+glute work. Travel B uses a step-up in place of the floor press. Both cable columns and the
 bar are set once at the start of the session (the Machine box on the card), so
 nothing is reconfigured inside a superset; equipment changes only between
 groups. Supersets pair opposing or unrelated muscles, never two for the same
