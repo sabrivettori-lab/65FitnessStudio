@@ -616,7 +616,9 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
         <li>Main lifts: fast up, slow down. Drive the weight up as fast as you can with control, lower it over 2&ndash;3 seconds. End the set when a rep slows to a grind.</li>
         <li>Effort is set as reps in reserve: how many more reps you could have done. The target for the phase is under the week title, and the full table is in &ldquo;How hard to push&rdquo;. Main lifts never go to failure. Other exercises go to 0&ndash;1 in reserve on the last set from phase 2.</li>
         <li>Add weight when every set reaches the top of the rep range at the phase&rsquo;s effort target. Add the smallest step available. If you reach the top of the range in the first set with far more in reserve, the weight is too light: go up straight away.</li>
-        <li>Every session has five groups: main lift 1, main lift 2, a free-weight superset, a machine superset, then core. The main lifts are straight sets with full rest. Supersets: one set of each exercise back to back, rest 60&ndash;90 sec, and repeat for the sets shown.</li>
+        <li>Every session has four groups: a main lift superset, a free-weight superset, a machine superset, then core.</li>
+        <li>Main lift superset (one lower-body lift, one upper-body lift): one set of the first lift, rest 60&ndash;90 sec, one set of the second, rest 60&ndash;90 sec, repeat. Each lift still gets 2&ndash;3 min between its own sets.</li>
+        <li>Other supersets: one set of each exercise back to back, rest 60&ndash;90 sec, and repeat for the sets shown.</li>
         <li>Set both cable columns and the bar at the start of the session, as the Machine box says. Nothing changes inside a superset.</li>
         <li>Supersets pair opposing or unrelated muscles, never two exercises for the same muscle (that costs reps).</li>
         <li>Rest 90&ndash;120 sec between sets of the main lift.</li>
@@ -818,6 +820,8 @@ const LIBRARY = [
    {id:"barbell-bench", n:"Barbell bench press",         q:"barbell bench press woman form", v:"JvOJdUtx6UQ", c:"The heavy compound press.", src:"prev"},
    {id:"alt-db-bench", n:"Alt DB bench hooklying",      q:"alternating dumbbell bench press hooklying", v:"wOa4YyxyiKI", c:"Alternating arms, controlled tempo.", src:"prev"},
    {id:"alt-db-floor-fly", n:"Alt DB floor flys",           q:"alternating dumbbell floor fly", v:"6rr5p1jCZC4", c:"Stretch focus, slow eccentric.", src:"prev"},
+   {id:"db-floor-press", n:"Dumbbell floor press",        q:"dumbbell floor press proper form", v:"uUGDRwge4F8", src:"new",
+                            c:"Lie on the floor, upper arms at about 45\u00b0. Lower until the elbows touch the floor, pause, press. Easy on the shoulders."},
    {id:"pushup", n:"Push-ups",                    q:"push up proper form", v:"IODxDxX7oi4", src:"plan"},
    {id:"cable-fly", n:"Cable fly",                   q:"cable chest fly proper form", v:"JUDTGZh4rhg", src:"new"},
    {id:"chest-press-mc", n:"Chest press machine",         q:"chest press machine proper form", v:"n8TOta_pfr4", src:"new"},
@@ -1068,12 +1072,11 @@ const STRENGTH = {
   a:{name:"Day A \u00b7 glutes, chest and back",
      machine:"Left column: ankle strap, low. Right column: handle, chest height.",
      blocks:[
-    {label:"Main lift 1", setup:"Bench flat", slots:[
-      {ex:"hip-thrust", role:"main"}]},
-    {label:"Main lift 2", setup:"Same bench, dumbbells", slots:[
-      {ex:"bulgarian", role:"main2", per:" / leg"}]},
+    {label:"Main lift superset", setup:"Flat bench \u00b7 barbell or plates for the thrust, dumbbells for the press", slots:[
+      {ex:"hip-thrust", role:"main"},
+      {ex:"db-press", role:"main2"}]},
     {label:"Free-weight superset", setup:"Flat bench \u00b7 dumbbells", slots:[
-      {ex:"db-press", role:"comp"},
+      {ex:"bulgarian", role:"comp", per:" / leg"},
       {ex:"single-arm-row", role:"comp", per:" / side"},
       {ex:"lateral-raise", d:"3 \u00d7 12\u201315"}]},
     {label:"Machine superset", setup:"Left column for the curl and abduction, right column for the rotation", slots:[
@@ -1087,12 +1090,11 @@ const STRENGTH = {
   b:{name:"Day B \u00b7 squat, back and shoulder health",
      machine:"Left column: rope, high. Right column: ankle strap, low. Bar: band looped on.",
      blocks:[
-    {label:"Main lift 1", setup:"Barbell, squat rack", slots:[
-      {ex:"back-squat", intro:"back-squat", introCue:"Weeks 1\u20132: ease in on the barbell, keep 3\u20134 reps in reserve.", role:"main"}]},
-    {label:"Main lift 2", setup:"Pull-up bar and band", slots:[
+    {label:"Main lift superset", setup:"Barbell and squat rack \u00b7 pull-up bar and band", slots:[
+      {ex:"back-squat", intro:"back-squat", introCue:"Weeks 1\u20132: ease in on the barbell, keep 3\u20134 reps in reserve.", role:"main"},
       {ex:"pullup", d:"3 \u00d7 6\u201310"}]},
-    {label:"Free-weight superset", setup:"Bench at incline \u00b7 light dumbbell \u00b7 floor", slots:[
-      {ex:"pushup", d:"3 \u00d7 8\u201312"},
+    {label:"Free-weight superset", setup:"Floor next to the bench \u00b7 bench at incline \u00b7 dumbbells", slots:[
+      {ex:"db-floor-press", role:"comp"},
       {ex:"y-raise", d:"3 \u00d7 10\u201312"},
       {ex:"sl-ext-rot", d:"3 \u00d7 12\u201315 / side"}]},
     {label:"Machine superset", setup:"Left column for the face pull and pushdown, right column for the curl", slots:[
@@ -1105,9 +1107,8 @@ const STRENGTH = {
   c:{name:"Day C \u00b7 hamstrings, back and arms",
      machine:"Left column: handle, mid height. Right column: handle, elbow height.",
      blocks:[
-    {label:"Main lift 1", setup:"Barbell", slots:[
-      {ex:"rdl", intro:"db-rdl", role:"main"}]},
-    {label:"Main lift 2", setup:"Bench at incline \u00b7 dumbbells", slots:[
+    {label:"Main lift superset", setup:"Barbell \u00b7 bench at incline, dumbbells", slots:[
+      {ex:"rdl", intro:"db-rdl", role:"main"},
       {ex:"incline-press", role:"main2"}]},
     {label:"Free-weight superset", setup:"Dumbbells \u00b7 floor", slots:[
       {ex:"lunge", role:"comp", per:" / leg"},
@@ -1161,9 +1162,10 @@ function buildStrength(ph, k, intro){
         const ex = (intro && sl.intro) ? sl.intro : (Array.isArray(sl.ex) ? sl.ex[ph.n - 1] : sl.ex);
         const dose = sl.role === "main" ? ph.main : (sl.role === "main2" ? ph.main2 : ph.comp);
         it = {ex:ex, d: sl.d || (dose + (sl.per || ""))};
-        if (bi < 2) it.cue = (intro && sl.intro) ? (sl.introCue || INTRO_CUE) + " " + MAIN_CUE : MAIN_CUE;
+        if (bi === 0) it.cue = (intro && sl.intro) ? (sl.introCue || INTRO_CUE) + " " + MAIN_CUE : MAIN_CUE;
       }
-      const setup = (intro && bi === 0 && bl.slots.some(function(x){ return x.intro && x.intro !== x.ex; })) ? "Dumbbells" : bl.setup;
+      const setup = (intro && bi === 0 && bl.slots.some(function(x){ return x.intro && x.intro !== x.ex; }))
+        ? bl.setup.replace("Barbell", "Dumbbells") : bl.setup;
       it.blk = si === 0 ? {label:(bi + 1) + " \u00b7 " + bl.label, setup:setup} : null;
       items.push(it);
     });
@@ -1197,7 +1199,7 @@ PLAN_SESSIONS.push(
           {ex:"deep-squat-hold",d:"2 \u00d7 30\u201345 sec"},{ex:"foam-roll",d:"5 min, optional"}]},
   {id:"short", name:"Short session (travel)", type:"strength", src:"v3",
    warm:"30 min with dumbbells or bands, for travel or a heavy week. Counts as a strength session.",
-   items:[{ex:"goblet",d:"3 \u00d7 10\u201312"},{ex:"db-rdl",d:"3 \u00d7 10\u201312"},{ex:"pushup",d:"3 \u00d7 8\u201312"},
+   items:[{ex:"goblet",d:"3 \u00d7 10\u201312"},{ex:"db-rdl",d:"3 \u00d7 10\u201312"},{ex:"db-floor-press",d:"3 \u00d7 10\u201312"},
           {ex:"single-arm-row",d:"3 \u00d7 10 / side"},{ex:"plank",d:"2 \u00d7 30\u201345 sec"}]}
 );
 

@@ -38,8 +38,12 @@ squat was too light), and dumbbell RDL; the barbell RDL takes over from week 3.
 
 **Session order.** Three full-body sessions a week, so glutes are trained about
 three times a week and every other muscle at least twice. Every session has the
-same five groups: main lift 1 and main lift 2 (straight sets, full rest), a
-free-weight superset, a machine superset, then core. Both cable columns and the
+same four groups: a main lift superset (one heavy lower-body lift and one
+upper-body lift, with 60–90 s rest after each set so each lift keeps 2–3 min
+between its own sets), a free-weight superset, a machine superset, then core.
+Main lift pairs: hip thrust + dumbbell chest press (A), back squat + assisted
+pull-up (B), RDL + incline dumbbell press (C). Push-ups are left to the HIIT
+sessions; Day B uses the dumbbell floor press. Both cable columns and the
 bar are set once at the start of the session (the Machine box on the card), so
 nothing is reconfigured inside a superset; equipment changes only between
 groups. Supersets pair opposing or unrelated muscles, never two for the same
