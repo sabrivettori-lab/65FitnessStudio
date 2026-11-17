@@ -80,8 +80,10 @@ November 2026 with YouTube's embed check, so it exists and allows playback
 inside another page.
 
 Weeks 4 and 8 are lighter: same exercises and weights, about half the sets. The
-app halves the sets on screen in those weeks. A 30-minute **Short session
-(travel)** sits in the day dropdown and counts as strength.
+app halves the sets on screen in those weeks. **Travel A, B and C** (about 30–35 min with hotel
+dumbbells, a bench and bands) sit in the day dropdown and count as strength;
+light weights are made hard with a 3 s lowering and sets taken to 0–2 reps in
+reserve.
 
 The plan was reviewed on 16 November 2026 by a separate Claude agent briefed as
 a women's-health coach (not a qualified coach or clinician). Its changes are

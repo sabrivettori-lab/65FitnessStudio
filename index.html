@@ -634,7 +634,7 @@ select:focus{outline:none;border-color:var(--burgundy);background:var(--white)}
         <li>Tuesday HIIT: choose a low-impact NTC session, 20&ndash;25 min. It follows a leg day.</li>
         <li>If sleep or energy is poor, swap HIIT for a walk.</li>
         <li>When the week gets busy, the order is: strength, then steps, then HIIT, then mobility.</li>
-        <li>Missed a strength session? Do it in the next HIIT slot. Travelling? Use the Short session.</li>
+        <li>Missed a strength session? Do it in the next HIIT slot. Travelling? Use Travel A, B or C for the day you would miss (in the day&rsquo;s dropdown).</li>
       </ul>
     </div>
   </details>
@@ -753,7 +753,7 @@ const LIBRARY = [
 
  {g:"glutes", label:"Glutes", items:[
    {id:"hip-thrust", n:"Hip thrust",                  q:"barbell hip thrust proper form", v:"xDmFkJxPzeM", src:"plan"},
-   {id:"sl-db-glute-bridge", n:"Single-leg DB glute bridge",  q:"single leg hip thrust dumbbell bench", v:"L4nTaesNm0E", c:"Each side. Go heavy.", src:"prev"},
+   {id:"sl-db-glute-bridge", n:"Single-leg dumbbell hip thrust",  q:"single leg hip thrust dumbbell bench", v:"L4nTaesNm0E", c:"Each side. Go heavy.", src:"prev"},
    {id:"glute-bridge", n:"Glute bridge",                q:"glute bridge proper form", v:"wPM8icPu6H8", src:"plan"},
    {id:"kickback", n:"Cable glute kickback",        q:"cable glute kickback proper form", v:"dJa_Nf4zdik", src:"plan"},
    {id:"cable-hip-abduction", n:"Cable hip abduction",         q:"standing cable hip abduction glute medius", v:"pvnR8CDb4BU", c:"Each side. Glute medius.", src:"prev"},
@@ -786,7 +786,9 @@ const LIBRARY = [
    {id:"cable-rev-nordic", n:"Cable reverse Nordics",       q:"cable reverse nordic curl", v:"GbpDfXXKuk0", c:"Plyobox, slow control.", src:"prev"},
    {id:"thomas-hf", n:"Thomas HF eccentrics",        q:"thomas hip flexor eccentrics", v:"WdTihDw2JN4", c:"KB or monkey feet, controlled.", src:"prev"},
    {id:"leg-extension", n:"Leg extension",               q:"leg extension machine proper form", v:"ljO4jkwv8wQ", src:"new"},
-   {id:"front-squat", n:"Front squat",                 q:"front squat proper form", v:"uYumuL_G_V0", src:"new"}
+   {id:"front-squat", n:"Front squat",                 q:"front squat proper form", v:"uYumuL_G_V0", src:"new"},
+   {id:"reverse-lunge", n:"Reverse lunge",            q:"dumbbell reverse lunge proper form", v:"xrPteyQLGAo", src:"new",
+                            c:"Step back, not forward: easier on the knees. Dumbbells at your sides."}
  ]},
 
  {g:"calves", label:"Calves", items:[
@@ -810,7 +812,11 @@ const LIBRARY = [
    {id:"back-extension", n:"Back extension",              q:"back extension proper form", v:"ph3pddpKzzw", src:"new"},
    {id:"one-arm-pulldown", n:"Single-arm lat pulldown",    q:"single arm lat pulldown proper form", v:"eM162KNncD8", src:"new"},
    {id:"t-bar-row", n:"T-bar row",                  q:"t bar row proper form", v:"TyLoy3n_a10", src:"new"},
-   {id:"machine-row", n:"Machine row",                q:"seated machine row proper form", v:"TeFo51Q_Nsc", src:"new"}
+   {id:"machine-row", n:"Machine row",                q:"seated machine row proper form", v:"TeFo51Q_Nsc", src:"new"},
+   {id:"band-pulldown", n:"Band lat pulldown",         q:"resistance band lat pulldown exercise", v:"MDAk3N1wEfI", src:"new",
+                            c:"Anchor the band high (door anchor or a rack). Kneel, pull the elbows down to your sides."},
+   {id:"band-row", n:"Band row",                       q:"resistance band seated row exercise", v:"LSkyinhmA8k", src:"new",
+                            c:"Seated, band around the feet or anchored at chest height. Squeeze the shoulder blades at the end."}
  ]},
 
  {g:"chest", label:"Chest", items:[
@@ -840,6 +846,10 @@ const LIBRARY = [
                             c:"Shoulder stabiliser. Elbow at your side on a rolled towel, turn the forearm out slowly. Do it in the rests between sets of the first lift."},
    {id:"sl-ext-rot", n:"Side-lying dumbbell external rotation", q:"side lying dumbbell external rotation rotator cuff", v:"20v3G-odF5c", src:"new",
                             c:"Shoulder stabiliser. Lie on your side, elbow bent at 90\u00b0 on a rolled towel at your waist, rotate the light dumbbell up slowly."},
+   {id:"band-ext-rot", n:"Band external rotation",    q:"resistance band shoulder external rotation", v:"_UvmPNGtlPM", noload:true, src:"new",
+                            c:"Shoulder stabiliser. Band anchored at elbow height, elbow at your side on a rolled towel, rotate the forearm out slowly."},
+   {id:"band-face-pull", n:"Band face pull",           q:"resistance band face pull", v:"toHfpKStJ48", noload:true, src:"new",
+                            c:"Band anchored at face height. Pull towards the forehead, elbows high, hands apart at the end."},
    {id:"pushup-plus", n:"Push-up plus",               q:"push up plus serratus anterior", noload:true, v:"JSR6Q26FJZo", src:"new",
                             c:"Shoulder stabiliser. At the top of a push-up, push the floor away so the shoulder blades spread. Knees are fine. Do it in the rests between sets of the first lift."}
  ]},
@@ -1184,6 +1194,23 @@ PHASES.forEach(function(ph){
     }
   });
 });
+/* Travel versions of A, B and C: hotel dumbbells, a bench and bands, about
+   30-35 min. Light weights are made hard with a slow 3 s lowering and by taking
+   sets close to failure; muscle growth is similar across loads when sets are hard. */
+const TRAVEL_NOTE = "About 30\u201335 min with hotel dumbbells, a bench and your bands. Weights are lighter, so lower " +
+  "every rep over 3 seconds and take each set to 0\u20132 reps in reserve. Counts as a strength session.";
+function travel(id, name, blocks){
+  const items = [];
+  blocks.forEach(function(bl, bi){
+    bl[2].forEach(function(e, si){
+      const it = {ex:e[0], d:e[1]};
+      if (bi === 0) it.cue = MAIN_CUE;
+      it.blk = si === 0 ? {label:(bi + 1) + " \u00b7 " + bl[0], setup:bl[1]} : null;
+      items.push(it);
+    });
+  });
+  return {id:id, name:name, type:"strength", src:"v3", warm:TRAVEL_NOTE, items:items};
+}
 PLAN_SESSIONS.push(
   {id:"ntc-low", name:"HIIT \u00b7 NTC, low impact", type:"hiit", src:"v3",
    note:"Choose a low-impact NTC session, 20\u201325 min. It follows a leg day, so skip jump-heavy ones. Tick the box when done.",
@@ -1197,10 +1224,23 @@ PLAN_SESSIONS.push(
           {ex:"adductor-rockback",d:"2 \u00d7 10"},{ex:"hip-flexor-stretch",d:"2 \u00d7 45 sec / side"},
           {ex:"figure-4",d:"2 \u00d7 45 sec / side"},{ex:"worlds-greatest",d:"2 \u00d7 5 / side"},
           {ex:"deep-squat-hold",d:"2 \u00d7 30\u201345 sec"},{ex:"foam-roll",d:"5 min, optional"}]},
-  {id:"short", name:"Short session (travel)", type:"strength", src:"v3",
+  /* The old single travel session, kept so any day already set to it still shows. */
+  {id:"short", name:"Short session (old)", type:"strength", src:"prev",
    warm:"30 min with dumbbells or bands, for travel or a heavy week. Counts as a strength session.",
    items:[{ex:"goblet",d:"3 \u00d7 10\u201312"},{ex:"db-rdl",d:"3 \u00d7 10\u201312"},{ex:"db-floor-press",d:"3 \u00d7 10\u201312"},
-          {ex:"single-arm-row",d:"3 \u00d7 10 / side"},{ex:"plank",d:"2 \u00d7 30\u201345 sec"}]}
+          {ex:"single-arm-row",d:"3 \u00d7 10 / side"},{ex:"plank",d:"2 \u00d7 30\u201345 sec"}]},
+  travel("travel-a", "Travel A \u00b7 glutes, chest and back", [
+    ["Main superset", "Bench and dumbbells", [["sl-db-glute-bridge","3 \u00d7 10\u201315 / leg"],["db-press","3 \u00d7 10\u201315"]]],
+    ["Superset", "Bench, dumbbells and a band", [["bulgarian","3 \u00d7 10\u201312 / leg"],["single-arm-row","3 \u00d7 10\u201315 / side"],["band-ext-rot","3 \u00d7 15 / side"]]],
+    ["Core", "Floor", [["side-plank-dips","3 \u00d7 10 / side"],["bicycle-crunch","2 \u00d7 12\u201315 / side, slow"]]]]),
+  travel("travel-b", "Travel B \u00b7 squat, back and shoulder health", [
+    ["Main superset", "Heaviest dumbbell \u00b7 band anchored high (or a pull-up bar)", [["goblet","3 \u00d7 12\u201315, 3 s down, 2 s pause at the bottom"],["band-pulldown","3 \u00d7 12\u201315"]]],
+    ["Superset", "Floor next to a bench \u00b7 dumbbells \u00b7 band anchored at face height", [["db-floor-press","3 \u00d7 10\u201315"],["band-face-pull","3 \u00d7 15"],["y-raise","3 \u00d7 10\u201312"]]],
+    ["Core", "Floor", [["rkc-plank","3 \u00d7 20\u201330 sec"],["bear-crawl","3 \u00d7 15\u201320 m"]]]]),
+  travel("travel-c", "Travel C \u00b7 hamstrings, back and arms", [
+    ["Main superset", "Dumbbells \u00b7 bench at incline", [["staggered-deadlift","3 \u00d7 10\u201312 / leg"],["incline-press","3 \u00d7 10\u201315"]]],
+    ["Superset", "Dumbbells and a band", [["reverse-lunge","3 \u00d7 10\u201312 / leg"],["band-row","3 \u00d7 12\u201315"],["biceps","3 \u00d7 10\u201312"]]],
+    ["Core", "Floor \u00b7 one dumbbell", [["suitcase-carry","3 \u00d7 30 m / side"],["dead-bug","3 \u00d7 10 / side"]]]])
 );
 
 /* ---- the earlier 12-week plan and the first app, kept so nothing is lost ---- */
